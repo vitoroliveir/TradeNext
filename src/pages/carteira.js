@@ -4,8 +4,6 @@ import AddAcoes from '../components/AddAcoes';
 import B3 from '../components/B3';
 import Sidebar from "../components/Sidebar"
 import { listDb, readDb} from '../services/db';
-import { AuthContext } from "../contexts/AuthContext"
-import { useContext } from "react";
 import Image from 'next/image'
 
 
@@ -41,9 +39,8 @@ export async function getStaticProps() {
         revalidate: 6000,
     }
 }
-
 export default function Carteira({results}){ 
-        const { user } = useContext(AuthContext);
+        const [user, setUser] = useState()
         const [activeModal, setActiveModal] = useState(false)
         const [activeModalB3, setActiveModalB3] = useState(false)
         const [data, setData] = useState([])
@@ -67,20 +64,20 @@ export default function Carteira({results}){
         }
     
         const list = async ()  => {
-            await listDb(user.uid).then((response) => {
+            await listDb(localStorage.getItem('uid')).then((response) => {
                 setData(response)
-                console.log(response)
             })
 
-            await readDb(user.uid, "total", "RESULTTOTAL").then((response)=>{
+            await readDb(localStorage.getItem('uid'), "total", "RESULTTOTAL").then((response)=>{
                 setCost(response.totalCost.toFixed(2))
-                setResult(Number(response.totalReturn.toFixed(2))*100)
+                setResult(response.totalReturn.toFixed(2))
                 setPorcento(response.percentage.toFixed(2))
             })
 
         }
     
         useEffect(() => {
+            setUser(localStorage.getItem('uid'))
             list()
         }, [])
     
@@ -107,11 +104,11 @@ export default function Carteira({results}){
                                 <h1><IconFaCoins/> Patrimônio</h1>
                                 <p>{formatCurrency(result)}</p>
                                 <Graphic>
-                                    <Donut uid={user.uid}/>
+                                    <Donut uid={user}/>
                                 </Graphic>
                             </Total>
                             <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
-                            <p>Retorno <Valor>{formatCurrency(result)}</Valor> <Valor>({porcento}%)</Valor></p>
+                            <p>Retorno <Valor>{formatCurrency((cost * porcento)/100)}</Valor> <Valor>({porcento}%)</Valor></p>
                         </Patrimony>
                         <List>                      
 

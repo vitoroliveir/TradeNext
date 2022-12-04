@@ -44,7 +44,7 @@ export default function Dashboard({results}) {
 
     const list = async ()  => {
 
-        await listDb(user.uid).then((response) => {
+        await listDb(localStorage.getItem('uid')).then((response) => {
             setData(response)
         })
     }

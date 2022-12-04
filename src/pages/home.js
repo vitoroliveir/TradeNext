@@ -78,12 +78,12 @@ export default function Home({results, results2}) {
     }
 
     const list = async ()  => {
-        await listDb(user.uid).then((response) => {
+        await listDb(localStorage.getItem('uid')).then((response) => {
             setData(response)
             console.log(response)
         })
 
-        await readDb(user.uid, "total", "RESULTTOTAL").then((response)=>{
+        await readDb(localStorage.getItem('uid'), "total", "RESULTTOTAL").then((response)=>{
             setCost(response.totalCost.toFixed(2))
             setResult(Number(response.totalReturn.toFixed(2))*100)
             setPorcento(response.percentage.toFixed(2))

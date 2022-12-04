@@ -57,7 +57,7 @@ export function AuthProvider({ children }) {
       .then(async (result) => {
         auth
         handleUser(result.user);
-        
+        localStorage.setItem("uid", result.user.uid)
         await setDoc(doc(db, "Usuarios", result.user.uid), {
           name: `${result.user.displayName}`,
           email: result.user.email,
@@ -73,6 +73,7 @@ export function AuthProvider({ children }) {
     const auth = getAuth();
 
     await signInWithEmailAndPassword(auth, email, password).then(singedUser => {
+      localStorage.setItem("uid", singedUser.user.uid)
       handleUser(singedUser);
       Router.push('/home')
 
@@ -85,6 +86,7 @@ export function AuthProvider({ children }) {
     const auth = getAuth()
 
     await createUserWithEmailAndPassword(auth, email, password).then(async (singeUser) => {
+      localStorage.setItem("uid", singeUser.user.uid)
       await updateProfile(singeUser.user, {
         displayName: `${name} ${lastName}`
       });

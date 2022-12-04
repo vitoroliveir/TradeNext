@@ -1,0 +1,19 @@
+:root{
+    --background: #F4F5FA;
+    --green-50:rgba(145, 228, 137, 0.1);
+    ---background: rgba(145, 228, 137, 0.5) ;
+    --grenn-100:#119598;
+    ---background:rgba(236, 236, 236, 0.716);
+    ---background:#47ADAF;
+    --red-50:#F64B3C;
+    ---background:rgba(208, 213, 221, 1);
+    --gray-50:rgba(102, 112, 133, 1);
+    ---background:rgba(98, 95, 95, 0.58);
+    ---background:#53545C;
+    ---background:rgba(84, 41, 255, 1);
+    --grenn-150:rgba(33, 119, 121, 1);
+    --grenn-ligth-100:#82E579;
+    --grenn-ligth-150:#01e59b;
+    
+}
+

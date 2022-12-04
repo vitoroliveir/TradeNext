@@ -85,7 +85,7 @@ export default function Home({results, results2}) {
 
         await readDb(localStorage.getItem('uid'), "total", "RESULTTOTAL").then((response)=>{
             setCost(response.totalCost.toFixed(2))
-            setResult(Number(response.totalReturn.toFixed(2))*100)
+            setResult(response.totalReturn.toFixed(2))
             setPorcento(response.percentage.toFixed(2))
         })
 
@@ -122,7 +122,7 @@ export default function Home({results, results2}) {
                             </Graphic>
                         </Total>
                         <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
-                        <p>Retorno <Valor>{formatCurrency(result)}</Valor> <Valor>({porcento}%)</Valor></p>
+                        <p>Retorno <Valor>{formatCurrency((cost * porcento)/100)}</Valor> <Valor>({porcento}%)</Valor></p>
                     </Patrimony>
                     <List>
                             

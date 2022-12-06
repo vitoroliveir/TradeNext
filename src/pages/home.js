@@ -118,7 +118,7 @@ export default function Home({results, results2}) {
                             <h1><IconFaCoins/> Patrimônio</h1>
                             <p>{formatCurrency(result)}</p>
                             <Graphic>
-                                <Donut uid={user.uid}/>
+                                <Donut />
                             </Graphic>
                         </Total>
                         <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>

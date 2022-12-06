@@ -104,7 +104,7 @@ export default function Carteira({results}){
                                 <h1><IconFaCoins/> Patrimônio</h1>
                                 <p>{formatCurrency(result)}</p>
                                 <Graphic>
-                                    <Donut uid={user}/>
+                                    <Donut />
                                 </Graphic>
                             </Total>
                             <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>

@@ -107,10 +107,12 @@ export function AuthProvider({ children }) {
 
 
   const signOut = async () => {
+    localStorage.removeItem("uid")
     Router.push('/');
     await getAuth().signOut();
     handleUser(false);
     setLogado(false);
+    
 
   }
 

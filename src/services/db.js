@@ -8,7 +8,10 @@ import {
     query,
     getDoc,
     updateDoc,
+    arrayUnion,
+
 } from "firebase/firestore";
+
 
 export const readDb = async (user, router, data) => {
     const docRef = doc(db, `Usuarios/${user}/${router}`, data.toUpperCase());
@@ -74,51 +77,58 @@ export const addAcoesDb = async (user, data) => {
 
     await addAnalytics(user)
 
-    
+
 }
 
 
 export const addAnalytics = async (user) => {
-    listDb(user).then((result)=>{
-        result.map(async (item)=>{
-           const data =  await fetch(`https://brapi.dev/api/quote/${item.name}`)
-           const results = await data.json()
-           const valueShares = await results.results[0].regularMarketPrice
+    listDb(user).then((result) => {
+        result.map(async (item) => {
+            const data = await fetch(`https://brapi.dev/api/quote/${item.name}`)
+            const results = await data.json()
+            const valueShares = await results.results[0].regularMarketPrice
 
-           var q = query(collection(db, "Usuarios"));
-           var querySnapshot = await getDocs(q);
-       
-           var queryData = querySnapshot.docs.map((detail) => {
-               ({
-                   ...detail.data(),
-                   id: user,
-               })
-           }
-           );
-       
-           queryData.map(async (v) => {
-               await setDoc(doc(db, `Usuarios/${user}/analytics`, item.name.toUpperCase()), {
-                name:item.name,
-                valueBuy : item.value,
-                currentValue: valueShares.toString(),
-                qtd: item.qtd,
-                date: item.date,
-                cost:Number(item.value) * Number(item.qtd),
-                return:valueShares * Number(item.qtd)
-               })
+            var q = query(collection(db, "Usuarios"));
+            var querySnapshot = await getDocs(q);
 
-               await setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), {
-                totalCost: 0,
-                totalReturn:0,
-                percentage:0
-             })
+            var queryData = querySnapshot.docs.map((detail) => {
+                ({
+                    ...detail.data(),
+                    id: user,
+                })
+            }
+            );
 
-             totalDb(user)
-           })
+            queryData.map(async (v) => {
+                await setDoc(doc(db, `Usuarios/${user}/analytics`, item.name.toUpperCase()), {
+                    name: item.name,
+                    valueBuy: item.value,
+                    currentValue: valueShares.toString(),
+                    qtd: item.qtd,
+                    date: item.date,
+                    cost: Number(item.value) * Number(item.qtd),
+                    return: valueShares * Number(item.qtd)
+                })
 
-           
+                await setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), {
+                    totalCost: 0,
+                    totalReturn: 0,
+                    percentage: 0
+                })
+
+                await setDoc(doc(db, `Usuarios/${user}/total`, 'PIE'), {
+                    cost: [],
+                    name: [],
+                })
+
+                pieDb(user)
+
+                totalDb(user)
+            })
+
+
         })
-    }) 
+    })
 }
 
 
@@ -138,8 +148,8 @@ export const totalDb = async (user) => {
     const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
     const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-    result.map((result)=>{
-        if(result.cost != NaN && result.return != NaN){
+    result.map((result) => {
+        if (result.cost != NaN && result.return != NaN) {
             totalCost = totalCost + result.cost
             totalReturn = totalReturn + result.return
         }
@@ -148,16 +158,16 @@ export const totalDb = async (user) => {
 
     var percentage = 0
 
-    if(totalCost  < totalReturn){
-        percentage = ((totalCost - totalReturn) / totalCost ) * 100
-    }else{
-        percentage = ((totalReturn - totalCost) / totalReturn ) * 100
+    if (totalCost < totalReturn) {
+        percentage = ((totalCost - totalReturn) / totalCost) * 100
+    } else {
+        percentage = ((totalReturn - totalCost) / totalReturn) * 100
     }
 
     const newData = {
         totalCost: totalCost,
-        totalReturn:totalReturn,
-        percentage:percentage
+        totalReturn: totalReturn,
+        percentage: percentage
     }
 
     const userDoc = doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL');
@@ -165,4 +175,20 @@ export const totalDb = async (user) => {
 
 }
 
+
+export const pieDb = async (user) => {
+    await listDb(user).then((response) => {
+        response.map((item) => {
+            readDb(user, "analytics", item.name).then(async (value) => {
+                var newData = {
+                    cost: arrayUnion(value.cost),
+                    name: arrayUnion(value.name)
+                }
+
+                const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
+                await updateDoc(userDoc, newData);
+            })
+        })
+    })
+}
 

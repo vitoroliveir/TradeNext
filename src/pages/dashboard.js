@@ -19,6 +19,7 @@ import {
     IconIoMdAdd,
     IconTbPlugConnected
 } from "../styles/dashboard"
+import { PieChart } from '../components/Graphics/PieChart';
 
 
 
@@ -71,7 +72,7 @@ export default function Dashboard({results}) {
                 </Head>
                 <Sidebar Page={'Dashboard'} />
 
-                
+                <PieChart/>
                 <Modal onClick={() => activeModal ? setActiveModal(false) : setActiveModal(true)}><IconIoMdAdd/>Adicionando um investimento</Modal>
                 {activeModal ? <AddAcoes results={results} onClose={() => { setActiveModal(false) }} /> : null}
             </Body>

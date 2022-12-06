@@ -108,7 +108,7 @@ export default function Carteira({results}){
                                 </Graphic>
                             </Total>
                             <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
-                            <p>Retorno <Valor>{formatCurrency((cost * porcento)/100)}</Valor> <Valor>({porcento}%)</Valor></p>
+                            <p>Retorno <Valor>{formatCurrency((cost  * porcento)/100)}</Valor> <Valor>({porcento}%)</Valor></p>
                         </Patrimony>
                         <List>                      
 

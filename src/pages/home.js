@@ -37,7 +37,7 @@ export async function getStaticProps() {
     const datas = await data.json()
     const results = await datas.stocks
 
-    const url2 = `https://newsapi.org/v2/everything?q=economy&from=11/20/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
+    const url2 = `https://newsapi.org/v2/everything?q=economy&from=12/02/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
     
     const data2 = await fetch(url2)
 

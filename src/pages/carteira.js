@@ -47,6 +47,7 @@ export default function Carteira({results}){
         const [cost, setCost] = useState()
         const [result, setResult] = useState()
         const [porcento, setPorcento] = useState()
+        const [retorno, setRetorno] = useState()
 
         const formatCurrency = (value)=> {
             const signal = Number(value) < 0 ? "-" : "";
@@ -72,6 +73,7 @@ export default function Carteira({results}){
                 setCost(response.totalCost.toFixed(2))
                 setResult(response.totalReturn.toFixed(2))
                 setPorcento(response.percentage.toFixed(2))
+                setRetorno((response.percentage.toFixed(2) * response.totalCost.toFixed(2) / 1000).toFixed(3))
             })
 
         }
@@ -108,7 +110,7 @@ export default function Carteira({results}){
                                 </Graphic>
                             </Total>
                             <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
-                            <p>Retorno <Valor>{formatCurrency((cost  * porcento)/100)}</Valor> <Valor>({porcento}%)</Valor></p>
+                            <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({porcento}%)</Valor></p>
                         </Patrimony>
                         <List>                      
 

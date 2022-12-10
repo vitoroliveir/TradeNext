@@ -13,7 +13,7 @@ import {
 import Button from '../Button';
 
 
-export default function AddAcoes({results}) {
+export default function AddAcoes({results, page}) {
     const [ativo , setAtivo] = useState();
     const [corretora , setCorretora] = useState();
     const [value , setValue] = useState();
@@ -52,7 +52,7 @@ export default function AddAcoes({results}) {
         <Container>
             {error ? <Errs><Err backgroundColor={success ? "green": null} width={"240px"}>{messageError}</Err></Errs>: null}
 
-            <Modal data={data} onError={(response, success) => onErro(response, success)} results={results}>
+            <Modal data={data} onError={(response, success) => onErro(response, success)} results={results} page={page}>
                 <Title>CADASTRO AÇÕES</Title>
                 
                 <Dados>

@@ -10,9 +10,9 @@ import {
   IoClose
 } from './styles';
 
-export default function Modal({ onClose = () => { }, children, data, onError, results }) {
+export default function Modal({ onClose = () => { }, children, data, onError, results, page }) {
   const { user } = useContext(AuthContext);
-
+  console.log(page)
   const reset = (data)=>{
     data.name = ""
     data.value = ""
@@ -54,7 +54,7 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
   return (
     <Container>
       <ContainerModal onSubmit={handleSubmit}>
-        <Close onClick={onClose} href={'/dashboard'} ><IoClose /></Close>
+        <Close onClick={onClose} href={`/${page}`} ><IoClose /></Close>
         {children}
       </ContainerModal>
     </Container>

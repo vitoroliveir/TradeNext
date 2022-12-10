@@ -16,8 +16,6 @@ const formatUser = async (user) => ({
   email: user.email,
   name: user.displayName,
   token: user.za,
-  provider: user.providerData[0].providerId,
-  photoUrl: user.photoURL,
 })
 
 export function AuthProvider({ children }) {

@@ -6,10 +6,10 @@ import {
     Dados
 } from './styles';
 
-export default function B3(){
+export default function B3({page}){
   return (
     <Container>
-        <Modal>
+        <Modal page={page}>
             <Dados>
                 <h1>EM BREVE </h1>
             </Dados>

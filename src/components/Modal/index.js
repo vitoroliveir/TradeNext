@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext"
 import { useContext } from "react";
-import { addAcoesDb, existDb } from "../../services/db"
+import { addAcoesDb, addAnalytics, existDb } from "../../services/db"
 
 import {
   Container,
@@ -12,7 +12,7 @@ import {
 
 export default function Modal({ onClose = () => { }, children, data, onError, results, page }) {
   const { user } = useContext(AuthContext);
-  console.log(page)
+
   const reset = (data)=>{
     data.name = ""
     data.value = ""

@@ -25,8 +25,8 @@ export const readDb = async (user, router, data) => {
 
 }
 
-export const listDb = async (user) => {
-    const data = await getDocs(collection(db, `Usuarios/${user}/acoes`));
+export const listDb = async (user, router) => {
+    const data = await getDocs(collection(db, `Usuarios/${user}/${router}`));
     const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result
 };
@@ -73,6 +73,7 @@ export const addAcoesDb = async (user, data) => {
             date: data.date,
             qtd: data.qtd
         })
+        
     })
 
     await addAnalytics(user)
@@ -82,7 +83,7 @@ export const addAcoesDb = async (user, data) => {
 
 
 export const addAnalytics = async (user) => {
-    listDb(user).then((result) => {
+    listDb(user,"acoes").then((result) => {
         result.map(async (item) => {
             const data = await fetch(`https://brapi.dev/api/quote/${item.name}`)
             const results = await data.json()
@@ -120,15 +121,15 @@ export const addAnalytics = async (user) => {
                     cost: [],
                     name: [],
                 })
-
+                await totalDb(user)
                 pieDb(user)
-
-                totalDb(user)
             })
-
 
         })
     })
+    
+
+    
 }
 
 
@@ -177,7 +178,7 @@ export const totalDb = async (user) => {
 
 
 export const pieDb = async (user) => {
-    await listDb(user).then((response) => {
+    await listDb(user,"acoes").then((response) => {
         response.map((item) => {
             readDb(user, "analytics", item.name).then(async (value) => {
                 var newData = {

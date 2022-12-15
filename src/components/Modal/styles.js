@@ -5,7 +5,7 @@ export const Container = styled.div`
     position:absolute;
     z-index:1000;
     width:100vw;
-    height:955px;
+    height:1500px;
     background-color:rgba(98, 95, 95, 0.58);
     display:flex;
     justify-content:center;
@@ -21,7 +21,7 @@ export const Container = styled.div`
 export const ContainerModal = styled.form`
     position:absolute;
     width:80vw;
-    height:90vh;
+    height:80vh;
     display:flex;
     justify-content:center;
     border-radius: 15px;
@@ -29,12 +29,6 @@ export const ContainerModal = styled.form`
 
     background-color: white;
     
-    @media (min-width: 870px) {
-        padding-left:3%
-    }
-
-
-
     @media (min-width: 515px) {
         width:60vw;
         height:70vh;
@@ -43,7 +37,9 @@ export const ContainerModal = styled.form`
         top:15%;
     }
 
-    
+    @media (min-width: 870px) {
+        padding-left:3%
+    }
 
     @media (min-width: 1020px) {
         height:50vh;

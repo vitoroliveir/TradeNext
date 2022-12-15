@@ -32,7 +32,7 @@ export const Dados = styled.div`
 
     flex-wrap:wrap;
     width:50vw;
-    height:20vh;
+    height:18vh;
 
     button{
         position:absolute;
@@ -47,6 +47,7 @@ export const Dados = styled.div`
         top:65px;
         display:flex;
         margin-left:2%;
+        height:20vh;
 
         justify-content:center;
         align-items:start;

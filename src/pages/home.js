@@ -68,7 +68,7 @@ export default function Home({ results, results2 }) {
     }
 
     const list = async () => {
-        await listDb(localStorage.getItem('uid')).then((response) => {
+        await listDb(localStorage.getItem('uid'), "acoes").then((response) => {
             setData(response)
             console.log(response)
         })

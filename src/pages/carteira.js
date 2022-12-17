@@ -168,8 +168,8 @@ export default function Carteira({ results }) {
                             
                                 {
                                     data.map((results) => (
-                                        <ModalEdit onClick={() => activeModal ? setActiveModalEdit(false) : onAtivo(results.name)} >
-                                            <Item key={results.name}>
+                                        <ModalEdit onClick={() => activeModal ? setActiveModalEdit(false) : onAtivo(results.name)} key={results.name}>
+                                            <Item>
                                                 <span>{results.name}</span>
                                                 <span>{results.qtd} </span>
                                                 <span>{results.valueBuy} </span>

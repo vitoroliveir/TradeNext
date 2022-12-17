@@ -4,8 +4,6 @@ import Sidebar from "../components/Sidebar"
 import { listDb, readDb } from '../services/db';
 import Welcome from '../components/Welcome'
 import AddAcoes from '../components/AddAcoes';
-import EditAcoes from '../components/EditAcoes';
-
 
 
 import {

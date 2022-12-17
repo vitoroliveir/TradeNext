@@ -168,7 +168,7 @@ export default function Carteira({ results }) {
                             
                                 {
                                     data.map((results) => (
-                                        <ModalEdit onClick={() => activeModal ? setActiveModalEdit(false) : onAtivo(results.name)} >
+                                        <ModalEdit onClick={() => activeModal ? setActiveModalEdit(false) : onAtivo(results.name)} kew={results.name}>
                                             <Item>
                                                 <span>{results.name}</span>
                                                 <span>{results.qtd} </span>

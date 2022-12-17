@@ -115,3 +115,46 @@ export const Errs = styled.div`
 
 `;
 
+export const WrapEdit = styled.div`
+
+   button{
+    
+    position:absolute;
+    &:nth-child(1){
+        left:-3vw;
+        @media (min-width:515px) {
+            left:3vw;
+        }
+
+        @media (min-width:1260px) {
+            left:2vw;
+        }
+        @media (min-width:1550px) {
+            left:0vw;
+        }
+    }
+
+    &:nth-child(2){
+        left:33vw;
+        @media (min-width:515px) {
+            left:28vw;
+        }
+
+        @media (min-width:1260px) {
+            left:23vw;
+        }
+        @media (min-width:1550px) {
+            left:19vw;
+        }
+    }
+
+
+   }
+
+
+
+
+`;
+
+
+

@@ -147,7 +147,7 @@ export const Item = styled.li`
     font-weight: 500;
 
     /* background-color:gray; */
-    border-radius:5px;
+    border-radius:15px;
     width:81vw;
     height:35px;
     display:flex;
@@ -285,8 +285,17 @@ export const Modal = styled.button`
     font-size: 15px;
     font-weight: 600;
     background-color:var(--grenn-150);
+    color:white;
 
 `
+export const ModalEdit = styled.div`
+    :hover{
+        background-color:#E8E8E8;
+        border-radius:5px;
+    }
+
+`
+
 
 export const Scroll = styled.ul`
     overflow-y:scroll;

@@ -58,7 +58,7 @@ export default function Welcome({ results, user, page }) {
 
                 </Add>
             </Container>
-            {activeModal ? <AddAcoes results={results} onClose={() => { setActiveModal(false) }} page={page} /> : null}
+            {activeModal ? <AddAcoes results={results} onClose={() => { setActiveModal(false) }} page={page} type={"CADASTRAR"}/> : null}
             {activeModalB3 ? <B3 results={results} onClose={() => { setActiveModalB3(false) }} page={page} /> : null}
 
         </Body>

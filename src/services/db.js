@@ -136,9 +136,15 @@ export const addAnalytics = async (user) => {
 
 export const deleteDb = async (user, data) => {
     const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
-    await deleteDoc(userDoc);
+    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, data.name.toUpperCase());
 
-    await addAnalytics(user)
+    await deleteDoc(userDoc);
+    await deleteDoc(userDocAnalytics);
+    
+    pieDb(user)
+    await totalDb(user)
+    
+
 }
 
 
@@ -174,6 +180,7 @@ export const totalDb = async (user) => {
     const userDoc = doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL');
     await updateDoc(userDoc, newData);
 
+
 }
 
 
@@ -181,7 +188,7 @@ export const pieDb = async (user) => {
     await listDb(user,"acoes").then((response) => {
         response.map((item) => {
             readDb(user, "analytics", item.name).then(async (value) => {
-                var newData = {
+                const newData = {
                     cost: arrayUnion(value.cost),
                     name: arrayUnion(value.name)
                 }

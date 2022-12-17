@@ -9,7 +9,7 @@ import {
 } from './style'
 
 
-const Input = ({type,name,label,placeholder,onChange,register = () =>{},error,oninput,step}) => {
+const Input = ({type,name,label,placeholder,onChange,register = () =>{},error,oninput,step,value}) => {
     const [show, setShow] = useState(false);
   
     function handleClick(e){
@@ -32,7 +32,11 @@ const Input = ({type,name,label,placeholder,onChange,register = () =>{},error,on
                         })} 
                         oninput={oninput}
                         step={step}
-                     />
+                        value={value}
+                    >
+                       
+                     </InputField>
+
                     { error ? <Error> {error} </Error> :""}
                     { 
                         type == 'password' ? (show ? 

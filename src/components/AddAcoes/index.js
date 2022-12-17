@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../Modal';
 import Err from '../Err'
 
@@ -8,20 +8,22 @@ import {
     Dados,
     WrapInput,
     Title,
-    Errs
+    Errs,
+    WrapEdit
 } from './styles';
 import Button from '../Button';
 
 
-export default function AddAcoes({results, page}) {
-    const [ativo , setAtivo] = useState();
-    const [corretora , setCorretora] = useState();
-    const [value , setValue] = useState();
-    const [qtd , setQtd] = useState();
-    const [date , setDate] = useState();
+export default function AddAcoes({results, page , type, ativos}) {
+    const [ativo , setAtivo] = useState(ativos != undefined ?  ativos.name: "");
+    const [corretora , setCorretora] = useState(ativos != undefined ?  ativos.corretora: "");
+    const [value , setValue] = useState(ativos != undefined ?  ativos.value: "");
+    const [qtd , setQtd] = useState(ativos != undefined ?  ativos.qtd: "");
+    const [date , setDate] = useState(ativos != undefined ?  ativos.date : "");
     const [error , setError] = useState(false)
     const [success, setSuccess] = useState(false)
     const [messageError ,setMessageError] = useState("")
+    const [operation , setOperation] = useState()
 
     var data = {
         name : ativo,
@@ -30,6 +32,18 @@ export default function AddAcoes({results, page}) {
         date: date,
         qtd: qtd
     }
+
+    if(type == "EDITAR"){
+        var newData = {
+            name : ativo == undefined ? ativos.name : ativo,
+            value: value == undefined ? ativos.value : value,
+            corretora: corretora == undefined ? ativos.corretora : corretora,
+            date: date == undefined ? ativos.date : date,
+            qtd: qtd == undefined ? ativos.qtd  : qtd 
+        }
+    
+    }
+
 
     const onErro = (response, success) =>{
         setError(true)
@@ -46,15 +60,16 @@ export default function AddAcoes({results, page}) {
         }, 4500)
     } 
 
-    
-    
+
+
+
     return (
         <Container>
-            {error ? <Errs><Err backgroundColor={success ? "green": null} width={"240px"}>{messageError}</Err></Errs>: null}
+            {error && type != "EDITAR"? <Errs><Err backgroundColor={success ? "green": null} width={"240px"}>{messageError}</Err></Errs>: null}
 
-            <Modal data={data} onError={(response, success) => onErro(response, success)} results={results} page={page}>
-                <Title>CADASTRO AÇÕES</Title>
-                
+            <Modal data={type == "EDITAR" ? newData : data} onError={(response, success) => onErro(response, success)} results={results} page={page} type={type} operation={operation}>
+                <Title>{`${type} AÇÕES`}</Title>
+               
                 <Dados>
                     <WrapInput>
                         <Input
@@ -63,8 +78,9 @@ export default function AddAcoes({results, page}) {
                             label={"Ativo"}
                             placeholder={'Ativo'}
                             onChange={(e) => setAtivo(e.target.value)}
-                            /* oninput={} */
-                        />
+                            value={ativo}
+                        >
+                        </Input>
                     </WrapInput>
 
                     <WrapInput>
@@ -74,7 +90,10 @@ export default function AddAcoes({results, page}) {
                             label={"Corretora"}
                             placeholder={'Corretora'}
                             onChange={(e) => setCorretora(e.target.value)}
-                        />
+                            value={corretora}
+                            >
+                            
+                            </Input>
                     </WrapInput>
 
                     <WrapInput>
@@ -85,7 +104,9 @@ export default function AddAcoes({results, page}) {
                             placeholder={'0,00'}
                             step={"0.001"}
                             onChange={(e) => setValue(e.target.value)}
-                        />
+                            value={value}
+                            >
+                            </Input>
                     </WrapInput>
 
                     <WrapInput>
@@ -95,20 +116,32 @@ export default function AddAcoes({results, page}) {
                             label={"Quantidade"}
                             placeholder={'0'}
                             onChange={(e) => setQtd(e.target.value)}
-                        />
+                            value={qtd}
+                            >
+                            </Input>
                     </WrapInput>
 
                     <WrapInput date={true}>
                         <Input
                             type={"date"}
-                            name={"date"}
+                            name={"date"} 
                             label={"Data"}
                             placeholder={''}
                             onChange={(e) => setDate(e.target.value)}
-                        />
-                    </WrapInput>
+                            value={date}
+                            >
 
-                    <Button type="submit" backgroundColor={"var(--green-50)"} >Salvar</Button>
+                            </Input>
+                    </WrapInput>
+                    {
+                        type == "EDITAR" ? <WrapEdit>
+                        <Button  backgroundColor={"var(--grenn-150)"} color={"white"} >Salvar</Button>
+                        <Button  onClick={ () => setOperation("delete")} backgroundColor={"var(--red-50)"} color={"white"}>Excluir</Button>
+                        </WrapEdit>
+
+                        :
+                        <Button type="submit" backgroundColor={"var(--green-50)"} >Salvar</Button>
+                    }
                 </Dados>
             </Modal>
         </Container>

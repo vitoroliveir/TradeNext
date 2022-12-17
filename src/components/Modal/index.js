@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext"
 import { useContext } from "react";
-import { addAcoesDb, addAnalytics, existDb } from "../../services/db"
+import { addAcoesDb, existDb, deleteDb, updadeDb} from "../../services/db"
+
 
 import {
   Container,
@@ -10,7 +11,7 @@ import {
   IoClose
 } from './styles';
 
-export default function Modal({ onClose = () => { }, children, data, onError, results, page }) {
+export default function Modal({ onClose = () => { }, children, data, onError, results, page, type , operation}) {
   const { user } = useContext(AuthContext);
 
   const reset = (data)=>{
@@ -24,31 +25,45 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if((data.name == undefined || data.name == "") || (data.value == undefined || data.value == "") || (data.corretora == undefined || data.corretora == "") || (data.date == undefined || data.date == "") || (data.qtd == undefined || data.qtd == "")) {
-
-      return onError("Preencha todos os campos")
-
-    }else{
-      await existDb(user.uid, data).then(async (Response) => {
-        if (results.includes(data.name.toUpperCase()) == false) {
-          return onError("Ação não existe")
-
-        }if(Response == true) {
-          console.log(data.name)
-          return onError("Ação já Cadastrada")
-
-        }
-
-        await addAcoesDb(user.uid, data).then(()=>{
-          reset(data)
+    if(type == "EDITAR" ){
+      var local = window.location
+      if(operation == "delete"){
+        await deleteDb(user.uid, data).then(()=>{
+          window.location.href = `${local}`
         })
-        
-        onError("Cadastrada com sucesso" , true)
+      }else{
+        await updadeDb(user.uid, data).then(()=>{
+          window.location.href = `${local}`
+        })
+      }
 
-        e.target.reset();
-      })
+      
+    }else{
+      if((data.name == undefined || data.name == "") || (data.value == undefined || data.value == "") || (data.corretora == undefined || data.corretora == "") || (data.date == undefined || data.date == "") || (data.qtd == undefined || data.qtd == "")) {
 
+        return onError("Preencha todos os campos")
+  
+      }else{
+        await existDb(user.uid, data).then(async (Response) => {
+          if (results.includes(data.name.toUpperCase()) == false) {
+            return onError("Ação não existe")
+  
+          }if(Response == true) {
+            return onError("Ação já Cadastrada")
+          }
+  
+          await addAcoesDb(user.uid, data).then(()=>{
+            reset(data)
+          })
+          
+          onError("Cadastrada com sucesso" , true)
+  
+          e.target.reset();
+        })
+  
+      }
     }
+
   }
 
   return (

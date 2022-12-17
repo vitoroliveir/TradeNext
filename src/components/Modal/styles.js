@@ -52,6 +52,7 @@ export const ContainerModal = styled.form`
 export const IoClose = styled(IoCloseSharp)`
     height: 20px;
     width:  20px;
+    color:black;
 `;
 
 export const Close = styled.a`

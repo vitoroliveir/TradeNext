@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar"
 import { listDb, readDb } from '../services/db';
 import Welcome from '../components/Welcome'
 import AddAcoes from '../components/AddAcoes';
+import EditAcoes from '../components/EditAcoes';
 
 
 
@@ -19,7 +20,8 @@ import {
     Item,
     Header,
     Modal,
-    Scroll
+    Scroll,
+    ModalEdit
 } from "../styles/carteira"
 import Donut from '../components/Graphics/Donut';
 
@@ -42,7 +44,34 @@ export default function Carteira({ results }) {
     const [porcento, setPorcento] = useState()
     const [retorno, setRetorno] = useState()
     const [activeModal, setActiveModal] = useState(false)
-    const [total , setTotal] = useState()
+    const [activeModalEdit ,setActiveModalEdit ] = useState()
+    const [dataAtivo , setDataAtivo] = useState()
+    const [ativo , setAtivo] = useState();
+    const [corretora , setCorretora] = useState();
+    const [value , setValue] = useState();
+    const [qtd , setQtd] = useState();
+    const [date , setDate] = useState();
+
+    var newData = {
+        name : ativo,
+        value: value,
+        corretora: corretora ,
+        date: date,
+        qtd: qtd
+    }
+
+    const onAtivo = async (ativos)=>{
+            await readDb(localStorage.getItem('uid'),"acoes",ativos).then((response)=>{
+                setAtivo(response.name)
+                setValue(response.value)
+                setCorretora(response.corretora)
+                setDate(response.date)
+                setQtd(response.qtd)
+                setDataAtivo(newData)
+                setActiveModalEdit(true)
+            })
+       
+    }
 
     const formatCurrency = (value) => {
         const signal = Number(value) < 0 ? "-" : "";
@@ -90,7 +119,7 @@ export default function Carteira({ results }) {
         })
 
     }
-    console.log(data)
+
     useEffect(() => {
         setUser(localStorage.getItem('uid'))
         list()
@@ -139,14 +168,16 @@ export default function Carteira({ results }) {
                             
                                 {
                                     data.map((results) => (
-                                        <Item>
-                                            <span>{results.name}</span>
-                                            <span>{results.qtd} </span>
-                                            <span>{results.valueBuy} </span>
-                                            <span>{results.currentValue}</span>
-                                            <span>{calculationPercentage(results.return, results.cost)} %</span>
-                                            <span>{((calculationTotal(results.return, results.cost)  * result)/100).toFixed(1)} %</span>
-                                        </Item>
+                                        <ModalEdit onClick={() => activeModal ? setActiveModalEdit(false) : onAtivo(results.name)} >
+                                            <Item>
+                                                <span>{results.name}</span>
+                                                <span>{results.qtd} </span>
+                                                <span>{results.valueBuy} </span>
+                                                <span>{results.currentValue}</span>
+                                                <span>{calculationPercentage(results.return, results.cost)} %</span>
+                                                <span>{(((calculationTotal(results.return, results.cost) * result)/100)/100).toFixed(1)} %</span>
+                                            </Item>
+                                        </ModalEdit>
                                     ))
                                 }
 
@@ -156,7 +187,8 @@ export default function Carteira({ results }) {
                         
                     </List>
                 </ContainerCarteira>
-                { activeModal ? <AddAcoes results={results} onClose={() => { setActiveModal(false) }} page={"carteira"}/> : null}
+                { activeModal ? <AddAcoes results={results}  onClose={() => { setActiveModal(false) }} page={"carteira"} type={"CADASTRAR"}/> : null}
+                { activeModalEdit ? <AddAcoes results={results} onClose={() => { setActiveModalEdit(false) }} page={"carteira"} type={"EDITAR"} ativos={newData}/> : null}
             </Body>
         ) : (
             <>

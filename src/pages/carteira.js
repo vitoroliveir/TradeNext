@@ -96,7 +96,6 @@ export default function Carteira({ results }) {
 
 
     }
-
     
     const calculationTotal = (n1, n2) => {
         return n1 * n2
@@ -151,6 +150,7 @@ export default function Carteira({ results }) {
                         </Total>
                         <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
                         <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({porcento}%)</Valor></p>
+
                     </Patrimony>
                     <List>
                         <h1>Meus Ativos</h1>
@@ -173,7 +173,7 @@ export default function Carteira({ results }) {
                                                 <span>{results.valueBuy} </span>
                                                 <span>{results.currentValue}</span>
                                                 <span>{calculationPercentage(results.return, results.cost)} %</span>
-                                                <span>{(((calculationTotal(results.return, results.cost) * result)/100)/100).toFixed(1)} %</span>
+                                                <span>{((results.return * 100)/result).toFixed(0)} %</span>
                                             </Item>
                                         </ModalEdit>
                                     ))

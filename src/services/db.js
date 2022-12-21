@@ -13,6 +13,66 @@ import {
 } from "firebase/firestore";
 
 
+const resetDb = async (user) =>{
+    const userDocpie = doc(db, `Usuarios/${user}/total`, "PIE");
+
+    await deleteDoc(userDocpie);
+    await setDoc(doc(db, `Usuarios/${user}/total`, 'PIE'), {
+        cost: [],
+        name: [],
+    })
+
+    await pieDb(user)
+    await totalDb(user)
+}
+
+
+export const existDb = async (user, data) => {
+    const docRef = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        return true
+    } else {
+        return false
+    }
+}
+
+export const deleteDb = async (user, data) => {
+    const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
+    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, data.name.toUpperCase());
+
+    await deleteDoc(userDoc);
+    await deleteDoc(userDocAnalytics);
+    await resetDb(user)
+}
+
+export const updateDb = async (user, data) => {
+    const datas = await fetch(`https://brapi.dev/api/quote/${data.name}`);
+    const results = await datas.json();
+    const valueShares = await results.results[0].regularMarketPrice;
+
+    const newData = {
+        name: data.name,
+        valueBuy: data.value,
+        currentValue: valueShares.toString(),
+        qtd: data.qtd,
+        date: data.date,
+        cost: Number(data.value) * Number(data.qtd),
+        return: valueShares * Number(data.qtd)
+    }
+
+
+    const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
+    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, data.name.toUpperCase());
+
+    await updateDoc(userDoc, data);
+    await updateDoc(userDocAnalytics, newData);
+    await resetDb(user)
+
+
+}
+
 export const readDb = async (user, router, data) => {
     const docRef = doc(db, `Usuarios/${user}/${router}`, data.toUpperCase());
     const docSnap = await getDoc(docRef);
@@ -30,28 +90,6 @@ export const listDb = async (user, router) => {
     const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result
 };
-
-
-export const updadeDb = async (user, data) => {
-    const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
-    await updateDoc(userDoc, data);
-
-    await addAnalytics(user)
-
-}
-
-
-export const existDb = async (user, data) => {
-    const docRef = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        return true
-    } else {
-        return false
-    }
-}
-
 
 export const addAcoesDb = async (user, data) => {
     var q = query(collection(db, "Usuarios"));
@@ -73,17 +111,14 @@ export const addAcoesDb = async (user, data) => {
             date: data.date,
             qtd: data.qtd
         })
-        
     })
 
-    await addAnalytics(user)
-
-
+    await addAnalytics(user) 
 }
 
 
 export const addAnalytics = async (user) => {
-    listDb(user,"acoes").then((result) => {
+    listDb(user, "acoes").then((result) => {
         result.map(async (item) => {
             const data = await fetch(`https://brapi.dev/api/quote/${item.name}`)
             const results = await data.json()
@@ -121,29 +156,14 @@ export const addAnalytics = async (user) => {
                     cost: [],
                     name: [],
                 })
-                await totalDb(user)
-                pieDb(user)
+                
+                await resetDb(user)
             })
 
         })
     })
-    
-
-    
-}
 
 
-
-export const deleteDb = async (user, data) => {
-    const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
-    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, data.name.toUpperCase());
-
-    await deleteDoc(userDoc);
-    await deleteDoc(userDocAnalytics);
-    
-    pieDb(user)
-    await totalDb(user)
-    
 
 }
 
@@ -185,18 +205,24 @@ export const totalDb = async (user) => {
 
 
 export const pieDb = async (user) => {
-    await listDb(user,"acoes").then((response) => {
-        response.map((item) => {
-            readDb(user, "analytics", item.name).then(async (value) => {
-                const newData = {
-                    cost: arrayUnion(value.cost),
-                    name: arrayUnion(value.name)
-                }
+    await listDb(user, "acoes").then(async (response) => {
+        const cost  = []
+        const name = []
 
-                const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
-                await updateDoc(userDoc, newData);
+        response.map(async (item) => {
+            await readDb(user, "analytics", item.name).then(async (value) => {
+                cost.push(value.return)
+                name.push(value.name)
             })
+
+            const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
+            await updateDoc(userDoc, {
+                cost: cost ,
+                name: name
+            });
         })
+
+
     })
 }
 

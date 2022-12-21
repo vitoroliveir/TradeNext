@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext"
 import { useContext } from "react";
-import { addAcoesDb, existDb, deleteDb, updadeDb} from "../../services/db"
+import { addAcoesDb, existDb, deleteDb, updateDb} from "../../services/db"
 
 
 import {
@@ -28,12 +28,14 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
     if(type == "EDITAR" ){
       var local = window.location
       if(operation == "delete"){
-        await deleteDb(user.uid, data).then(()=>{
+        await deleteDb(user.uid, data).then(async ()=>{
           window.location.href = `${local}`
+
         })
       }else{
-        await updadeDb(user.uid, data).then(()=>{
+        await updateDb(user.uid, data).then(async ()=>{
           window.location.href = `${local}`
+          
         })
       }
 
@@ -55,12 +57,12 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
           await addAcoesDb(user.uid, data).then(()=>{
             reset(data)
           })
-          
+          reset(data)
           onError("Cadastrada com sucesso" , true)
-  
-          e.target.reset();
+          
+          
         })
-  
+        e.target.reset();
       }
     }
 

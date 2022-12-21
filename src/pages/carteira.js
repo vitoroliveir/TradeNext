@@ -87,12 +87,9 @@ export default function Carteira({ results }) {
     }
 
     const calculationPercentage = (n1, n2) => {
-        var percentage
-        if (n1 > n2) {
-            return percentage = (((n1 - n2) / n2) * 100).toFixed(1)
-        } else {
-            return percentage = (((n2 - n1) / n1) * 100).toFixed(1)
-        }
+        var percentage = (((n1 - n2) / n2) * 100).toFixed(0)
+
+        return percentage
 
 
     }
@@ -110,7 +107,7 @@ export default function Carteira({ results }) {
             if (response.totalCost != undefined) {
                 setCost(response.totalCost.toFixed(2))
                 setResult(response.totalReturn.toFixed(2))
-                setPorcento(response.percentage.toFixed(2))
+                setPorcento(response.percentage.toFixed(1))
                 setRetorno((response.percentage.toFixed(2) * response.totalCost.toFixed(2) / 1000).toFixed(3))
             }
         })

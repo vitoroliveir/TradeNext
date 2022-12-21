@@ -183,13 +183,13 @@ export const totalDb = async (user) => {
 
     })
 
-    var percentage = 0
+    var percentage = ((totalReturn - totalCost) / totalCost) * 100
 
-    if (totalCost < totalReturn) {
+/*     if (totalCost < totalReturn) {
         percentage = ((totalReturn - totalCost) / totalCost) * 100
     } else {
         percentage = ((totalCost - totalReturn) / totalReturn) * 100
-    }
+    } */
 
     const newData = {
         totalCost: totalCost,

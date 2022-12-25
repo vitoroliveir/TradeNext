@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar"
-import { listDb, readDb } from '../services/db';
+import { listDb, readDb, resetDb } from '../services/db';
 import Welcome from '../components/Welcome'
 import AddAcoes from '../components/AddAcoes';
 
@@ -22,6 +22,7 @@ import {
     ModalEdit
 } from "../styles/carteira"
 import Donut from '../components/Graphics/Donut';
+import Loading from '../components/Loading';
 
 export async function getStaticProps() {
     const url = `https://brapi.dev/api/available`;
@@ -51,6 +52,7 @@ export default function Carteira({ results }) {
     const [value , setValue] = useState();
     const [qtd , setQtd] = useState();
     const [date , setDate] = useState();
+    const [loading , setLoading] = useState(true)
 
     var newData = {
         name : ativo,
@@ -97,8 +99,11 @@ export default function Carteira({ results }) {
     }
 
     const list = async () => {
+        await resetDb(localStorage.getItem('uid'))
+
         await listDb(localStorage.getItem('uid'), "analytics").then((response) => {
             setData(response)
+            setLoading(false)
         })
 
         await readDb(localStorage.getItem('uid'), "total", "RESULTTOTAL").then((response) => {
@@ -117,7 +122,9 @@ export default function Carteira({ results }) {
     }, [])
 
     return (
-
+        loading ? (
+            <><Loading/></>
+        ):
         data != "" ? (
             <Body>
                 <Head>

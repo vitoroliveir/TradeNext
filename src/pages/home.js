@@ -52,6 +52,7 @@ export default function Home({ results, results2 }) {
     const [result, setResult] = useState()
     const [porcento, setPorcento] = useState()
     const [retorno, setRetorno] = useState()
+    const [loading , setLoading] = useState(true)
 
     const formatCurrency = (value) => {
         const signal = Number(value) < 0 ? "-" : "";
@@ -69,9 +70,11 @@ export default function Home({ results, results2 }) {
     }
 
     const list = async () => {
+        await resetDb(localStorage.getItem('uid'))
+
         await listDb(localStorage.getItem('uid'), "acoes").then((response) => {
             setData(response)
-            console.log(response)
+            setLoading(false)
         })
 
         await readDb(localStorage.getItem('uid'), "total", "RESULTTOTAL").then((response) => {
@@ -86,13 +89,14 @@ export default function Home({ results, results2 }) {
 
     }
 
-    useEffect(async () => {
-        await resetDb(localStorage.getItem('uid'))
-        await list()
+    useEffect( () => {
+        list()
     }, [])
 
     return (
-
+        loading ? (
+            <><Loading/></>
+        ):
         data != "" ? (
             <Body>
                 <Head>

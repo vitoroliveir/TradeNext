@@ -19,6 +19,7 @@ import {
     IconIoMdAdd,
     IconTbPlugConnected
 } from "../styles/dashboard"
+import Loading from '../components/Loading';
 
 
 
@@ -41,11 +42,13 @@ export default function Dashboard({results}) {
     const [activeModal, setActiveModal] = useState(false)
     const [activeModalB3, setActiveModalB3] = useState(false)
     const [data, setData] = useState([])
+    const [loading , setLoading] = useState(true)
 
     const list = async ()  => {
 
         await listDb(localStorage.getItem('uid')).then((response) => {
             setData(response)
+            setLoading(false)
         })
     }
 
@@ -54,7 +57,9 @@ export default function Dashboard({results}) {
     }, [])
 
     return (
-
+        loading ? (
+            <><Loading /></>
+        ) :
         data != "" ? (
             <Body>
                 <Head>

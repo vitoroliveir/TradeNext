@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 
 
-const resetDb = async (user) =>{
+export const resetDb = async (user) =>{
     const userDocpie = doc(db, `Usuarios/${user}/total`, "PIE");
 
     await deleteDoc(userDocpie);
@@ -113,7 +113,7 @@ export const addAcoesDb = async (user, data) => {
         })
     })
 
-    await addAnalytics(user) 
+    await addAnalytics(user)
 }
 
 
@@ -156,7 +156,7 @@ export const addAnalytics = async (user) => {
                     cost: [],
                     name: [],
                 })
-                
+
                 await resetDb(user)
             })
 
@@ -185,11 +185,6 @@ export const totalDb = async (user) => {
 
     var percentage = ((totalReturn - totalCost) / totalCost) * 100
 
-/*     if (totalCost < totalReturn) {
-        percentage = ((totalReturn - totalCost) / totalCost) * 100
-    } else {
-        percentage = ((totalCost - totalReturn) / totalReturn) * 100
-    } */
 
     const newData = {
         totalCost: totalCost,

@@ -148,7 +148,7 @@ export const Item = styled.li`
 
     /* background-color:gray; */
     border-radius:15px;
-    width:81vw;
+    width:80vw;
     height:35px;
     display:flex;
     justify-content:space-between;
@@ -164,37 +164,52 @@ export const Item = styled.li`
         &:nth-child(1) {
             font-size: 16px;
             font-weight: 600;
-            width:64px;
+            width:57px;
         }
 
         &:nth-child(2) {
-            width:25px;
+            width:23px;
+            margin-right:-5px;
+        }
+
+        &:nth-child(4) {
+            width:35px;
             margin-right:-5px;
         }
 
         &:nth-child(5) {
-            width:55px;
+            width:50px;
         }
         &:nth-child(6) {
-            width:55px;
+            width:40px;
         }
     }
 
     @media (min-width:501px) {
-        width:70vw;
+        width:69vw;
         padding-right:25px;
     }
 
     @media (min-width:850px) {
-        width:47vw;
+        width:48vw;
         padding-right:0px;
 
         >span{
             &:nth-child(6) {
-            width:52px;
-            margin-right:25px;
+                width:52px;
+                margin-right:25px;
 
-        }
+            }
+            &:nth-child(4) {
+                width:1px;
+                margin-right:25px;
+
+            }
+            &:nth-child(5) {
+                width:39px;
+                margin-right:25px;
+
+            }
         }
 
     }
@@ -202,6 +217,14 @@ export const Item = styled.li`
 
     @media (min-width:1450px) {
         margin-left:4vw;
+        >span{
+
+
+            &:nth-child(3) {
+                margin-right:10px;
+
+            }
+        }
 
     }
 

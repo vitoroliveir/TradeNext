@@ -34,6 +34,8 @@ export async function getStaticProps() {
         revalidate: 6000,
     }
 }
+
+
 export default function Carteira({ results }) {
     const [user, setUser] = useState()
     const [data, setData] = useState([])
@@ -93,10 +95,6 @@ export default function Carteira({ results }) {
 
 
     }
-    
-    const calculationTotal = (n1, n2) => {
-        return n1 * n2
-    }
 
     const list = async () => {
         await listDb(localStorage.getItem('uid'), "analytics").then((response) => {
@@ -111,12 +109,11 @@ export default function Carteira({ results }) {
                 setRetorno((response.percentage.toFixed(2) * response.totalCost.toFixed(2) / 1000).toFixed(3))
             }
         })
-
+        setUser(localStorage.getItem('uid'))
     }
 
     useEffect(() => {
-        setUser(localStorage.getItem('uid'))
-        list()
+     list()
     }, [])
 
     return (
@@ -170,7 +167,7 @@ export default function Carteira({ results }) {
                                                 <span>{results.valueBuy} </span>
                                                 <span>{results.currentValue}</span>
                                                 <span>{calculationPercentage(results.return, results.cost)} %</span>
-                                                <span>{((results.return * 100)/result).toFixed(0)} %</span>
+                                                <span>{((results.return * 100)/result).toFixed(1)} %</span>
                                             </Item>
                                         </ModalEdit>
                                     ))

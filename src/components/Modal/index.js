@@ -11,7 +11,7 @@ import {
   IoClose
 } from './styles';
 
-export default function Modal({ onClose = () => { }, children, data, onError, results, page, type , operation}) {
+export default function Modal({ onClose = () => { }, children, data, onError, results, page, type , operation,resetData}) {
   const { user } = useContext(AuthContext);
 
   const reset = (data)=>{
@@ -30,12 +30,10 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
       if(operation == "delete"){
         await deleteDb(user.uid, data).then(async ()=>{
           window.location.href = `${local}`
-
         })
       }else{
         await updateDb(user.uid, data).then(async ()=>{
           window.location.href = `${local}`
-          
         })
       }
 
@@ -53,16 +51,21 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
           }if(Response == true) {
             return onError("Ação já Cadastrada")
           }
-  
-          await addAcoesDb(user.uid, data).then(()=>{
-            reset(data)
-          })
+          
+
+          await addAcoesDb(user.uid, data)
+
           reset(data)
-          onError("Cadastrada com sucesso" , true)
-          
-          
+
+          setTimeout(async () => {
+            reset(data)
+            await onError("Cadastrada com sucesso" , true)
+            resetData(true)
+          }, 500)
+
+          await e.target.reset();
         })
-        e.target.reset();
+        
       }
     }
 

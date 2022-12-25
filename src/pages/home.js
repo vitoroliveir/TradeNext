@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar"
-import { listDb, readDb } from '../services/db';
+import { listDb, readDb, resetDb } from '../services/db';
 import { AuthContext } from "../contexts/AuthContext"
 import { useContext } from "react";
 import Welcome from '../components/Welcome'
@@ -19,6 +19,7 @@ import {
     New, Card, Title, Content,
 } from "../styles/home"
 import Donut from '../components/Graphics/Donut';
+import Loading from '../components/Loading';
 
 
 
@@ -85,8 +86,9 @@ export default function Home({ results, results2 }) {
 
     }
 
-    useEffect(() => {
-        list()
+    useEffect(async () => {
+        await resetDb(localStorage.getItem('uid'))
+        await list()
     }, [])
 
     return (

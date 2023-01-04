@@ -20,7 +20,7 @@ import {
 const today = new Date(timeElapsed); */
 
 export async function getStaticProps() {
-    const url = `https://newsapi.org/v2/everything?q=economy&from=12/03/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
+    const url = `https://newsapi.org/v2/everything?q=economy&from=12/12/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
     
     const data = await fetch(url)
 

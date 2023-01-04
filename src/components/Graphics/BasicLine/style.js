@@ -4,10 +4,10 @@ export const Graphic = styled.div`
     background-color: white;
     border-radius: 15px;
     height: 400px;
-    width: 370px;
+    width: 850px;
     position: relative;
-    left: 250px;
-    top: 100px;
+    left: 350px;
+    top: 150px;
     display: flex;
     justify-content: center;
     align-items: center;

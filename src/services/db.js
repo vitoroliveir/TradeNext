@@ -14,6 +14,7 @@ import {
 
 
 export const resetDb = async (user) =>{
+   
     const userDocpie = doc(db, `Usuarios/${user}/total`, "PIE");
 
     await deleteDoc(userDocpie);
@@ -22,8 +23,10 @@ export const resetDb = async (user) =>{
         name: [],
     })
 
+    
     await pieDb(user)
     await totalDb(user)
+    await HistoryDb(user)
 }
 
 
@@ -112,7 +115,7 @@ export const addAcoesDb = async (user, data) => {
             qtd: data.qtd
         })
     })
-
+    
     await addAnalytics(user)
 }
 
@@ -123,7 +126,7 @@ export const addAnalytics = async (user) => {
             const data = await fetch(`https://brapi.dev/api/quote/${item.name}`)
             const results = await data.json()
             const valueShares = await results.results[0].regularMarketPrice
-
+            
             var q = query(collection(db, "Usuarios"));
             var querySnapshot = await getDocs(q);
 
@@ -136,14 +139,16 @@ export const addAnalytics = async (user) => {
             );
 
             queryData.map(async (v) => {
+                
                 await setDoc(doc(db, `Usuarios/${user}/analytics`, item.name.toUpperCase()), {
                     name: item.name,
                     valueBuy: item.value,
                     currentValue: valueShares.toString(),
                     qtd: item.qtd,
-                    date: item.date,
+                    date: item.date.replace(/[-]/g, "/"),
                     cost: Number(item.value) * Number(item.qtd),
-                    return: valueShares * Number(item.qtd)
+                    return: valueShares * Number(item.qtd),
+                    history12m:[]
                 })
 
                 await setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), {
@@ -157,15 +162,21 @@ export const addAnalytics = async (user) => {
                     name: [],
                 })
 
-                await resetDb(user)
+                await setDoc(doc(db, `Usuarios/${user}/total`, 'HISTORY'), {
+                    averageAll: [],
+                    dateAll: [],
+                    
+                })
+
+                
+                await resetDb(user,item)
             })
 
+            
         })
     })
-
-
-
 }
+
 
 
 export const totalDb = async (user) => {
@@ -197,6 +208,114 @@ export const totalDb = async (user) => {
 
 
 }
+
+//criando datas
+const datas = []
+
+function dateToString(d) {
+    return [d.getFullYear(), d.getMonth() + 1, d.getDate()].map(d => d > 9 ? d : '0' + d).join('/');
+}
+    
+var hoje = new Date();
+var ano = hoje.getFullYear();
+var mes = hoje.getMonth();
+var dia = hoje.getDate();
+
+for (var i = 0; i < 1095 ; i++) {
+    var outroDia = new Date(ano, mes, dia - i);
+        datas.push(dateToString(outroDia))
+}
+
+export const HistoryDb = async (user) => {
+    const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
+    const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const allData = []
+    const filterAllDate = []
+    const filterAllValue = []
+
+    result.map(async (result)=>{
+        const history3y = []
+
+        const dataHystory = await fetch(`https://brapi.dev/api/quote/${result.name}?range=3y&interval=1d&fundamental=true`)
+        const resultsHystory = await dataHystory.json()
+        const resultshistory = resultsHystory.results[0].historicalDataPrice
+        await resultshistory.reverse().map((result,index)=>{
+            history3y.push({
+                value : result.close ,
+                date: datas[index]
+            })
+
+            allData.push({
+                value : result.close ,
+                date: [datas[index]]
+            })
+            
+        })
+
+        var hoje = new Date();
+        var ano = hoje.getFullYear();
+        var mes = hoje.getMonth();
+        var dia = hoje.getDate();
+
+        //comparar a data
+        let dataInicial = result.date.replace(/[-]/g, "/");
+        let dataFinal = `2023/01/03`;
+        let objetosFiltrados = history3y.filter(result => {
+            return result.date >= dataInicial && result.date <= dataFinal ;
+        })
+
+        objetosFiltrados.map((res)=>{
+            if(filterAllDate.includes(res.date)){
+                filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
+            }else{
+                filterAllDate.push(res.date)
+                filterAllValue.push([])
+                filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
+            }
+
+        })
+       
+        const newData = {
+            name: result.name,
+            valueBuy: result.valueBuy,
+            currentValue: result.currentValue,
+            qtd: result.qtd,
+            date: result.date,
+            cost: result.cost,
+            return: result.return,
+            history12m: objetosFiltrados
+        }
+
+        const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, result.name.toUpperCase());
+        await updateDoc(userDocAnalytics, newData);
+
+        const newFilterAllValue = []
+
+        filterAllValue.map((values,index)=>{
+            var somaValue = 0
+
+            values.map((resul)=>{
+                somaValue = somaValue + resul
+            })
+
+            newFilterAllValue[index] = somaValue.toFixed(1)
+        })
+
+        const userDoc = doc(db, `Usuarios/${user}/total`, 'HISTORY');
+        await updateDoc(userDoc, {
+            averageAll: newFilterAllValue,
+            dateAll: filterAllDate
+        });
+        
+    })
+
+
+
+
+
+}
+
+
 
 
 export const pieDb = async (user) => {

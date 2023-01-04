@@ -51,7 +51,6 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
           }if(Response == true) {
             return onError("Ação já Cadastrada")
           }
-          
 
           await addAcoesDb(user.uid, data)
 
@@ -62,7 +61,6 @@ export default function Modal({ onClose = () => { }, children, data, onError, re
             await onError("Cadastrada com sucesso" , true)
             resetData(true)
           }, 500)
-
           await e.target.reset();
         })
         

@@ -9,15 +9,15 @@ export default function Donut() {
   const [cost, setCost] = useState([])
   const [name, setName] = useState([])
 
-
-
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "PIE").then((value) => {
       setCost(value.cost)
       setName(value.name)
     })
   }, [])
+  
   var show = cost.length <= 12 ? false : true
+
   var state = {
     name: name,
     series: cost,

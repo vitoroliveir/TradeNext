@@ -3,6 +3,7 @@ import Head from 'next/head'
 import LoginForm from '../components/LoginForm'
 import { useContext } from 'react';
 import Router from 'next/router';
+import Loading from '../components/Loading';
 
 import {
   SideImage,
@@ -16,10 +17,13 @@ import { AuthContext } from "../contexts/AuthContext";
 export default function Login() {
   const { logado } = useContext(AuthContext);
 
+
+
   if (logado) {
     Router.push('/home')
   } else {
     return (
+      
       <Body>
         <Head>
           <title>Login | TradeNext</title>

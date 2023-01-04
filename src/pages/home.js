@@ -29,7 +29,7 @@ export async function getStaticProps() {
     const datas = await data.json()
     const results = await datas.stocks
 
-    const url2 = `https://newsapi.org/v2/everything?q=economy&from=12/02/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
+    const url2 = `https://newsapi.org/v2/everything?q=economy&from=12/12/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
 
     const data2 = await fetch(url2)
 
@@ -52,7 +52,7 @@ export default function Home({ results, results2 }) {
     const [result, setResult] = useState()
     const [porcento, setPorcento] = useState()
     const [retorno, setRetorno] = useState()
-    const [loading , setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
 
     const formatCurrency = (value) => {
         const signal = Number(value) < 0 ? "-" : "";
@@ -89,58 +89,58 @@ export default function Home({ results, results2 }) {
 
     }
 
-    useEffect( () => {
+    useEffect(() => {
         list()
     }, [])
 
     return (
         loading ? (
-            <><Loading/></>
-        ):
-        data != "" ? (
-            <Body>
-                <Head>
-                    <script
-                        // eslint-disable-next-line react/no-danger
-                        dangerouslySetInnerHTML={{
-                            __html: `
+            <><Loading /></>
+        ) :
+            data != "" ? (
+                <Body>
+                    <Head>
+                        <script
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={{
+                                __html: `
                         if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
                             window.location.href = "/"
                         }
                         `,
-                        }}
-                    />
-                </Head>
-                <Sidebar Page={'Home'} />
-                <ContainerCarteira>
-                    <Patrimony>
-                        <Total>
-                            <h1><IconFaCoins /> Patrimônio</h1>
-                            <p>{formatCurrency(result)}</p>
-                            <Graphic>
-                                <Donut />
-                            </Graphic>
-                        </Total>
-                        <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
-                        <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({porcento}%)</Valor></p>
-                    </Patrimony>
-                    <List>
+                            }}
+                        />
+                    </Head>
+                    <Sidebar Page={'Home'} />
+                    <ContainerCarteira>
+                        <Patrimony>
+                            <Total>
+                                <h1><IconFaCoins /> Patrimônio</h1>
+                                <p>{formatCurrency(result)}</p>
+                                <Graphic>
+                                    <Donut />
+                                </Graphic>
+                            </Total>
+                            <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
+                            <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({porcento}%)</Valor></p>
+                        </Patrimony>
+                        <List>
 
-                        <h1>Principais Assuntos</h1>
-                        <New>
-                            {results2.map((result) => (
-                                <Card key={result.id}><Content href={result.url}><Title>{result.title}</Title></Content></Card>
-                            ))}
-                        </New>
+                            <h1>Principais Assuntos</h1>
+                            <New>
+                                {results2.map((result) => (
+                                    <Card key={result.id}><Content href={result.url}><Title>{result.title}</Title></Content></Card>
+                                ))}
+                            </New>
 
 
-                    </List>
-                </ContainerCarteira>
-            </Body>
-        ) : (
-            <>
-                <Welcome results={results} user={user} page={"home"} />
-            </>
-        )
+                        </List>
+                    </ContainerCarteira>
+                </Body>
+            ) : (
+                <>
+                    <Welcome results={results} user={user} page={"home"} />
+                </>
+            )
     )
 }

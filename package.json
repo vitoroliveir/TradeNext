@@ -24,6 +24,7 @@
     "react-google-charts": "^4.0.0",
     "react-hook-form": "^7.34.2",
     "react-icons": "^4.4.0",
+    "react-slick": "^0.29.0",
     "rn-nodeify": "^10.3.0",
     "styled-components": "^5.3.5",
     "vite": "^3.0.7",

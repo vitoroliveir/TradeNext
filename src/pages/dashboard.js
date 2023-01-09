@@ -8,10 +8,14 @@ import Welcome from '../components/Welcome'
 
 import {
     Body,
+    GraphicSplineArea,
+    GraphicBaiscLine
 
 } from "../styles/dashboard"
 import Loading from '../components/Loading';
 import BasicLine from '../components/Graphics/BasicLine';
+import SplineArea from '../components/Graphics/SplineArea';
+
 
 
 export default function Dashboard({results}) {
@@ -52,8 +56,14 @@ export default function Dashboard({results}) {
                 </Head>
                 <Sidebar Page={'Dashboard'} />
                 
-
-                <BasicLine></BasicLine>
+                <GraphicBaiscLine>
+                    <BasicLine/>
+                </GraphicBaiscLine>
+                
+                <GraphicSplineArea>
+                    <SplineArea/>
+                </GraphicSplineArea>
+                
             </Body>
         ) : (
             <>

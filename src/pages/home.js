@@ -20,6 +20,7 @@ import {
 } from "../styles/home"
 import Donut from '../components/Graphics/Donut';
 import Loading from '../components/Loading';
+import TopStocks from '../components/TopStocks';
 
 
 
@@ -112,6 +113,7 @@ export default function Home({ results, results2 }) {
                         />
                     </Head>
                     <Sidebar Page={'Home'} />
+                    {/* <TopStocks></TopStocks> */}
                     <ContainerCarteira>
                         <Patrimony>
                             <Total>

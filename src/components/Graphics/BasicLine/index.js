@@ -15,8 +15,8 @@ export default function BasicLine() {
 
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "HISTORY").then((value) => {
-        setValue(value.averageAll)
-        setDate(value.dateAll)
+        setValue(value.averageMonthValue)
+        setDate(value.averageMonthDate)
     })
   }, [])
 
@@ -56,7 +56,7 @@ export default function BasicLine() {
 
 
     <Graphic>
-      <ReactApexChart options={state.options} series={state.series} type="line" height={350} width={850} />
+      <ReactApexChart options={state.options} series={state.series} type="line" height="350px" />
     </Graphic>
   )
 }

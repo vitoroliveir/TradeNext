@@ -8,13 +8,10 @@ import {
     query,
     getDoc,
     updateDoc,
-    arrayUnion,
-
 } from "firebase/firestore";
 
 
 export const resetDb = async (user) =>{
-   
     const userDocpie = doc(db, `Usuarios/${user}/total`, "PIE");
 
     await deleteDoc(userDocpie);
@@ -23,7 +20,6 @@ export const resetDb = async (user) =>{
         name: [],
     })
 
-    
     await pieDb(user)
     await totalDb(user)
     await HistoryDb(user)
@@ -165,7 +161,10 @@ export const addAnalytics = async (user) => {
                 await setDoc(doc(db, `Usuarios/${user}/total`, 'HISTORY'), {
                     averageAll: [],
                     dateAll: [],
-                    
+                    averageAll1y: [],
+                    dateAll1y: [],
+                    averageAll6m: [],
+                    dateAll6m: []
                 })
 
                 
@@ -210,21 +209,27 @@ export const totalDb = async (user) => {
 }
 
 //criando datas
-const datas = []
 
-function dateToString(d) {
-    return [d.getFullYear(), d.getMonth() + 1, d.getDate()].map(d => d > 9 ? d : '0' + d).join('/');
-}
+function dates(dias){
+    const datas = []
+
+    function dateToString(d) {
+        return [d.getFullYear(), d.getMonth() + 1, d.getDate()].map(d => d > 9 ? d : '0' + d).join('/');
+    }
+        
+    var hoje = new Date();
+    var ano = hoje.getFullYear();
+    var mes = hoje.getMonth();
+    var dia = hoje.getDate();
     
-var hoje = new Date();
-var ano = hoje.getFullYear();
-var mes = hoje.getMonth();
-var dia = hoje.getDate();
+    for (var i = 0; i < dias  ; i++) {
+        var outroDia = new Date(ano, mes, dia - i);
+            datas.push(dateToString(outroDia))
+    }
 
-for (var i = 0; i < 1095 ; i++) {
-    var outroDia = new Date(ano, mes, dia - i);
-        datas.push(dateToString(outroDia))
+    return datas
 }
+
 
 export const HistoryDb = async (user) => {
     const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
@@ -232,6 +237,10 @@ export const HistoryDb = async (user) => {
     const allData = []
     const filterAllDate = []
     const filterAllValue = []
+    const filterAllDate1y = []
+    const filterAllDate6m = []
+
+    const datas =  dates(1095)
 
     result.map(async (result)=>{
         const history3y = []
@@ -259,7 +268,7 @@ export const HistoryDb = async (user) => {
 
         //comparar a data
         let dataInicial = result.date.replace(/[-]/g, "/");
-        let dataFinal = `2023/01/03`;
+        let dataFinal = `${ano}/${mes}/${dia}`;
         let objetosFiltrados = history3y.filter(result => {
             return result.date >= dataInicial && result.date <= dataFinal ;
         })
@@ -290,6 +299,11 @@ export const HistoryDb = async (user) => {
         await updateDoc(userDocAnalytics, newData);
 
         const newFilterAllValue = []
+        const newFilterAllValue1y = []
+        const newFilterAllValue6m = []
+        const  averageMonthValue = []
+        const  averageMonthDate = []
+
 
         filterAllValue.map((values,index)=>{
             var somaValue = 0
@@ -301,22 +315,80 @@ export const HistoryDb = async (user) => {
             newFilterAllValue[index] = somaValue.toFixed(1)
         })
 
+        if(objetosFiltrados.length > 365){
+            objetosFiltrados.map((value, index)=>{
+                if(index < 365){
+                    filterAllDate1y.push(value.date)
+                }
+            })
+
+            newFilterAllValue.map((values,index)=>{
+                if(index < 365){
+                    newFilterAllValue1y.push(values)
+                }
+            })
+
+
+            if(objetosFiltrados.length > 182){
+                objetosFiltrados.map((value, index)=>{
+                    if(index < 182){
+                        filterAllDate6m.push(value.date)
+                    }
+                })
+
+                newFilterAllValue.map((values,index)=>{
+                    if(index < 182){
+                        newFilterAllValue6m.push(values)
+                    }
+                })
+            }
+        }
+
+
+        function diasDoMes(mes, ano){
+            return new Date(ano, mes, 0 ).getDate()
+        }
+
+        for (let i = 0 ; i <= 2; i++){
+            const year = ano - i
+
+                for(let a = 1 ; a <= 12; a++){
+                    var diasMes = diasDoMes(a,year)
+                    var date = 0 
+                    if(a < 10){
+                        date = `${year}/0${a}/${diasMes}`
+                    }else {
+                        date = `${year}/${a }/${diasMes}`
+                    }
+
+                    filterAllDate.map((value, index)=>{
+
+                        if(date == value){
+                            console.log(value)
+                            averageMonthDate.push(value)
+                            averageMonthValue.push(newFilterAllValue[index])
+                        }
+                    })
+
+                }
+          
+        }
+
         const userDoc = doc(db, `Usuarios/${user}/total`, 'HISTORY');
         await updateDoc(userDoc, {
             averageAll: newFilterAllValue,
-            dateAll: filterAllDate
+            dateAll: filterAllDate,
+            averageAll1y: newFilterAllValue1y,
+            dateAll1y: filterAllDate1y,
+            averageAll6m: newFilterAllValue6m,
+            dateAll6m: filterAllDate6m,
+            averageMonthDate: averageMonthDate,
+            averageMonthValue:averageMonthValue
         });
         
     })
 
-
-
-
-
 }
-
-
-
 
 export const pieDb = async (user) => {
     await listDb(user, "acoes").then(async (response) => {
@@ -331,7 +403,7 @@ export const pieDb = async (user) => {
 
             const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
             await updateDoc(userDoc, {
-                cost: cost ,
+                cost: cost,
                 name: name
             });
         })

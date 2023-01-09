@@ -43,9 +43,9 @@ export default function SideBar({ Page }) {
     }
 
     return (
-        <Container  >
+        <Container onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}  >
 
-            <Sidebar active={isOpen} >
+            <Sidebar active={isOpen} onMouseEnter={() => setIsOpen(false)}>
                 <Menu>
                     <Search></Search>
 
@@ -63,13 +63,13 @@ export default function SideBar({ Page }) {
                         />
                         <p >Trade Next</p>
                     </Logo>
-                    <IconBsArrowLeftShort active={isOpen} onClick={() => setIsOpen(false)} />
+                    {/* <IconBsArrowLeftShort active={isOpen} onClick={() => setIsOpen(false)} /> */}
                     <IconMdMenu onClick={() => isOpen ? setIsOpen(false) :setIsOpen(true)}/>
                 </Top_section>
 
-                <Access active={active}>
+                <Access active={active} >
 
-                    <Link_text onClick={() => setIsOpen(true)} active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)}   active={isOpen}>
                         <Icon><IconAiOutlineHome /></Icon>
                         <Link activeclassName="active" href="/home">
                             <title>Home</title>
@@ -78,7 +78,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onClick={() => setIsOpen(true)} active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
                         <Icon ><IconMdOutlineSpaceDashboard /></Icon>
                         <Link activeclassName="active" href="/dashboard">
                             <title>Dashboard</title>
@@ -87,7 +87,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onClick={() => setIsOpen(true)} active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
                         <Icon ><IconCiWallet /></Icon>
                         <Link activeclassName="active" href="/carteira">
                             <title>Carteira</title>
@@ -96,7 +96,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onClick={() => setIsOpen(true)} active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
                         <Icon ><IconFaGlobeAmericas /></Icon>
                         <Link activeclassName="active" href="/news">
                             <title>Noticias</title>
@@ -105,7 +105,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onClick={() => setIsOpen(true)} active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
                         <Icon ><IconBsChatDots /></Icon>
                         <Link activeclassName="active" href="">
                             <title>Chat</title>
@@ -113,7 +113,7 @@ export default function SideBar({ Page }) {
                     </Link_text>
 
                 </Access>
-                <SingOut onClick={()=> signOut()} active={isOpen}>
+                <SingOut onMouseEnter={() => setIsOpen(true)}  onClick={()=> signOut()} active={isOpen}>
                     <IconHiOutlineLogout />
                     <p>Logout</p>
                 </SingOut>

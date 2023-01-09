@@ -105,6 +105,7 @@ export const Container = styled.div`
     position: fixed;
 
     z-index:1000;
+    height:100vh;
 
 `
 
@@ -118,6 +119,7 @@ export const Sidebar = styled.div`
     left: 2px;
 
     width:${props => props.active ? "200px" : "88px"};
+
     
     @media (max-width: 500px){
         height: 9vh;
@@ -134,6 +136,10 @@ export const Top_section = styled.div`
     align-items: center;
     margin-bottom: 36px;
     margin-top: 16px;
+
+    a{
+        cursor:pointer;
+    }
 
 `
 
@@ -156,7 +162,6 @@ export const Link_text = styled.li`
     color:#53545C;
     cursor: pointer;
 
-    
     @media (max-width: 500px){
         display:${props => props.active ? "flex" : "none"};
     }
@@ -164,7 +169,7 @@ export const Link_text = styled.li`
     title{
         margin-left: -20px;
         display:${props => props.active ? "block" : "none"};
-
+        
 
         font-family: 'Inter';
         font-size: 14px;

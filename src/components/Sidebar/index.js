@@ -51,7 +51,7 @@ export default function SideBar({ Page }) {
 
                     <Name active={isOpen} >{Page}</Name>
 
-                    <User><h1>{user?.name}</h1></User>
+                    <User><h1>Olá, {user?.name}</h1></User>
                 </Menu>
                 <Top_section >
                     <Logo active={isOpen}>

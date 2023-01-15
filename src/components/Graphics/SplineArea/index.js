@@ -12,11 +12,13 @@ import { readDb } from '../../../services/db';
 export default function BasicLine() {
   const [value, setValue] = useState([])
   const [date, setDate] = useState([])
+  const [valueSelic, setValueSelic] = useState([])
 
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "HISTORY").then((value) => {
         setValue(value.averageAll)
         setDate(value.dateAll)
+        setValueSelic(value.selic)
     })
   }, [])
 
@@ -25,6 +27,10 @@ export default function BasicLine() {
     series: [{
         name: 'carterira',
         data: value
+      },
+      {
+        name: 'selic',
+        data: valueSelic
       }],
       
       options: {

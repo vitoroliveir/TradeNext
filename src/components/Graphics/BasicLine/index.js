@@ -20,6 +20,9 @@ export default function BasicLine() {
     })
   }, [])
 
+  console.log(date)
+  console.log(value)
+
   const state = {
 
     series: [{

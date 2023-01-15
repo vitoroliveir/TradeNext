@@ -209,6 +209,12 @@ export const User = styled.div`
     top:35px;
     display: none;
 
+    h1{
+        font-family: 'Inter';
+        font-size: 15px;
+        font-weight: 450;
+        text-align: left;
+    }
 
     @media (min-width: 780px){
         display: block;

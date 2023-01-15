@@ -208,6 +208,28 @@ export const totalDb = async (user) => {
 
 }
 
+export const pieDb = async (user) => {
+    await listDb(user, "acoes").then(async (response) => {
+        const cost  = []
+        const name = []
+
+        response.map(async (item) => {
+            await readDb(user, "analytics", item.name).then(async (value) => {
+                cost.push(value.return)
+                name.push(value.name)
+            })
+
+            const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
+            await updateDoc(userDoc, {
+                cost: cost,
+                name: name
+            });
+        })
+
+
+    })
+}
+
 //criando datas
 
 function dates(dias){
@@ -237,13 +259,17 @@ export const HistoryDb = async (user) => {
     const allData = []
     const filterAllDate = []
     const filterAllValue = []
+    const filterAllDateSelic=[]
+    const filterAllValueSelic=[]
     const filterAllDate1y = []
     const filterAllDate6m = []
+    
 
     const datas =  dates(1095)
 
     result.map(async (result)=>{
         const history3y = []
+        const allCost = []
 
         const dataHystory = await fetch(`https://brapi.dev/api/quote/${result.name}?range=3y&interval=1d&fundamental=true`)
         const resultsHystory = await dataHystory.json()
@@ -258,32 +284,68 @@ export const HistoryDb = async (user) => {
                 value : result.close ,
                 date: [datas[index]]
             })
-            
         })
+
+        const selic = await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json`)
+        const resultsSelic = await selic.json()
+        await resultsSelic.reverse().map((results)=>{
+            if(results.data.split('/').reverse().join('/') >= result.date){
+                allCost.push({
+                    value: ((result.cost * (results.valor / 100)) + result.cost) ,
+                    date : results.data.split('/').reverse().join('/')
+                })
+
+                console.log(results.valor)
+            }
+
+                
+        })
+
+        
 
         var hoje = new Date();
         var ano = hoje.getFullYear();
         var mes = hoje.getMonth();
         var dia = hoje.getDate();
 
+
         //comparar a data
         let dataInicial = result.date.replace(/[-]/g, "/");
-        let dataFinal = `${ano}/${mes}/${dia}`;
+        let dataFinal = `${ano}/${mes + 1}/${dia}`;
+        console.log(dataFinal)
         let objetosFiltrados = history3y.filter(result => {
             return result.date >= dataInicial && result.date <= dataFinal ;
         })
 
-        objetosFiltrados.map((res)=>{
-            if(filterAllDate.includes(res.date)){
-                filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
+
+        allCost.map((res)=>{
+            if(filterAllDateSelic.includes(res.date)){
+                filterAllValueSelic[filterAllDateSelic.indexOf(res.date)].push(res.value )
             }else{
-                filterAllDate.push(res.date)
-                filterAllValue.push([])
-                filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
+                filterAllDateSelic.push(res.date)
+                filterAllValueSelic.push([])
+                filterAllValueSelic[filterAllDateSelic.indexOf(res.date)].push(res.value )
             }
 
         })
-       
+
+
+        
+        objetosFiltrados.map((res)=>{
+            if(filterAllDateSelic.includes(res.date)){
+                if(filterAllDate.includes(res.date)){
+                    filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
+                }else{
+                    filterAllDate.push(res.date)
+                    filterAllValue.push([])
+                    filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
+                }
+            }
+
+
+        })
+
+
         const newData = {
             name: result.name,
             valueBuy: result.valueBuy,
@@ -303,7 +365,7 @@ export const HistoryDb = async (user) => {
         const newFilterAllValue6m = []
         const  averageMonthValue = []
         const  averageMonthDate = []
-
+        const ValueSelic =[] 
 
         filterAllValue.map((values,index)=>{
             var somaValue = 0
@@ -313,6 +375,17 @@ export const HistoryDb = async (user) => {
             })
 
             newFilterAllValue[index] = somaValue.toFixed(1)
+        })
+
+
+        filterAllValueSelic.reverse().map((values,index)=>{
+            var somaValues = 0
+
+            values.map((resul)=>{
+                somaValues = somaValues + resul
+            })
+
+            ValueSelic[index] = somaValues.toFixed(1)
         })
 
         if(objetosFiltrados.length > 365){
@@ -355,16 +428,30 @@ export const HistoryDb = async (user) => {
                 for(let a = 1 ; a <= 12; a++){
                     var diasMes = diasDoMes(a,year)
                     var date = 0 
-                    if(a < 10){
+
+                        if(a < 10){
+                        if(new Date(`${year}/${a}/${diasMes}`).getDay() === 0 ){
+                            diasMes = diasMes - 2
+                        }else if (new Date(`${year}/${a}/${diasMes}`).getDay() === 6){
+                            diasMes = diasMes - 1 
+                        }else if(a == 2 ){
+                            diasMes = 23
+                        }
+
                         date = `${year}/0${a}/${diasMes}`
                     }else {
-                        date = `${year}/${a }/${diasMes}`
+                        if(new Date(`${year}/${a}/${diasMes}`).getDay() === 0 ){
+                            diasMes = diasMes - 2
+                        }else if (new Date(`${year}/${a}/${diasMes}`).getDay() === 6){
+                            diasMes = diasMes - 1 
+                        }
+
+                        date = `${year}/${a}/${diasMes}`
                     }
 
                     filterAllDate.map((value, index)=>{
 
                         if(date == value){
-                            console.log(value)
                             averageMonthDate.push(value)
                             averageMonthValue.push(newFilterAllValue[index])
                         }
@@ -373,6 +460,7 @@ export const HistoryDb = async (user) => {
                 }
           
         }
+    
 
         const userDoc = doc(db, `Usuarios/${user}/total`, 'HISTORY');
         await updateDoc(userDoc, {
@@ -383,32 +471,13 @@ export const HistoryDb = async (user) => {
             averageAll6m: newFilterAllValue6m,
             dateAll6m: filterAllDate6m,
             averageMonthDate: averageMonthDate,
-            averageMonthValue:averageMonthValue
+            averageMonthValue:averageMonthValue,
+            selic: ValueSelic
         });
         
     })
 
 }
 
-export const pieDb = async (user) => {
-    await listDb(user, "acoes").then(async (response) => {
-        const cost  = []
-        const name = []
 
-        response.map(async (item) => {
-            await readDb(user, "analytics", item.name).then(async (value) => {
-                cost.push(value.return)
-                name.push(value.name)
-            })
-
-            const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
-            await updateDoc(userDoc, {
-                cost: cost,
-                name: name
-            });
-        })
-
-
-    })
-}
 

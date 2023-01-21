@@ -52,7 +52,8 @@ export default function Welcome({ results, user, page }) {
                 <Add>
                     <h1>Como você quer começar?</h1>
 
-                    <Modal onClick={() => activeModal ? setActiveModal(false) : setActiveModal(true)} ><IconIoMdAdd />Adicionando um investimento</Modal>
+                    <Modal onClick={() => activeModal ? setActiveModal(false) : setActiveModal(true)} 
+                    ><IconIoMdAdd />Adicionando um investimento</Modal>
 
                     <Modal onClick={() => activeModalB3 ? setActiveModalB3(false) : setActiveModalB3(true)} ><IconTbPlugConnected />Conecte-se a b3</Modal>
 

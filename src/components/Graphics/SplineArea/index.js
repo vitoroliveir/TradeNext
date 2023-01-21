@@ -42,7 +42,7 @@ export default function BasicLine() {
           enabled: false
         },
         title: {
-          text: 'Evolução Carteira'
+          text: 'Carteira vs Selic'
         },
         stroke: {
           curve: 'smooth'

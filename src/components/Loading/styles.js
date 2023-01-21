@@ -10,4 +10,5 @@ export const Container = styled.div`
     justify-content: center;
     position:absolute;
     left:45vw;
+    top:50px;
 `;

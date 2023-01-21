@@ -37,7 +37,6 @@ export default function TopStocks(){
             <h3>6</h3>
           </div>
         </Slider>
-
     </Container>
   )
 }

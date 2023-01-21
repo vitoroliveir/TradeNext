@@ -18,10 +18,9 @@ function Search() {
   
   return (
     <SearchBox >
-        <Input  type="text" onChange={onChange} ref={nameInputRef} />
+        <Input  type="text" onChange={onChange} ref={nameInputRef} placeholder='Pesquisa por ativos'/>
         <Link href={`${search?"/result/" + search: "/"}`}>
-        <BiSearchAlt2 />
-
+          <BiSearchAlt2 />
         </Link>
         
     </SearchBox>

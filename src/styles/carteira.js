@@ -145,8 +145,7 @@ export const Item = styled.li`
     font-family: "inter";
     font-size: 13px;
     font-weight: 500;
-
-    /* background-color:gray; */
+    
     border-radius:15px;
     width:80vw;
     height:35px;

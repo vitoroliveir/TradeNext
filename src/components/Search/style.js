@@ -7,12 +7,13 @@ export const SearchBox = styled.div`
     top:-18px;
     left: 50%;
     padding: 10px;
-    border-radius: 10px;
-    border: 0.1px solid gray;
+    border-radius: 15px;
+    border: 1.9px solid gray;
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: .8s;
+    cursor:pointer;
 
     @media (min-width: 760px){
         width: 30%;
@@ -46,6 +47,7 @@ export const Input = styled.input`
     background: none;
     outline: none;
     color:black;
+    cursor: pointer;
 
     @media (max-width: 820px) {
         width: 80%;
@@ -63,3 +65,4 @@ export const Input = styled.input`
 
 
 `
+

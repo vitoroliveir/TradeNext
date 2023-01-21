@@ -7,7 +7,8 @@ export const Body= styled.div`
 
 
     @media(min-width:515px){
-        height:1200px;
+        height:100vh;
+        
     }   
 
 `;

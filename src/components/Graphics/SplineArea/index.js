@@ -16,9 +16,9 @@ export default function BasicLine() {
 
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "HISTORY").then((value) => {
-        setValue(value.averageAll)
+        setValue(value.percentage)
         setDate(value.dateAll)
-        setValueSelic(value.selic)
+        setValueSelic(value.percentageSelic.reverse())
     })
   }, [])
 

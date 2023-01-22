@@ -63,7 +63,6 @@ export default function SideBar({ Page }) {
                         />
                         <p >Trade Next</p>
                     </Logo>
-                    {/* <IconBsArrowLeftShort active={isOpen} onClick={() => setIsOpen(false)} /> */}
                     <IconMdMenu onClick={() => isOpen ? setIsOpen(false) :setIsOpen(true)}/>
                 </Top_section>
 

@@ -23,10 +23,10 @@ export const GraphicSplineArea = styled.div`
 
 
     @media(min-width:515px){
-       width:70vw;
+       width:80vw;
        height:40vh;
        top:550px;
-       left:17vw;
+       left:13vw;
     }   
 
 `;
@@ -42,10 +42,10 @@ export const GraphicBaiscLine = styled.div`
 
 
     @media(min-width:515px){
-        width:70vw;
+        width:80vw;
         top:120px;
         height:40vh;
-        left:17vw;
+        left:13vw;
     }   
 
 `;

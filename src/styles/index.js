@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const Menu = styled.div`
     display: flex;
@@ -57,7 +57,6 @@ export const Links = styled.div`
     left: -40px;
     top: 0px;
 
-    
 
     > li{
         > a{
@@ -92,10 +91,6 @@ export const Links = styled.div`
     @media (min-width: 650px) {
         left: 15px;
     }
-
-
-
-
 `;
 
 export const Logo = styled.div`
@@ -177,6 +172,9 @@ export const ImageInvestments = styled.div`
     justify-content: center;
     align-items: center;
 
+    animation-name: moveImage;
+    animation-duration:1s;
+
     @media (max-width: 950px) {
         height: 15vh;
         width: 70vw;
@@ -184,7 +182,17 @@ export const ImageInvestments = styled.div`
         margin-bottom: 200px;
     }
 
+    @keyframes moveImage {
+        from{
+            opacity:0;
+        }
+        to{
+            opacity:1;
+        }
+    }
 `;
+
+
 
 export const ContentStart = styled.div`
     width: 40%;
@@ -194,6 +202,9 @@ export const ContentStart = styled.div`
     position: relative;
     
     bottom: 55px;
+
+    animation-name: moveText;
+    animation-duration:1s;
 
     > h1{
         font-family: 'Inter';
@@ -223,6 +234,8 @@ export const ContentStart = styled.div`
         position: relative;
         top: 100px;
         text-decoration: none;
+        animation-name:moveText;
+        animation-duration:2s;
 
         > Button{
             width: 205px;
@@ -246,6 +259,18 @@ export const ContentStart = styled.div`
         >h1 ,p{
             position:relative;
             left: -35px;
+        }
+    }
+
+
+    @keyframes moveText {
+        from{
+            opacity:0;
+            transform: translateX(-6%);
+        }
+        to{
+            opacity:1;
+            transform: translateX(0);
         }
     }
 

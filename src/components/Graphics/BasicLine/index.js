@@ -20,9 +20,6 @@ export default function BasicLine() {
     })
   }, [])
 
-  console.log(date)
-  console.log(value)
-
   const state = {
 
     series: [{
@@ -56,8 +53,6 @@ export default function BasicLine() {
   };
 
   return (
-
-
     <Graphic>
       <ReactApexChart options={state.options} series={state.series} type="line" height="350px" />
     </Graphic>

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FaCoins } from "react-icons/fa";
 
+
 export const IconFaCoins = styled(FaCoins)`
     height: 25px;
     width: 25px;

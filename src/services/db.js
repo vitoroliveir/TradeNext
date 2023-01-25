@@ -257,6 +257,9 @@ export const HistoryDb = async (user) => {
     const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
     const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     const qtdStokes = result.length
+/*     const data1 = await readDb(user, `total` , 'RESULTTOTAL');
+    const result1 = data1.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const cost =  data1.totalCost */
     const allData = []
     const filterAllDate = []
     const filterAllValue = []
@@ -265,7 +268,7 @@ export const HistoryDb = async (user) => {
     const filterAllDate1y = []
     const filterAllDate6m = []
     const percentageSelic = []
-    const percentage = []
+    const cost = []
     
 
     const datas =  dates(1095)
@@ -281,7 +284,7 @@ export const HistoryDb = async (user) => {
             history3y.push({
                 value : results.close ,
                 date: datas[index],
-                percentage : (((results.close - result.valueBuy) / result.valueBuy) * 100) / qtdStokes
+                cost: result.cost
             })
 
             allData.push({
@@ -337,17 +340,15 @@ export const HistoryDb = async (user) => {
             if(filterAllDateSelic.includes(res.date)){
                 if(filterAllDate.includes(res.date)){
                     filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
-                    percentage[filterAllDate.indexOf(res.date)].push(res.percentage)
+                    cost[filterAllDate.indexOf(res.date)].push(res.cost)
                 }else{
                     filterAllDate.push(res.date)
                     filterAllValue.push([])
                     filterAllValue[filterAllDate.indexOf(res.date)].push(res.value * result.qtd)
-                    percentage.push([])
-                    percentage[filterAllDate.indexOf(res.date)].push(res.percentage)
+                    cost.push([])
+                    cost[filterAllDate.indexOf(res.date)].push(res.cost)
                 }
             }
-
-
         })
 
         const newData = {
@@ -365,6 +366,7 @@ export const HistoryDb = async (user) => {
         await updateDoc(userDocAnalytics, newData);
 
         const newFilterAllValue = []
+        const newFilterAllCost = []
         const newFilterAllValue1y = []
         const newFilterAllValue6m = []
         const  averageMonthValue = []
@@ -383,17 +385,25 @@ export const HistoryDb = async (user) => {
             newFilterAllValue[index] = somaValue.toFixed(1)
         })
 
-        //somar percetage   
-        percentage.map((values,index)=>{
+        cost.map((values,index)=>{
             var somaValue = 0
 
             values.map((resul)=>{
                 somaValue = somaValue + resul
             })
-            
+
+            newFilterAllCost[index] = somaValue.toFixed(1)
+        })
+
+        //somar percetage   
+        newFilterAllValue.map((values,index)=>{
+            var somaValue = 0
+
+            somaValue =  ((values - newFilterAllCost[index]) / newFilterAllCost[index]) * 100
 
             newFilterAllPercentage[index] = somaValue.toFixed(1)
         })
+
         
         //somar percetageSelic
         var val = 0

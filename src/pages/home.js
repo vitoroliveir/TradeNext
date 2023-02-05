@@ -21,6 +21,7 @@ import {
 import Donut from '../components/Graphics/Donut';
 import Loading from '../components/Loading';
 import TopStocks from '../components/TopStocks';
+import Carrossel from '../components/Carrossel';
 
 
 
@@ -30,23 +31,25 @@ export async function getStaticProps() {
     const datas = await data.json()
     const results = await datas.stocks
 
+    const urlS = `https://brapi.dev/api/quote/PETR4%2CMGLU3%2CVALE3%2CITUB4%2CB3SA3%2CSUZB3%2CBBDC4%2CABEV3%2CLREN3%2CBBAS3%2CRENT3%2CHAPV3%2CKLBN11%2CPRIO3%2CELET3?range=1d&interval=1d&fundamental=true`;
+    const dataS = await fetch(urlS)
+    const datasS = await dataS.json()
+    const resultsStocks = await datasS.results
+
     const url2 = `https://newsapi.org/v2/everything?q=economy&from=30/12/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
-
     const data2 = await fetch(url2)
-
     const datas2 = await data2.json()
-
     const results2 = await datas2.articles
 
 
     return {
-        props: { results, results2 },
+        props: { results, results2, resultsStocks },
         revalidate: 6000,
     }
 }
 
 
-export default function Home({ results, results2 }) {
+export default function Home({ results, results2, resultsStocks }) {
     const { user } = useContext(AuthContext);
     const [data, setData] = useState([])
     const [cost, setCost] = useState()
@@ -69,6 +72,7 @@ export default function Home({ results, results2 }) {
 
         return signal + value;
     }
+
 
     const list = async () => {
         await resetDb(localStorage.getItem('uid'))
@@ -113,7 +117,9 @@ export default function Home({ results, results2 }) {
                         />
                     </Head>
                     <Sidebar Page={'Home'} />
-                    {/* <TopStocks></TopStocks> */}
+
+                    <TopStocks stocks={resultsStocks} />
+
                     <ContainerCarteira>
                         <Patrimony>
                             <Total>
@@ -127,17 +133,23 @@ export default function Home({ results, results2 }) {
                             <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({porcento}%)</Valor></p>
                         </Patrimony>
                         <List>
+                            <Carrossel news={results2} />
 
-                            <h1>Principais Assuntos</h1>
                             <New>
-                                {results2.map((result) => (
-                                    <Card key={result.id}><Content href={result.url}><Title>{result.title}</Title></Content></Card>
+                                {results2.map((result,index) => (
+                                    index <= 5 ?
+                                    <Card key={result.id}>
+                                        <Content href={result.url}>
+                                            <img src={`${result.urlToImage}`}/>
+                                            <Title>{result.title}</Title>
+                                        </Content>
+                                    </Card> : null
                                 ))}
                             </New>
-
-
                         </List>
+
                     </ContainerCarteira>
+
                 </Body>
             ) : (
                 <>

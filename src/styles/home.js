@@ -10,16 +10,24 @@ export const IconFaCoins = styled(FaCoins)`
 
 export const Body= styled.div`
     background-color: var(--background);
-    height:1250px;
+    height:1800px;
     width: 100vw;
 
     @media(min-width:501px){
-        height:1500px;
+        height:1900px;
     }   
 
+    @media(min-width:601px){
+        height:1600px;
+    }  
+
     @media(min-width:850px){
+        height:1400px;
+    } 
+    
+    @media(min-width:1120px){
         height:100vh;
-    }   
+    } 
 
 `;
 
@@ -28,9 +36,10 @@ export const Patrimony =  styled.div`
     position: relative;
     background-color:white;
     width:90vw;
-    height:60vh;
+    height:45vh;
     bottom:15px;
     border-radius:15px;
+    top:3vh;
 
     >p{
         font-family: "inter";
@@ -50,7 +59,8 @@ export const Patrimony =  styled.div`
     
     @media (min-width:501px) {
         width:80vw;
-        top:85px;
+        top:16vh;
+        height:53vh;
 
         >p{
             top:10%;
@@ -59,13 +69,13 @@ export const Patrimony =  styled.div`
 
     @media (min-width:850px) {
         width:35vw;
-        height:85vh;
+        height:50vh;
         bottom:0;
         
 
         margin-left:8.5px;
         left:11%;
-        top:100px;
+        top:-19vh;
 
 
         >p{
@@ -74,15 +84,30 @@ export const Patrimony =  styled.div`
     }
 
     @media (min-width:1023px) {
-    
-        width:35vw;
-        height:85vh;
+        width:350px;
+        height:470px;
+
+        top:-19.5vh;
+
+        p{
+            top:5%;
+        }
 
     }
 
-    @media (min-width:1450px) {
-        left:7%;
+    @media (min-width:1120px) {
 
+        top:2vh;
+
+    }
+
+    @media (min-width:1339px) {
+        top:0px;
+        height:430px;
+    }
+
+    @media (min-width:1219px) {
+        left:8%;
     }
 
 `;
@@ -105,44 +130,50 @@ export const List =  styled.div`
     align-items: center;
     background-color: white;
     width: 90vw;
-    height: 80vh;
+    height: 120vh;
     position: relative;
     border-radius: 15px;
-
-    >h1{
-      position: absolute;
-
-      height: 50px;
-      background-color: white;
-      color: black;
-      padding-left: 15px;
-      padding-top: 20px;
-      font-family: 'Inter';
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 19px;
-      letter-spacing: 0.01em;
-      text-align: left;
-    }
-
+    top:60px;
 
     @media (min-width:501px) {
         width:80vw;
-        top:100px;
+        top:180px;
+        height: 118vh;
+    }
+
+    @media (min-width:601px) {
+        height: 93.5vh;
     }
 
     @media (min-width:850px) {
-        width:50vw;
-        height:85vh;
+        width:51vw;
+        top:165px;
+        height:123vh;
         margin-left:7.5px;
         left:12%;
 
     }
 
-    @media (min-width:1450px) {
+    @media (min-width:1107px) {
         width:55vw;
-        left:8%;
 
+    }
+
+    @media (min-width:1120px) {
+        height:80vh;
+        
+    }
+    @media (min-width:1219px) {
+        width:60vw;
+        left:10%;
+    }
+
+    @media (min-width:1450px) {
+        width:65vw;
+    }
+
+    @media (min-width:1668px) {
+        width:68vw;
     }
 
 `;
@@ -223,10 +254,17 @@ export const Total = styled.div`
 
 export const Graphic = styled.div`
     position:absolute;
-    top:15%;
-    left:2%;
-    width:320px;
+    top:12%;
+    left:-5%;
+    width:350px;
 
+    @media(min-width:361px){
+        left:3%;
+    }
+
+    @media(min-width:413px){
+        left:10%;
+    }
 
     @media (min-width:501px) {
         position:relative;
@@ -237,91 +275,108 @@ export const Graphic = styled.div`
 
     @media (min-width:850px) {
         position:relative;
-        width:90%;
+        width:85%;
         margin-top:80px;
+        max-width:350px;
         left:4%;
     }
 
     @media (min-width:1340px) {
         position:relative;
         width:80%;
-        max-width:500px;
-        margin-top:80px;
+        max-width:300px;
+        margin-top:50px;
         left:8%;
     }
 `
 
 export const New = styled.div`
-   position: relative;
-    top: 70px;
-    overflow-y: scroll;
-    height: 90%;
-    width: 95%;
+  position: relative;
+  top:35px;
 
-    &::-webkit-scrollbar{
-        width:13px;
-        border: 1px solid white;
-    }
+  display: flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+  justify-content:space-around;
 
-    &::-webkit-scrollbar-thumb{
-        background-color: var(--grenn-150);
-        border-radius:6px;
-        
-    }
-    
-
+  @media(min-width:1120px){
+    top:40px;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content:space-around;
+  }
+  
     
 `;
 
 export const Card = styled.li`
-  height: 55px;
-  width: 71vw;
-  background-color: rgba(236, 236, 236, 0.716);
-  margin: 8px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius:10px;
-  padding:4px;
-
-  :hover{
-    background-color: rgba(145, 228, 137, 0.5);
-  }
-
-  @media (min-width: 850px) {
-    height: 55px;
-    width: 42.6vw;
-    padding-left:4px;
-}
-
-    @media (min-width: 1460px) {
-        width: 48.5vw;
-    }
+    list-style: none;   
 `;
 
 export const Content = styled.a`
   text-decoration: none;
+
+  img{
+    height: 20vw;
+    width: 34vw;
+    border-radius:5px;
+  }
+
+  margin: 15px;
+
+  display: flex;
+  flex-direction:column;
+
+  
+  @media(min-width:601px){
+    img{
+        height: 15vw;
+         width: 20vw;
+    }
+  }
+
+  @media(min-width:1120px){
+    flex-direction:row;
+    margin: 14px;
+    img{
+        height: 100px;
+        width: 100px;
+    }
+  }
   
 `;
 
 
 export const News = styled.ul`
-  position: relative;
-  top: 70px;
-  overflow: scroll;
-  height: 90%;
-  width: 95%;
+
 
 `;
 
 
 export const Title = styled.h1`
     color: black;
-    margin-left: 5px;
+    margin-left: 10px;
+    margin-top: 10px;
     font-family: 'Inter';
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 19px;
     letter-spacing: 0.01em;
     text-align: left;
+    width:32vw;
+
+    @media(min-width:601px){
+        width:20vw;
+        margin-top: 10px;
+    }
+
+    @media(min-width:1120px){
+        width:15vw;
+        margin-top: 0;
+    }
+
+    @media(min-width:1380px){
+        width:18vw;
+        margin-top:10px;
+    }
 `;

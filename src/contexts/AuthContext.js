@@ -61,6 +61,13 @@ export function AuthProvider({ children }) {
           email: result.user.email,
         })
 
+        await setDoc(doc(db, `Usuarios/${result.user.uid}/total`, 'RESULTTOTAL'), {
+          totalCost: 0,
+          totalReturn: 0,
+          percentage: 0
+        })
+
+
         Router.push('/home')
       }).catch((error) => {
         console.log(error);
@@ -94,6 +101,13 @@ export function AuthProvider({ children }) {
         email: email,
       })
 
+
+      await setDoc(doc(db, `Usuarios/${singeUser.user.uid}/total`, 'RESULTTOTAL'), {
+        totalCost: 0,
+        totalReturn: 0,
+        percentage: 0
+      })
+
       await handleUser(singeUser.user)
 
       Router.push('/home')
@@ -110,7 +124,7 @@ export function AuthProvider({ children }) {
     await getAuth().signOut();
     handleUser(false);
     setLogado(false);
-    
+
 
   }
 

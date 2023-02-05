@@ -89,7 +89,6 @@ export default function Home({ results, results2, resultsStocks }) {
                 setPorcento(response.percentage.toFixed(2))
                 setRetorno((response.percentage.toFixed(2) * response.totalCost.toFixed(2) / 1000).toFixed(3))
             }
-
         })
 
     }

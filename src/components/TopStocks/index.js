@@ -78,7 +78,7 @@ export default function TopStocks({stocks}) {
       <Slider {...settings}>
         {
           stocks.map((result)=>(
-            <Card>
+            <Card  key={result.symbol}>
               <h2>{result.symbol}</h2>
               <h3>{formatCurrency(result.regularMarketPrice)}</h3>
               {formatPercente(result.regularMarketChangePercent.toFixed(2))} 

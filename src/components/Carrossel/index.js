@@ -4,9 +4,8 @@ import "slick-carousel/slick/slick.css";
 
 import "slick-carousel/slick/slick-theme.css";
 import { Container, Card } from './styles';
-import Link from "next/link";
 
-export default function Carrossel({ news }) {
+export default function Carrossel() {
   var settings = {
     dots: false,
     infinite: true,

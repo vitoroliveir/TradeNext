@@ -20,8 +20,9 @@ Tradenext is a personal project aimed at studying the development of a web platf
 - Real-time portfolio tracking
 - Historical performance analysis
 - Integration with multiple exchanges and data sources
-- Customizable dashboards and alerts
+- Customizable dashboards
 - Advanced reporting and data visualization
+- Keep up with market news
 
 ## Used Technologies
 - Next.js

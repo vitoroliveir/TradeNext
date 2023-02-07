@@ -216,7 +216,7 @@ export const User = styled.div`
         text-align: left;
     }
 
-    @media (min-width: 780px){
+    @media (min-width: 912px){
         display: block;
     }
 

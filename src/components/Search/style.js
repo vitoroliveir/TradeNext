@@ -15,7 +15,7 @@ export const SearchBox = styled.div`
     transition: .8s;
     cursor:pointer;
 
-    @media (min-width: 760px){
+    @media (min-width: 912px){
         width: 30%;
     }
 

@@ -7,6 +7,7 @@ export const Body = styled.div`
     height:1355px;
     width: 100vw;
     position: absolute;
+
     
     background-color: var(--background);
 

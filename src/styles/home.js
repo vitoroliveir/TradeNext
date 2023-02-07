@@ -4,7 +4,7 @@ import { FaCoins } from "react-icons/fa";
 export const IconFaCoins = styled(FaCoins)`
     height: 25px;
     width: 25px;
-
+    
 
 `;
 
@@ -12,6 +12,8 @@ export const Body= styled.div`
     background-color: var(--background);
     height:1800px;
     width: 100vw;
+    position: absolute;
+    right: 0px;
 
     @media(min-width:501px){
         height:1900px;

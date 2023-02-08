@@ -186,8 +186,8 @@ export default function Carteira({ results }) {
                         
                     </List>
                 </ContainerCarteira>
-                { activeModal ? <AddAcoes results={results}  onClose={() => { setActiveModal(false) }} page={"carteira"} type={"CADASTRAR"}/> : null}
-                { activeModalEdit ? <AddAcoes results={results} onClose={() => { setActiveModalEdit(false) }} page={"carteira"} type={"EDITAR"} ativos={newData}/> : null}
+                { activeModal ? <AddAcoes results={results}  onClose={() => { setActiveModal(false), list() }} page={"carteira"} type={"CADASTRAR"}/> : null}
+                { activeModalEdit ? <AddAcoes results={results} onClose={() => { setActiveModalEdit(false), list() }} page={"carteira"} type={"EDITAR"} ativos={newData}/> : null}
             </Body>
         ) : (
             <>

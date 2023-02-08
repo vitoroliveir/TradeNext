@@ -14,7 +14,7 @@ import {
 import Button from '../Button';
 
 
-export default function AddAcoes({results, page , type, ativos}) {
+export default function AddAcoes({onClose, results, page , type, ativos}) {
     const [ativo , setAtivo] = useState(ativos != undefined ?  ativos.name: "");
     const [corretora , setCorretora] = useState(ativos != undefined ?  ativos.corretora: "");
     const [value , setValue] = useState(ativos != undefined ?  ativos.value: "");
@@ -76,7 +76,7 @@ export default function AddAcoes({results, page , type, ativos}) {
         <Container>
             {error && type != "EDITAR"? <Errs><Err backgroundColor={success ? "green": null} width={"240px"}>{messageError}</Err></Errs>: null}
 
-            <Modal data={type == "EDITAR" ? newData : data} onError={(response, success) => onErro(response, success)} results={results} page={page} type={type} operation={operation} resetData={reset}>
+            <Modal data={type == "EDITAR" ? newData : data}  onClose={onClose} onError={(response, success) => onErro(response, success)} results={results} page={page} type={type} operation={operation} resetData={reset}>
                 <Title>{`${type} AÇÕES`}</Title>
                
                 <Dados>

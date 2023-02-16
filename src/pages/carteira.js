@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar"
-import { listDb, readDb, resetDb } from '../services/db';
+import { listDb, pieDb, readDb, resetDb } from '../services/db';
 import Welcome from '../components/Welcome'
 import AddAcoes from '../components/AddAcoes';
 
@@ -94,9 +94,12 @@ export default function Carteira({ results }) {
         var percentage = (((n1 - n2) / n2) * 100).toFixed(0)
 
         return percentage
-
-
     }
+
+    const handleReload = () => {
+        setLoading(true)
+        window.location.reload();
+      };
 
     const list = async () => {
         await resetDb(localStorage.getItem('uid'))
@@ -186,8 +189,8 @@ export default function Carteira({ results }) {
                         
                     </List>
                 </ContainerCarteira>
-                { activeModal ? <AddAcoes results={results}  onClose={() => { setActiveModal(false), list() }} page={"carteira"} type={"CADASTRAR"}/> : null}
-                { activeModalEdit ? <AddAcoes results={results} onClose={() => { setActiveModalEdit(false), list() }} page={"carteira"} type={"EDITAR"} ativos={newData}/> : null}
+                { activeModal ? <AddAcoes results={results}  onClose={() => { setActiveModal(false), list(),handleReload()}} page={"carteira"} type={"CADASTRAR"}/> : null}
+                { activeModalEdit ? <AddAcoes results={results} onClose={() => { setActiveModalEdit(false), list(),handleReload()}} page={"carteira"} type={"EDITAR"} ativos={newData}/> : null}
             </Body>
         ) : (
             <>

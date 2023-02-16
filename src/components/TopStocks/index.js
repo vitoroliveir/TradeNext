@@ -7,7 +7,7 @@ import { Container , Card } from './styles';
 
 export default function TopStocks({stocks}) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [variableToModify, setVariableToModify] = useState('');
+  const [variableToModify, setVariableToModify] = useState();
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,7 +20,9 @@ export default function TopStocks({stocks}) {
   }, []);
 
   useEffect(() => {
-    if (windowWidth <= 720) {
+    if(windowWidth <= 413){
+      setVariableToModify(1);
+    }else if (windowWidth > 413 && windowWidth <= 720) {
       setVariableToModify(2);
     } else if (windowWidth > 720 && windowWidth <= 897 ) {
       setVariableToModify(3);
@@ -79,9 +81,11 @@ export default function TopStocks({stocks}) {
         {
           stocks.map((result)=>(
             <Card  key={result.symbol}>
-              <h2>{result.symbol}</h2>
-              <h3>{formatCurrency(result.regularMarketPrice)}</h3>
-              {formatPercente(result.regularMarketChangePercent.toFixed(2))} 
+              <div>
+                <h2>{result.symbol}</h2>
+                <h3>{formatCurrency(result.regularMarketPrice)}</h3>
+                {formatPercente(result.regularMarketChangePercent.toFixed(2))} 
+              </div>
             </Card>
           ))
         }

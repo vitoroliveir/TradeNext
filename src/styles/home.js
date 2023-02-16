@@ -10,17 +10,21 @@ export const IconFaCoins = styled(FaCoins)`
 
 export const Body= styled.div`
     background-color: var(--background);
-    height:1800px;
+    height:1780px;
     width: 100vw;
     position: absolute;
     right: 0px;
 
+    @media(min-width:411px){
+        height:1790px;
+    }
+
     @media(min-width:501px){
-        height:1900px;
+        height:1880px;
     }   
 
     @media(min-width:601px){
-        height:1600px;
+        height:1630px;
     }  
 
     @media(min-width:850px){
@@ -38,10 +42,10 @@ export const Patrimony =  styled.div`
     position: relative;
     background-color:white;
     width:90vw;
-    height:45vh;
+    height:55vh;
     bottom:15px;
     border-radius:15px;
-    top:3vh;
+    top:-13vh;
 
     >p{
         font-family: "inter";
@@ -56,6 +60,11 @@ export const Patrimony =  styled.div`
         left:20px;
         top:72%;
 
+    }
+
+    @media (min-width:411px) {
+        height:45vh;
+        top:-10vh;
     }
 
     
@@ -132,10 +141,15 @@ export const List =  styled.div`
     align-items: center;
     background-color: white;
     width: 90vw;
-    height: 120vh;
+    height: 1100px;
     position: relative;
     border-radius: 15px;
-    top:60px;
+    top:-60px;
+
+    @media(min-width:411px){
+        top:-70px;
+        
+    }
 
     @media (min-width:501px) {
         width:80vw;
@@ -189,6 +203,10 @@ export const ContainerCarteira =  styled.div`
     flex-direction:column;
     top:15%;
     left:5%;
+
+    @media (min-width:420px) {
+            left:6%;
+    }
 
     @media (min-width:501px) {
             top:13px;

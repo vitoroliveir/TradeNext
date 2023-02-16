@@ -33,10 +33,9 @@ export const Card = styled.div`
     line-height: 32px;
     background-color:white ;
     margin-top:9px;
-    padding-left: 17%;
+    padding-left: 10%;
 
     h2{
-        position: absolute;
         font-family: 'Inter';
         font-size: 14px;
         font-weight: 600;
@@ -44,8 +43,6 @@ export const Card = styled.div`
     }
 
     h3{
-        position: relative;
-        left: 65px;
         font-family: 'Inter';
         font-size: 14px;
         font-weight: 600;
@@ -53,7 +50,6 @@ export const Card = styled.div`
     }
 
     span{
-        position: relative;
         left: 137px;
         top: -32px;
         font-family: 'Inter';
@@ -62,23 +58,12 @@ export const Card = styled.div`
     
     }
 
-    @media(min-width:724px){
-        padding-left: 5vw;
+    div{
+        width: 80%;
+        height: 100%;
+        display: flex;
+        align-items:center;
+        justify-content:space-around;
     }
 
-    @media(min-width:898px){
-        padding-left: 2.3vw;
-    }
-
-    @media(min-width:1030px){
-        padding-left: 3vw;
-    }
-
-    @media(min-width:1090px){
-        padding-left: 2vw;
-    }
-
-    @media(min-width:1309px){
-        padding-left: 1.2vw;
-    }    
 `

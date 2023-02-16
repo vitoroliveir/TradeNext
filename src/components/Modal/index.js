@@ -55,7 +55,7 @@ export default function Modal({ onClose , children, data, onError, results, page
           await addAcoesDb(user.uid, data)
 
           reset(data)
-
+        
           setTimeout(async () => {
             reset(data)
             await onError("Cadastrada com sucesso" , true)

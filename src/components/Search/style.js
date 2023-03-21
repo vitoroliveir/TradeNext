@@ -66,3 +66,8 @@ export const Input = styled.input`
 
 `
 
+export const Mess = styled.div`
+    position: absolute;
+    top: 950px;
+
+`

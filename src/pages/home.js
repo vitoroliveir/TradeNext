@@ -116,9 +116,9 @@ export default function Home({ results, results2, resultsStocks }) {
                         />
                     </Head>
                     <Sidebar Page={'Home'} />
-
+                    
                     <TopStocks stocks={resultsStocks} />
-
+                    
                     <ContainerCarteira>
                         <Patrimony>
                             <Total>
@@ -133,7 +133,7 @@ export default function Home({ results, results2, resultsStocks }) {
                         </Patrimony>
                         <List>
                             <Carrossel news={results2} />
-
+                            
                             <New>
                                 {results2.map((result,index) => (
                                     index <= 5 ?

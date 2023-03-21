@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import Link from "next/link";
 import Image from 'next/image'
 import { AuthContext } from "../../contexts/AuthContext";
-
+import { Message } from '../Message';
 import {
     Container,
     Sidebar,
@@ -30,17 +30,21 @@ import Search from "../Search";
 
 export default function SideBar({ Page }) {
     const [isOpen, setIsOpen] = useState(false);
-    const { user , signOut} = useContext(AuthContext);
+    const { user, signOut } = useContext(AuthContext);
+    const [message , setMessage] = useState(false)
 
     const [active, setActive] = useState(false);
 
-    const handleClick = () =>{
-      if(active == ""){
-        setActive(true)
-      }else{
-        setActive(false)
-      }
+    const onMessage = () => {
+        setMessage(true)
+
+        setTimeout(function () {
+            setMessage(false)
+        }, 3000)
     }
+
+
+    
 
     return (
         <Container onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}  >
@@ -63,12 +67,12 @@ export default function SideBar({ Page }) {
                         />
                         <p >Trade Next</p>
                     </Logo>
-                    <IconMdMenu onClick={() => isOpen ? setIsOpen(false) :setIsOpen(true)}/>
+                    <IconMdMenu onClick={() => isOpen ? setIsOpen(false) : setIsOpen(true)} />
                 </Top_section>
-
+                {message ? <Message/> : null }
                 <Access active={active} >
 
-                    <Link_text onMouseEnter={() => setIsOpen(true)}   active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)} active={isOpen}>
                         <Icon><IconAiOutlineHome /></Icon>
                         <Link activeclassName="active" href="/home">
                             <title>Home</title>
@@ -77,7 +81,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)} active={isOpen}>
                         <Icon ><IconMdOutlineSpaceDashboard /></Icon>
                         <Link activeclassName="active" href="/dashboard">
                             <title>Dashboard</title>
@@ -86,7 +90,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)} active={isOpen}>
                         <Icon ><IconCiWallet /></Icon>
                         <Link activeclassName="active" href="/carteira">
                             <title>Carteira</title>
@@ -95,7 +99,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)} active={isOpen}>
                         <Icon ><IconFaGlobeAmericas /></Icon>
                         <Link activeclassName="active" href="/news">
                             <title>Noticias</title>
@@ -104,15 +108,15 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={() => setIsOpen(true)}  active={isOpen}>
+                    <Link_text onMouseEnter={() => setIsOpen(true)} active={isOpen} onClick={onMessage}>
                         <Icon ><IconBsChatDots /></Icon>
-                        <Link activeclassName="active" href="">
+                        <Link activeclassName="active" href="" >
                             <title>Chat</title>
                         </Link>
                     </Link_text>
 
                 </Access>
-                <SingOut onMouseEnter={() => setIsOpen(true)}  onClick={()=> signOut()} active={isOpen}>
+                <SingOut onMouseEnter={() => setIsOpen(true)} onClick={() => signOut()} active={isOpen}>
                     <IconHiOutlineLogout />
                     <p>Logout</p>
                 </SingOut>

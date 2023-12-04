@@ -47,7 +47,7 @@ export const deleteDb = async (user, data) => {
 }
 
 export const updateDb = async (user, data) => {
-    const datas = await fetch(`https://brapi.dev/api/quote/${data.name}`);
+    const datas = await fetch(`https://brapi.dev/api/quote/${data.name}?token=x6Cr3XN4ZDKxycrrRbx7kM`);
     const results = await datas.json();
     const valueShares = await results.results[0].regularMarketPrice;
 
@@ -119,7 +119,7 @@ export const addAcoesDb = async (user, data) => {
 export const addAnalytics = async (user) => {
     listDb(user, "acoes").then((result) => {
         result.map(async (item) => {
-            const data = await fetch(`https://brapi.dev/api/quote/${item.name}`)
+            const data = await fetch(`https://brapi.dev/api/quote/${item.name}?token=x6Cr3XN4ZDKxycrrRbx7kM`)
             const results = await data.json()
             const valueShares = await results.results[0].regularMarketPrice
 
@@ -276,13 +276,40 @@ export const HistoryDb = async (user) => {
     result.map(async (result) => {
         const history3y = []
         const allCost = []
+        // Obtendo a data atual
+        let dataAtual = new Date();
 
-        const dataHystory = await fetch(`https://brapi.dev/api/quote/${result.name}?range=3y&interval=1d&fundamental=true`)
-        const resultsHystory = await dataHystory.json()
-        const resultshistory = resultsHystory.results[0].historicalDataPrice
+        // Formatando a data atual para exibição no formato americano (ano-mês-dia)
+        let diaAtual = dataAtual.getDate();
+        let mesAtual = dataAtual.getMonth() + 1; // Meses são indexados de 0 a 11
+        let anoAtual = dataAtual.getFullYear();
+
+        // Formatando a data atual para exibir o formato "aaaa-mm-dd"
+        let dataFormatadaAtual = `${anoAtual}${mesAtual < 10 ? '0' : ''}${mesAtual}${diaAtual < 10 ? '0' : ''}${diaAtual}`;
+
+        // Subtraindo 365 dias da data atual
+        let dataMenos365 = new Date(dataAtual); // Criando uma nova data com a data atual
+        dataMenos365.setDate(dataAtual.getDate() - 365);
+
+        // Formatando a data subtraída para exibição no formato americano (ano-mês-dia)
+        let diaMenos365 = dataMenos365.getDate();
+        let mesMenos365 = dataMenos365.getMonth() + 1; // Meses são indexados de 0 a 11
+        let anoMenos365 = dataMenos365.getFullYear();
+
+        // Formatando a data subtraída para exibir o formato "aaaa-mm-dd"
+        let dataFormatadaMenos365 = `${anoMenos365}${mesMenos365 < 10 ? '0' : ''}${mesMenos365}${diaMenos365 < 10 ? '0' : ''}${diaMenos365}`;
+
+
+        // const dataHystory = await fetch(`https://brapi.dev/api/quote/${result.name}?token=x6Cr3XN4ZDKxycrrRbx7kM&range=3mo&interval=1d&fundamental=true`)
+        // const resultsHystory = await dataHystory.json()
+        // const resultshistory = resultsHystory.results[0].historicalDataPrice
+        const dataHystorys = await fetch(`https://www.okanebox.com.br/api/acoes/hist/${result.name}/${dataFormatadaMenos365}/${dataFormatadaAtual}/`)
+        const resultshistory = await dataHystorys.json()
+
+
         await resultshistory.reverse().map((results, index) => {
             history3y.push({
-                value: results.close,
+                value: results.PREABE,
                 date: datas[index],
                 cost: result.cost
             })

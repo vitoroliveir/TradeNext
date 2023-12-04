@@ -31,10 +31,10 @@ export async function getStaticProps() {
     const datas = await data.json()
     const results = await datas.stocks
 
-    const urlS = `https://brapi.dev/api/quote/PETR4%2CMGLU3%2CVALE3%2CITUB4%2CB3SA3%2CSUZB3%2CBBDC4%2CABEV3%2CLREN3%2CBBAS3%2CRENT3%2CHAPV3%2CKLBN11%2CPRIO3%2CELET3?range=1d&interval=1d&fundamental=true`;
-    const dataS = await fetch(urlS)
-    const datasS = await dataS.json()
-    const resultsStocks = await datasS.results
+    // const urlS = `https://brapi.dev/api/quote/PETR4%2CMGLU3%2CVALE3%2CITUB4%2CB3SA3%2CSUZB3%2CBBDC4%2CABEV3%2CLREN3%2CBBAS3%2CRENT3%2CHAPV3%2CKLBN11%2CPRIO3%2CELET3?token=x6Cr3XN4ZDKxycrrRbx7kM&range=1d&interval=1d&fundamental=true`;
+    // const dataS = await fetch(urlS)
+    // const datasS = await dataS.json()
+    // const resultsStocks = await datasS.results
 
     const url2 = `https://newsapi.org/v2/everything?q=economy&from=30/12/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
     const data2 = await fetch(url2)
@@ -43,13 +43,13 @@ export async function getStaticProps() {
 
 
     return {
-        props: { results, results2, resultsStocks },
+        props: { results, results2, /**resultsStocks**/ },
         revalidate: 6000,
     }
 }
 
 
-export default function Home({ results, results2, resultsStocks }) {
+export default function Home({ results, results2, /**resultsStocks**/ }) {
     const { user } = useContext(AuthContext);
     const [data, setData] = useState([])
     const [cost, setCost] = useState()
@@ -117,7 +117,7 @@ export default function Home({ results, results2, resultsStocks }) {
                     </Head>
                     <Sidebar Page={'Home'} />
                     
-                    <TopStocks stocks={resultsStocks} />
+                    <TopStocks /**stocks={resultsStocks}**/ />
                     
                     <ContainerCarteira>
                         <Patrimony>

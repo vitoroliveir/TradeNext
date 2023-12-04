@@ -13,18 +13,21 @@ export default function BasicLine() {
   const [value, setValue] = useState([])
   const [date, setDate] = useState([])
   const [valueSelic, setValueSelic] = useState([])
-
+let i
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "HISTORY").then((value) => {
+        setValueSelic(value.percentageSelic.reverse())
         setValue(value.percentage)
         setDate(value.dateAll)
-        setValueSelic(value.percentageSelic.reverse())
     })
   }, [])
 
+  console.log(valueSelic);
+
   const state = {
 
-    series: [{
+    series: [
+      {
         name: 'carterira',
         data: value
       },

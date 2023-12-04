@@ -26,10 +26,16 @@ function Search() {
     }, 3000)
   }
 
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      onMessage()
+    }
+  }
+
 
   return (
     <>
-      <SearchBox >
+      <SearchBox onKeyDown={handleKeyDown} >
 
         <Input type="text" onChange={onChange} ref={nameInputRef} placeholder='Pesquisa por ativos' />
         {/* <Link href={`${search?"/result/" + search: "/"}`} > */}

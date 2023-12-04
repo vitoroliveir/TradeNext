@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { readDb } from "../../../services/db"
 
 export default function Donut() {
-  const [cost, setCost] = useState([])
+  const [cost, setCost] = useState([0])
   const [name, setName] = useState([])
 
   useEffect(() => {

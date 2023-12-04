@@ -43,9 +43,6 @@ export default function SideBar({ Page }) {
         }, 3000)
     }
 
-
-    
-
     return (
         <Container onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}  >
 

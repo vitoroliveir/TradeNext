@@ -103,10 +103,9 @@ export const Logo = styled.div`
 
 export const Container = styled.div`
     position: fixed;
-
     z-index:1000;
     height:100vh;
-
+    
 `
 
 export const Sidebar = styled.div`

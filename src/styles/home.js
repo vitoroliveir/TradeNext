@@ -58,7 +58,7 @@ export const Patrimony =  styled.div`
 
         position:relative;
         left:20px;
-        top:72%;
+        top:70%;
 
     }
 
@@ -67,14 +67,20 @@ export const Patrimony =  styled.div`
         top:-10vh;
     }
 
-    
     @media (min-width:501px) {
+        width:80vw;
+        top:15vh;
+        left: 15px;
+    }
+
+    
+    @media (min-width:662px) {
         width:80vw;
         top:16vh;
         height:53vh;
 
         >p{
-            top:10%;
+            top:70%;
         }
     }
 
@@ -86,7 +92,7 @@ export const Patrimony =  styled.div`
 
         margin-left:8.5px;
         left:11%;
-        top:-19vh;
+        top:-20.8vh;
 
 
         >p{
@@ -98,7 +104,7 @@ export const Patrimony =  styled.div`
         width:350px;
         height:470px;
 
-        top:-19.5vh;
+        top: -23.5vh;
 
         p{
             top:5%;
@@ -108,12 +114,11 @@ export const Patrimony =  styled.div`
 
     @media (min-width:1120px) {
 
-        top:2vh;
+        top:-3.8vh;
 
     }
 
     @media (min-width:1339px) {
-        top:0px;
         height:430px;
     }
 
@@ -150,8 +155,14 @@ export const List =  styled.div`
         top:-70px;
         
     }
-
     @media (min-width:501px) {
+        width:80vw;
+        top:180px;
+        left: 15px;
+    }
+
+
+    @media (min-width:662px) {
         width:80vw;
         top:180px;
         height: 118vh;
@@ -278,19 +289,25 @@ export const Graphic = styled.div`
     left:-5%;
     width:350px;
 
-    @media(min-width:361px){
-        left:3%;
+    @media (min-width:375px) {
+        left:2%;
     }
 
-    @media(min-width:413px){
-        left:10%;
-    }
 
     @media (min-width:501px) {
-        position:relative;
+        position:absolute;
         width:350px;
         margin-top:50px;
-        left:22%;
+        left:10%;
+        
+    }
+
+    @media (min-width:602px) {
+        left:15%;
+    }
+
+    @media (min-width:670px) {
+        left:20%;
     }
 
     @media (min-width:850px) {

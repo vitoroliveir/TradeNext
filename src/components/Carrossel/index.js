@@ -21,9 +21,9 @@ export default function Carrossel() {
     <Container>
       <Slider {...settings}>
         <Card>
-          <a href="https://investnews.com.br/esg/conceito-de-sustentabilidade-acelerou-na-pandemia-diz-accor/">
-            <img src={"https://b1957982.smushcdn.com/1957982/wp-content/uploads/2023/01/Screenshot-2023-01-31-at-11.31.44-560x600.png?lossy=1&strip=1&webp=1"} />
-            <h2>Conceito de sustentabilidade acelerou na pandemia, diz Accor</h2>
+          <a href="https://investnews.com.br/financas/yduqs-salta-mais-de-100-no-ano-e-lidera-altas-do-ibovespa-em-2023/">
+            <img src={"https://investnews.com.br/wp-content/uploads/2022/03/logo-da-yduqs-divulgacao.jpeg"} />
+            <h2>Yduqs salta mais de 100% no ano e lidera altas do Ibovespa em 2023</h2>
           </a>
         </Card>
 
@@ -35,9 +35,9 @@ export default function Carrossel() {
         </Card>
 
         <Card>
-          <a href="https://investnews.com.br/criptonews/bitcoin-sera-o-melhor-investimento-de-2023-preve-goldman-sachs/">
+          <a href="https://investnews.com.br/criptonews/10-previsoes-para-o-mercado-de-criptomoedas-em-2024/">
             <img src={"https://b1957982.smushcdn.com/1957982/wp-content/uploads/2022/07/bitcoin-400x240.jpg?lossy=1&strip=1&webp=1"} />
-            <h2>Bitcoin será o melhor investimento de 2023, prevê Goldman Sachs</h2>
+            <h2>10 previsões para o mercado de criptomoedas em 2024</h2>
           </a>
         </Card>
       </Slider>

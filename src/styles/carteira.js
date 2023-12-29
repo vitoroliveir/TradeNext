@@ -6,7 +6,6 @@ export const IconFaCoins = styled(FaCoins)`
     height: 25px;
     width: 25px;
 
-
 `;
 
 
@@ -46,19 +45,27 @@ export const Patrimony = styled.div`
 
         position:relative;
         left:20px;
-        top:72%;
+        top:75%;
 
     }
 
-    
+
     @media (min-width:501px) {
-        width:80vw;
+        width:75vw;
         top:85px;
+        left: 20px;
+    }
+    
+    @media (min-width:662px) {
+        width:80vw;
+        left: 0;
 
         >p{
-            top:10%;
+            top:75%;
         }
     }
+
+
 
     @media (min-width:850px) {
         width:35vw;
@@ -103,12 +110,21 @@ export const List = styled.div`
     width:90vw;
     height:80vh;
     border-radius:15px;
+    margin-bottom: 30px;
 
 
     @media (min-width:501px) {
+        width:75vw;
+        top:100px;
+        left: 20px;
+    }
+
+    @media (min-width:662px) {
         width:80vw;
         top:100px;
+        left: 0px;
     }
+    
 
     @media (min-width:850px) {
         width:51.1vw;
@@ -116,6 +132,7 @@ export const List = styled.div`
         margin-left:7.5px;
         left:12%;
         top:100px;
+        margin-bottom: 0px;
     }
 
     @media (min-width:1450px) {
@@ -148,7 +165,7 @@ export const Item = styled.li`
     font-weight: 500;
     
     border-radius:15px;
-    width:80vw;
+    width:78vw;
     height:35px;
     display:flex;
     justify-content:space-between;
@@ -157,32 +174,18 @@ export const Item = styled.li`
     padding-top:5px;
     cursor:pointer;
 
-    > span{
+    > div{
         margin:5px;
         height:25px;
-        
+        width: 10px;
+        display:flex;
+        align-items:center;
+
         &:nth-child(1) {
-            font-size: 16px;
-            font-weight: 600;
-            width:57px;
+            width:17px;
+            margin-right:25px;
         }
-
-        &:nth-child(2) {
-            width:23px;
-            margin-right:-5px;
-        }
-
-        &:nth-child(4) {
-            width:35px;
-            margin-right:-5px;
-        }
-
-        &:nth-child(5) {
-            width:50px;
-        }
-        &:nth-child(6) {
-            width:40px;
-        }
+        
     }
 
     @media (min-width:501px) {
@@ -191,10 +194,11 @@ export const Item = styled.li`
     }
 
     @media (min-width:850px) {
-        width:48vw;
+        width: 51vw;
         padding-right:0px;
 
         >span{
+            width:00vw;
             &:nth-child(6) {
                 width:52px;
                 margin-right:25px;
@@ -206,7 +210,7 @@ export const Item = styled.li`
 
             }
             &:nth-child(5) {
-                width:39px;
+                width:44px;
                 margin-right:25px;
 
             }
@@ -216,10 +220,8 @@ export const Item = styled.li`
 
 
     @media (min-width:1450px) {
-        margin-left:4vw;
+        /* margin-left:4vw; */
         >span{
-
-
             &:nth-child(3) {
                 margin-right:10px;
 
@@ -234,65 +236,113 @@ export const Header = styled.div`
     margin:10px;
 
     font-family: "inter";
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
 
     border-radius:5px;
-    width:81vw;
+    width:78vw;
     height:35px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding-left:5px;
+    padding-left:0vw;
     padding-top:40px;
 
-    > span{
+
+    > div{
         margin:5px;
         height:25px;
-        &:nth-child(1) {
-            width:64px;
-        }
+        width:10px;
+
+        &:nth-child(6) {
+            width:10px;
+            padding-right: 28px;
+        } 
 
         &:nth-child(2) {
-            width:34px;
-            margin-right:-5px;
+            width:5px;
+
         }
 
+        &:nth-child(1) {
+            width:0px;
 
-        &:nth-child(5) {
-            width:65px;
         }
-        &:nth-child(4) {
-            width:40px;
-        }
-        &:nth-child(6) {
-            width:65px;
+
+    }
+
+    @media (min-width:375px) {
+        padding-left:-1vw;
+        font-size: 13px;
+        width:73vw;
+        > div{
+            &:nth-child(6) {
+                padding-left:2vw;
+                padding-right:2vw;
+            } 
         }
     }
 
     @media (min-width:501px) {
-        width:70vw;
-        padding-right:25px;
+        width:60vw;
+        padding-left: 21px;
+        
+    }
+
+    @media (min-width:655px) {
+        padding-left: 29px;
+
+        &:nth-child(6) {
+            width:0vw;
+        } 
+        
+    }
+
+    @media (min-width:730px) {
+        width:62vw;
     }
 
     @media (min-width:850px) {
-        width:47vw;
-        padding-right:0px;
+        width:42vw;
+        padding-left:34px;
+        font-size: 13px;
 
-        >span{
+        >div{
             &:nth-child(6) {
-            width:60px;
-            margin-right:25px;
+                margin-left:36px;
+            } 
+        }
 
-        }
-        }
 
     }
 
+    @media (min-width:1100px) {
+        width:43vw;
+        padding-left: 37px;
+    }
+
+
+    @media (min-width:1200px) {
+        padding-left: 2vw;
+        width:45vw;
+        >div{
+            &:nth-child(6) {
+                margin-left:15px;
+            } 
+        }
+    }
 
     @media (min-width:1450px) {
-        margin-left:4vw;
-
+        padding-left: 2vw;
+        width:46vw;
+        >div{
+            &:nth-child(5) {
+                margin-left:15px;
+            }
+            &:nth-child(6) {
+                margin-left:0px;
+            } 
+        }
     }
 `
 
@@ -352,10 +402,12 @@ export const ContainerCarteira = styled.div`
     flex-direction:column;
     top:15%;
     left:5%;
+    
 
     @media (min-width:501px) {
-            top:13px;
-            left:15%;
+        top:13px;
+        left:15%;
+        
     }
 
     @media (min-width:850px) {
@@ -380,7 +432,7 @@ export const Total = styled.div`
 
         position:relative;
         left:20px;
-        top:15px;
+        top:17px;
     }
 
     > p{
@@ -393,8 +445,14 @@ export const Total = styled.div`
         color:var(--grenn-100);
 
         position:relative;
-        left:60px;
+        left:30px;
         top:20px;
+    }
+
+    @media (min-width:375px) {
+        >p{
+            left:60px;
+        }
     }
 
 
@@ -419,17 +477,31 @@ export const Total = styled.div`
 
 export const Graphic = styled.div`
     position:absolute;
-    top:15%;
-    left:2%;
+    top:18%;
+    left:-7%;
     width:320px;
+
+    @media (min-width:375px) {
+        left:2%;
+    }
 
 
     @media (min-width:501px) {
-        position:relative;
+        position:absolute;
         width:350px;
         margin-top:50px;
-        left:22%;
+        left:10%;
+        
     }
+
+    @media (min-width:602px) {
+        left:15%;
+    }
+
+    @media (min-width:670px) {
+        left:20%;
+    }
+
 
     @media (min-width:850px) {
         position:relative;

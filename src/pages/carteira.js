@@ -5,7 +5,6 @@ import { listDb, pieDb, readDb, resetDb } from '../services/db';
 import Welcome from '../components/Welcome'
 import AddAcoes from '../components/AddAcoes';
 
-
 import {
     Body,
     Patrimony,
@@ -23,6 +22,7 @@ import {
 } from "../styles/carteira"
 import Donut from '../components/Graphics/Donut';
 import Loading from '../components/Loading';
+import TextLimiter from '../components/textLimiter';
 
 export async function getStaticProps() {
     const url = `https://brapi.dev/api/available`;
@@ -159,12 +159,12 @@ export default function Carteira({ results }) {
                     <List>
                         <h1>Meus Ativos</h1>
                         <Header>
-                            <span></span>
-                            <span>Qtde</span>
-                            <span>P.Médio</span>
-                            <span>Preço</span>
-                            <span>Retorno</span>
-                            <span>%Carteira</span>
+                            <TextLimiter text={""} qtd={4}/>
+                            <TextLimiter text={"Qtde"} qtd={4}/>
+                            <TextLimiter text={"P.Médio"} qtd={4}/>
+                            <TextLimiter text={"Preço"} qtd={4}/>
+                            <TextLimiter text={"Retorno"} qtd={4}/>
+                            <TextLimiter text={"%Carteira"} qtd={4}/>
                         </Header>
                         <Scroll>
                             
@@ -172,7 +172,8 @@ export default function Carteira({ results }) {
                                     data.map((results) => (
                                         <ModalEdit onClick={() => activeModal ? setActiveModalEdit(false) : onAtivo(results.name)} key={results.name}>
                                             <Item>
-                                                <span>{results.name}</span>
+    
+                                                <TextLimiter text={results.name} qtd={4}/>
                                                 <span>{results.qtd} </span>
                                                 <span>{results.valueBuy} </span>
                                                 <span>{results.currentValue}</span>

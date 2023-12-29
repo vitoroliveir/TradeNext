@@ -13,12 +13,12 @@ export default function BasicLine() {
   const [value, setValue] = useState([])
   const [date, setDate] = useState([])
   const [valueSelic, setValueSelic] = useState([])
-let i
+
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "HISTORY").then((value) => {
-        setValueSelic(value.percentageSelic.reverse())
-        setValue(value.percentage)
-        setDate(value.dateAll)
+      setValueSelic(value.percentageSelic.reverse())
+      setValue(value.percentage)
+      setDate(value.dateAll)
     })
   }, [])
 
@@ -35,40 +35,40 @@ let i
         name: 'selic',
         data: valueSelic
       }],
-      
-      options: {
-        chart: {
-          height: 350,
-          type: 'area'
-        },
-        dataLabels: {
-          enabled: false
-        },
-        title: {
-          text: 'Carteira vs Selic'
-        },
-        stroke: {
-          curve: 'smooth'
-        },
-        xaxis: {
-          type: 'datetime',
-          categories: date
-        },
-        tooltip: {
-          x: {
-            format: 'yy/MM/dd'
-          },
+
+    options: {
+      chart: {
+        height: 350,
+        type: 'area'
+      },
+      dataLabels: {
+        enabled: false
+      },
+      title: {
+        text: 'Carteira vs Selic'
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: date
+      },
+      tooltip: {
+        x: {
+          format: 'yy/MM/dd'
         },
       },
-    
-    
-    };
+    },
+
+
+  };
 
   return (
 
 
     <Graphic>
-      <ReactApexChart options={state.options} series={state.series} type="line" height="350px"/>
+      <ReactApexChart options={state.options} series={state.series} type="line" height="350px" />
     </Graphic>
   )
 }

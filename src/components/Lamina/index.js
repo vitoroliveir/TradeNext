@@ -112,12 +112,7 @@ export default function Lamina({results}){
                             <p>Custo   <Valor>{formatCurrency(cost)}</Valor></p>
                             <p>Retorno <Valor>{formatCurrency(result)}</Valor> <Valor>({porcento}%)</Valor></p>
                         </Patrimony>
-                        <List>{
-                                
-                               
-                                
-                            
-                        }</List>
+                        <List>{}</List>
                     </ContainerCarteira>
                 </Body>
             ) : (

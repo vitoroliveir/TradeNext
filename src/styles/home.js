@@ -45,7 +45,7 @@ export const Patrimony =  styled.div`
     height:55vh;
     bottom:15px;
     border-radius:15px;
-    top:-13vh;
+    top:-90px;
 
     >p{
         font-family: "inter";
@@ -69,14 +69,13 @@ export const Patrimony =  styled.div`
 
     @media (min-width:501px) {
         width:80vw;
-        top:15vh;
+        top:160px;
         left: 15px;
     }
 
     
     @media (min-width:662px) {
         width:80vw;
-        top:16vh;
         height:53vh;
 
         >p{
@@ -92,7 +91,7 @@ export const Patrimony =  styled.div`
 
         margin-left:8.5px;
         left:11%;
-        top:-20.8vh;
+        top:-180px;
 
 
         >p{
@@ -103,8 +102,8 @@ export const Patrimony =  styled.div`
     @media (min-width:1023px) {
         width:350px;
         height:470px;
+        top:-185px;
 
-        top: -23.5vh;
 
         p{
             top:5%;
@@ -113,13 +112,15 @@ export const Patrimony =  styled.div`
     }
 
     @media (min-width:1120px) {
-
-        top:-3.8vh;
-
+        top:20px;
+        
     }
+    
+
 
     @media (min-width:1339px) {
         height:430px;
+        top:0px;
     }
 
     @media (min-width:1219px) {

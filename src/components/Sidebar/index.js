@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from 'next/image'
 import { AuthContext } from "../../contexts/AuthContext";
@@ -35,50 +35,51 @@ export default function SideBar({ Page }) {
     const [larguraDaTela, setLarguraDaTela] = useState(null);
     const [active, setActive] = useState(false);
     const [click, setClick] = useState(false);
-    
 
-    const onclick = () =>{
-        if(isOpen){
-            setIsOpen(false) 
+    const onclick = () => {
+        if (isOpen) {
+            setIsOpen(false)
             setClick(false)
-        }else{
+        } else {
             setIsOpen(true)
             setClick(true)
         }
     }
 
-    const validar = ()=>{
-        console.log(click);
-        onclick()
-        if(larguraDaTela >= 501 && click == false){
+    const validarEntrada = () => {
+        if (larguraDaTela <= 500 && click == true) {
             setIsOpen(true)
-        }else{
+        } if (larguraDaTela >= 500 && isOpen == false) {
+            setIsOpen(true)
+        }
+    }
+
+    const validarSaida = () => {
+        if (larguraDaTela <= 500 && click == false && isOpen == true) {
+            setIsOpen(false)
+        } if (larguraDaTela >= 499 && isOpen == true && click == false) {
             setIsOpen(false)
         }
     }
 
+
+    const handleResize = () => {
+        setLarguraDaTela(window.innerWidth);
+    };
+
+    const handleResizeMemo = useMemo(() => {
+        return handleResize;
+    }, []); // Esta função só será recriada quando o componente for montado ou desmontado
+
     useEffect(() => {
-        const handleResize = () => {
-            setLarguraDaTela(window.innerWidth);
-          };
-      
-          const updateWidth = () => {
-            setLarguraDaTela(window.innerWidth);
-          };
-      
-          // Verifica se o código está sendo executado no ambiente do navegador antes de adicionar o event listener
-          if (typeof window !== 'undefined') {
-            setLarguraDaTela(window.innerWidth);
-            window.addEventListener('resize', handleResize);
-      
-            return () => {
-              window.removeEventListener('resize', handleResize);
-            };
-          } else {
-            // Simula a atualização da largura em um ambiente onde window não está disponível (SSR)
-            updateWidth();
-          }
-      }, []);
+        handleResize(); // Obter o tamanho da janela inicialmente
+        window.addEventListener('resize', handleResizeMemo);
+
+        return () => {
+            window.removeEventListener('resize', handleResizeMemo);
+        };
+    }, [handleResizeMemo]);
+
 
     const onMessage = () => {
         setMessage(true)
@@ -89,9 +90,9 @@ export default function SideBar({ Page }) {
     }
 
     return (
-        <Container onMouseEnter={validar} onMouseLeave={() => setIsOpen(false)}  >
+        <Container onMouseLeave={validarSaida}  >
 
-            <Sidebar active={isOpen} onMouseEnter={() =>  setIsOpen(false) }>
+            <Sidebar active={isOpen} onMouseEnter={() => setIsOpen(false)}>
                 <Menu>
                     <Search></Search>
 
@@ -109,12 +110,12 @@ export default function SideBar({ Page }) {
                         />
                         <p >Trade Next</p>
                     </Logo>
-                    <IconMdMenu onClick={ onclick}  />
+                    <IconMdMenu onClick={onclick} />
                 </Top_section>
                 {message ? <Message /> : null}
                 <Access active={active} >
 
-                    <Link_text onMouseEnter={validar} active={isOpen}>
+                    <Link_text onMouseEnter={validarEntrada} active={isOpen}>
                         <Icon><IconAiOutlineHome /></Icon>
                         <Link activeclassName="active" href="/home">
                             <title>Home</title>
@@ -123,7 +124,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={validar} active={isOpen}>
+                    <Link_text onMouseEnter={validarEntrada} active={isOpen}>
                         <Icon ><IconMdOutlineSpaceDashboard /></Icon>
                         <Link activeclassName="active" href="/dashboard">
                             <title>Dashboard</title>
@@ -132,7 +133,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={validar} active={isOpen}>
+                    <Link_text onMouseEnter={validarEntrada} active={isOpen}>
                         <Icon ><IconCiWallet /></Icon>
                         <Link activeclassName="active" href="/carteira">
                             <title>Carteira</title>
@@ -141,7 +142,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={validar} active={isOpen}>
+                    <Link_text onMouseEnter={validarEntrada} active={isOpen}>
                         <Icon ><IconFaGlobeAmericas /></Icon>
                         <Link activeclassName="active" href="/news">
                             <title>Noticias</title>
@@ -150,7 +151,7 @@ export default function SideBar({ Page }) {
 
 
 
-                    <Link_text onMouseEnter={validar} active={isOpen} onClick={onMessage}>
+                    <Link_text onMouseEnter={validarEntrada} active={isOpen} onClick={onMessage}>
                         <Icon ><IconBsChatDots /></Icon>
                         <Link activeclassName="active" href="" >
                             <title>Chat</title>
@@ -158,7 +159,7 @@ export default function SideBar({ Page }) {
                     </Link_text>
 
                 </Access>
-                <SingOut onMouseEnter={validar} onClick={() => signOut()} active={isOpen}>
+                <SingOut onMouseEnter={validarEntrada} onClick={() => signOut()} active={isOpen}>
                     <IconHiOutlineLogout />
                     <p>Logout</p>
                 </SingOut>

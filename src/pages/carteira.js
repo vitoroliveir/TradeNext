@@ -22,7 +22,7 @@ import {
 } from "../styles/carteira"
 import Donut from '../components/Graphics/Donut';
 import Loading from '../components/Loading';
-import TextLimiter from '../components/textLimiter';
+import TextLimiter from '../components/TextLimiter';
 
 export async function getStaticProps() {
     const url = `https://brapi.dev/api/available`;

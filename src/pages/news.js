@@ -15,7 +15,7 @@ import {
     Content
 
 } from "../styles/news"
-import TextLimiter from "../components/textLimiter";
+import TextLimiter from "../components/TextLimiter";
 
 /* const timeElapsed = Date.now();
 const today = new Date(timeElapsed); */

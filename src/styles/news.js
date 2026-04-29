@@ -160,20 +160,41 @@ export const Main = styled.div`
   align-items: center;
 
   
-
   img{
     width: 100%;
     height: 20%;
     left: 5px;
     border-radius: 5px;
+    
   }
 
-  @media (min-width: 870px) {
+  @media (min-width: 870px) {npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: TradeNext@0.1.0
+npm error Found: apexcharts@3.54.1
+npm error node_modules/apexcharts
+npm error   apexcharts@"^3.35.5" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer apexcharts@">=4.0.0" from react-apexcharts@1.9.0
+npm error node_modules/react-apexcharts
+npm error   react-apexcharts@"^1.4.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\vitor\AppData\Local\npm-cache\_logs\2026-04-17T13_36_51_030Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\vitor\AppData\Local\npm-cache\_logs\2026-04-17T13_36_51_030Z-debug-0.log
       position: relative;
       bottom: 15px;
+      
       img{
         width: 100%;
-        max-width: 650px;
+        max-width: 500px;
 
       }
   }

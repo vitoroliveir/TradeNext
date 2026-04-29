@@ -305,9 +305,10 @@ export const HistoryDb = async (user) => {
         // const resultshistory = resultsHystory.results[0].historicalDataPrice
         const dataHystorys = await fetch(`https://www.okanebox.com.br/api/acoes/hist/${result.name}/${dataFormatadaMenos365}/${dataFormatadaAtual}/`)
         const resultshistory = await dataHystorys.json()
+        const safeHistory = Array.isArray(resultshistory) ? resultshistory : []
 
 
-        await resultshistory.reverse().map((results, index) => {
+        safeHistory.slice().reverse().map((results, index) => {
             history3y.push({
                 value: results.PREABE,
                 date: datas[index],
@@ -323,7 +324,8 @@ export const HistoryDb = async (user) => {
 
         const selic = await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json`)
         const resultsSelic = await selic.json()
-        await resultsSelic.reverse().map((results) => {
+        const safeSelic = Array.isArray(resultsSelic) ? resultsSelic : []
+        safeSelic.slice().reverse().map((results) => {
             allCost.push({
                 value: ((result.cost * (results.valor / 100)) + result.cost),
                 date: results.data.split('/').reverse().join('/'),

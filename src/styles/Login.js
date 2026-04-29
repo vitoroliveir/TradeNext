@@ -1,70 +1,56 @@
 import styled from 'styled-components'
 
 export const Body = styled.div`
-    @media (max-width: 867px) {
-        width: 300px;  
-    }
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3rem;
+    padding: 3.5rem 2rem 2rem;
+    box-sizing: border-box;
 
+    @media (max-width: 867px) {
+        padding: 1.5rem 1rem;
+        gap: 1.5rem;
+    }
 `;
 
 export const SideImage =  styled.div`
-    @media (max-width: 867px) {
-        display: none;        
-    }
-
-    width: 46%;
-    height: 814px;
+    width: min(46%, 700px);
+    min-height: 640px;
     background-color: var(--green-50);
-    position: absolute;
-    top: 65px;
-    left: 45px;
     border-radius: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
 
-    > Image{
-        display: flex;
-        align-items: center;
+    @media (max-width: 1080px) {
+        width: 50%;
+        min-height: 560px;
+    }
+
+    @media (max-width: 867px) {
+        display: none;
     }
 `;
 
 
 export const Logo =  styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    position: absolute;
-    top: -80px;
-
-    @media (min-width: 867px) {
-        position: relative;
-        top: -50px;
-        
-        width: 130px;
-        height: 30px;
-        display: flex;
-        flex-direction: row;
-        
-
-        >p{
-            position: absolute;
-            height: 19px;
-            width: 86px;
-            left: 44px;
-            top: 6.5px;
-        }
-    }
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
 
     @media (max-width: 500px) {
-        position: relative;
-        left: 33%;
-        top: -35px;
+        margin-bottom: 1rem;
     }
 
-    > p{            
-        height: 19px;
-        width: 86px;
+    > p{
+        margin: 0;
 
         font-family: 'Inter';
         font-size: 16px;
@@ -78,13 +64,12 @@ export const Logo =  styled.div`
 export const FormLogin =  styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    position: relative;
-    top: 150px;
-    
+    align-items: flex-start;
+    width: min(430px, 100%);
+    margin-top: 0.5rem;
 
-    
     > h1{
+        margin: 0 0 0.5rem 0;
         font-family: 'Inter';
         font-size: 40px;
         font-weight: 700;
@@ -94,6 +79,7 @@ export const FormLogin =  styled.div`
     }
 
     > p{
+        margin: 0 0 1.5rem 0;
         font-family: 'Inter';
         font-size: 16px;
         font-weight: 400;
@@ -102,50 +88,20 @@ export const FormLogin =  styled.div`
         text-align: left;
     }
 
-    @media (min-width: 867px) {
-        position: absolute;
-        left: 56%;
-        top: 140px;
-
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-    }
-
     @media (max-width: 500px) {
-        position: absolute;
-        left: 15%;
-        top: 100px;
-        width: 330px;
-        
+        width: 100%;
+        margin-top: 0;
 
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        
-        
         > h1{
-            font-family: 'Inter';
             font-size: 32px;
-            font-weight: 700;
             line-height: 39px;
-            letter-spacing: 0.01em;
-            text-align: left;
         }
 
-        
         > p{
-            font-family: 'Inter';
             font-size: 14px;
-            font-weight: 400;
             line-height: 24px;
-            letter-spacing: 0em;
-            text-align: left;
-
         }
     }
-
-
 `;
 
 

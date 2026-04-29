@@ -10,30 +10,10 @@ export const IconFaCoins = styled(FaCoins)`
 
 export const Body= styled.div`
     background-color: var(--background);
-    height:1780px;
-    width: 100vw;
-    position: absolute;
-    right: 0px;
-
-    @media(min-width:411px){
-        height:1790px;
-    }
-
-    @media(min-width:501px){
-        height:1880px;
-    }   
-
-    @media(min-width:601px){
-        height:1630px;
-    }  
-
-    @media(min-width:850px){
-        height:1400px;
-    } 
-    
-    @media(min-width:1120px){
-        height:100vh;
-    } 
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
 
 `;
 
@@ -41,90 +21,27 @@ export const Body= styled.div`
 export const Patrimony =  styled.div`
     position: relative;
     background-color:white;
-    width:90vw;
-    height:55vh;
-    bottom:15px;
+    width:min(100%, 380px);
+    min-height:430px;
     border-radius:15px;
-    top:-90px;
+    padding: 1rem 0.5rem 1.25rem;
+    box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
     >p{
         font-family: "inter";
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 600;
         line-height: 1.4;
         text-align: start;
 
         color:var(--gray-50);
+        margin: 0.75rem 1rem;
 
-        position:relative;
-        left:20px;
-        top:70%;
-
-    }
-
-    @media (min-width:411px) {
-        height:45vh;
-        top:-10vh;
-    }
-
-    @media (min-width:501px) {
-        width:80vw;
-        top:160px;
-        left: 15px;
-    }
-
-    
-    @media (min-width:662px) {
-        width:80vw;
-        height:53vh;
-
-        >p{
-            top:70%;
-        }
     }
 
     @media (min-width:850px) {
-        width:35vw;
-        height:50vh;
-        bottom:0;
-        
-
-        margin-left:8.5px;
-        left:11%;
-        top:-180px;
-
-
-        >p{
-            top:10%;
-        }
-    }
-
-    @media (min-width:1023px) {
-        width:350px;
-        height:470px;
-        top:-185px;
-
-
-        p{
-            top:5%;
-        }
-
-    }
-
-    @media (min-width:1120px) {
-        top:20px;
-        
-    }
-    
-
-
-    @media (min-width:1339px) {
-        height:430px;
-        top:0px;
-    }
-
-    @media (min-width:1219px) {
-        left:8%;
+        width:min(35vw, 380px);
     }
 
 `;
@@ -146,96 +63,43 @@ export const List =  styled.div`
     flex-direction: column;
     align-items: center;
     background-color: white;
-    width: 90vw;
-    height: 1100px;
+    width: min(100%, 900px);
+    min-height: 780px;
     position: relative;
     border-radius: 15px;
-    top:-60px;
-
-    @media(min-width:411px){
-        top:-70px;
-        
-    }
-    @media (min-width:501px) {
-        width:80vw;
-        top:180px;
-        left: 15px;
-    }
-
-
-    @media (min-width:662px) {
-        width:80vw;
-        top:180px;
-        height: 118vh;
-    }
-
-    @media (min-width:601px) {
-        height: 93.5vh;
-    }
+    padding: 1rem 0.75rem 2rem;
+    box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
     @media (min-width:850px) {
-        width:51vw;
-        top:165px;
-        height:123vh;
-        margin-left:7.5px;
-        left:12%;
-
-    }
-
-    @media (min-width:1107px) {
-        width:55vw;
-
-    }
-
-    @media (min-width:1120px) {
-        height:80vh;
-        
-    }
-    @media (min-width:1219px) {
-        width:60vw;
-        left:10%;
-    }
-
-    @media (min-width:1450px) {
-        width:65vw;
-    }
-
-    @media (min-width:1668px) {
-        width:68vw;
+        width:min(58vw, 920px);
     }
 
 `;
 
 
 export const ContainerCarteira =  styled.div`
-    position:absolute;
     display:flex;
-    align-items:center;
+    align-items:stretch;
     justify-content:center;
     flex-direction:column;
-    top:15%;
-    left:5%;
-
-    @media (min-width:420px) {
-            left:6%;
-    }
-
-    @media (min-width:501px) {
-            top:13px;
-            left:15%;
-    }
+    gap: 1.25rem;
+    width: min(100%, 1280px);
+    margin: 8.5rem auto 0;
+    padding: 0 1rem;
+    box-sizing: border-box;
 
     @media (min-width:850px) {
         flex-direction:row;
-        top:0;
-        left:0;
-
+        align-items:flex-start;
+        padding: 0 1.5rem;
     }
 `;
 
 export const Total = styled.div`
     display:flex;
-    flex-direction:row;
+    flex-direction:column;
+    gap: 0.5rem;
     >h1{
         font-family: "inter";
         font-size: 20px;
@@ -244,10 +108,10 @@ export const Total = styled.div`
         text-align: start;
 
         color:var(--grenn-100);
-
-        position:relative;
-        left:20px;
-        top:15px;
+        margin: 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
     }
 
     > p{
@@ -258,93 +122,25 @@ export const Total = styled.div`
         text-align: start;
 
         color:var(--grenn-100);
-
-        position:relative;
-        left:60px;
-        top:20px;
+        margin: 0 1rem;
     }
-
-
-        
-    @media (min-width:501px) {
-        flex-direction:column;
-        > p{
-            top:40px;
-            left:30px;
-        }
-
-        > h1{
-            top:30px;
-            left:30px
-        }
-
-
-    }
-
 
 `
 
 export const Graphic = styled.div`
-    position:absolute;
-    top:12%;
-    left:-5%;
-    width:350px;
-
-    @media (min-width:375px) {
-        left:2%;
-    }
-
-
-    @media (min-width:501px) {
-        position:absolute;
-        width:350px;
-        margin-top:50px;
-        left:10%;
-        
-    }
-
-    @media (min-width:602px) {
-        left:15%;
-    }
-
-    @media (min-width:670px) {
-        left:20%;
-    }
-
-    @media (min-width:850px) {
-        position:relative;
-        width:85%;
-        margin-top:80px;
-        max-width:350px;
-        left:4%;
-    }
-
-    @media (min-width:1340px) {
-        position:relative;
-        width:80%;
-        max-width:300px;
-        margin-top:50px;
-        left:8%;
-    }
+    width:100%;
+    max-width: 340px;
+    margin: 0.5rem auto 0;
 `
 
 export const New = styled.div`
-  position: relative;
-  top:35px;
-
   display: flex;
   flex-direction:row;
   flex-wrap: wrap;
-  justify-content:space-around;
-
-  @media(min-width:1120px){
-    top:40px;
-    flex-direction:row;
-    flex-wrap: wrap;
-    justify-content:space-around;
-  }
-  
-    
+  justify-content:center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1rem;
 `;
 
 export const Card = styled.li`
@@ -353,14 +149,17 @@ export const Card = styled.li`
 
 export const Content = styled.a`
   text-decoration: none;
+  width: 100%;
+  max-width: 370px;
 
   img{
-    height: 20vw;
-    width: 34vw;
+    height: 160px;
+    width: 100%;
+    object-fit: cover;
     border-radius:5px;
   }
 
-  margin: 15px;
+  margin: 10px;
 
   display: flex;
   flex-direction:column;
@@ -368,14 +167,16 @@ export const Content = styled.a`
   
   @media(min-width:601px){
     img{
-        height: 15vw;
-         width: 20vw;
+        height: 170px;
+        width: 100%;
     }
   }
 
   @media(min-width:1120px){
     flex-direction:row;
     margin: 14px;
+    max-width: 520px;
+    align-items: center;
     img{
         height: 100px;
         width: 100px;
@@ -401,20 +202,20 @@ export const Title = styled.h1`
     line-height: 19px;
     letter-spacing: 0.01em;
     text-align: left;
-    width:32vw;
+    width:100%;
 
     @media(min-width:601px){
-        width:20vw;
+        width:100%;
         margin-top: 10px;
     }
 
     @media(min-width:1120px){
-        width:15vw;
+        width:calc(100% - 120px);
         margin-top: 0;
     }
 
     @media(min-width:1380px){
-        width:18vw;
+        width:calc(100% - 120px);
         margin-top:10px;
     }
 `;

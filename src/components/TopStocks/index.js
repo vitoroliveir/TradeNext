@@ -6,8 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Container , Card } from './styles';
 
 export default function TopStocks(/**{stocks}**/) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [variableToModify, setVariableToModify] = useState();
+  const [slidesToShow, setSlidesToShow] = useState(1);
 
   //Dados Mock enquanto não encontro uma api nova
   const stocks = [
@@ -91,39 +90,32 @@ export default function TopStocks(/**{stocks}**/) {
   ]
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+    const getSlidesByWidth = (width) => {
+      if (width <= 413) return 1;
+      if (width <= 720) return 2;
+      if (width <= 897) return 3;
+      if (width <= 1091) return 4;
+      if (width <= 1309) return 5;
+      if (width <= 1500) return 6;
+      if (width <= 1680) return 7;
+      return 8;
     };
+
+    const handleResize = () => {
+      setSlidesToShow(getSlidesByWidth(window.innerWidth));
+    };
+
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
-  useEffect(() => {
-    if(windowWidth <= 413){
-      setVariableToModify(1);
-    }else if (windowWidth > 413 && windowWidth <= 720) {
-      setVariableToModify(2);
-    } else if (windowWidth > 720 && windowWidth <= 897 ) {
-      setVariableToModify(3);
-    } else if(windowWidth > 897 && windowWidth <= 1091) {
-      setVariableToModify(4);
-    }else if(windowWidth > 1091 && windowWidth <= 1309) {
-      setVariableToModify(5);
-    }else if(windowWidth > 1309 && windowWidth <= 1500 ) {
-      setVariableToModify(6);
-    }else if(windowWidth > 1500 && windowWidth <= 1680 ) {
-      setVariableToModify(7);
-    }if(windowWidth > 1680 ) {
-      setVariableToModify(8);
-    }
-  }, [windowWidth]);
-
   var settings = {
     dots: false,
     infinite: true,
-    slidesToShow: variableToModify,
+    slidesToShow,
     slidesToScroll: 1,
     autoplay: true,
     speed: 2000,
@@ -140,19 +132,11 @@ export default function TopStocks(/**{stocks}**/) {
   }
 
   const formatCurrency = (value) => {
-    const signal = Number(value) < 0 ? "-" : "";
-
-    value = String(value).replace(/\D/g, "");
-
-    value = Number(value) / 100;
-
-    value = value.toLocaleString("pt-br", {
+    return Number(value || 0).toLocaleString("pt-br", {
         style: "currency",
         currency: "BRL"
     });
-
-    return signal + value;
-}
+  }
 
 
  

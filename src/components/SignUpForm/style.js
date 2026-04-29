@@ -2,28 +2,42 @@ import styled from 'styled-components'
 import { FcGoogle } from "react-icons/fc";
 
 export const Sign = styled.div`
-    height: 200px;
-    width:  410px;
+    width: 100%;
+    max-width: 410px;
+
+    form {
+        width: 100%;
+    }
+
     Input,label{
         font-size: 16px;
     } 
+
     Button{
         margin-top: 15px;
+        margin-left: auto;
+        margin-right: auto;
     }
 `;
 
 export const Name = styled.div`
     display: flex;
     flex-direction: row;
-    margin-top: 45px;
+    gap: 12px;
+    margin-top: 20px;
+
     Input{
-        width: 157px;
-        margin-right: 20px;
+        width: 100%;
+        min-width: 0;
+        margin-right: 0;
     }
 
      @media (max-width: 500px) {
+        flex-direction: column;
+        gap: 0;
+
         Input{
-            width: 125px;
+            width: 100%;
         }
     }
 
@@ -33,11 +47,12 @@ export const Name = styled.div`
 export const WrapInput = styled.div`
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-width: 0;
 
     > Input {
-        margin-right: 20px;
         margin-top: 10px;
-        width: 164px;
+        width: 100%;
     }
 `;
 
@@ -47,13 +62,15 @@ export const Google =  styled(FcGoogle)`
 `;
 
 export const Login =  styled.div`
-    height: 21px;
-    width: 360px;
+    min-height: 21px;
+    width: 100%;
+    max-width: 360px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    top: 15px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
     
     font-family: 'Inter';
     font-size: 14px;
@@ -74,12 +91,4 @@ export const Login =  styled.div`
         text-align: center;
         
     }
-`;
-
-export const Email = styled.div`
-
-`;
-
-export const Password = styled.div`
-
 `;

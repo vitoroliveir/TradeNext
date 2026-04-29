@@ -22,56 +22,51 @@ import {
 
 export default function LoginForm() {
   const { loginInWithGoogle, loginInWithEmailAndPassword, error} = useContext(AuthContext);
-  const schema =  yup.object().shape({
+  const schema = yup.object().shape({
     email: yup.string().email().required("Campo obrigatório"),
     password: yup.string().required("Campo obrigatório"),
-  })
+  });
   
-  var [err , setErr] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { register , handleSubmit: onSubmit , formState:{errors} } = useForm({
-    resolver:yupResolver(schema),
+  const [err, setErr] = useState("");
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
   });
 
   
-  const handleSubmit = async (data) =>{
+  const onSubmit = async (data) => {
     await loginInWithEmailAndPassword(data.email, data.password)
 
-    if(error != ""){
-      if(error == "Firebase: Error (auth/user-not-found)."){
-        setErr( "Usuario não cadastrado" )
-      }else {
-        setErr( "Senha incorreta" )
+    if (error) {
+      if (error === "Firebase: Error (auth/user-not-found).") {
+        setErr("Usuario não cadastrado");
+      } else {
+        setErr("Senha incorreta");
       }
     }
-
-  }
+  };
 
   
   return (
       <Container>
-        {err != "" ? <Err>{err}</Err> : ""}
-        <form onSubmit={onSubmit(handleSubmit)}>
+        {err ? <Err>{err}</Err> : null}
+        <form onSubmit={handleSubmit(onSubmit)}>
           <WrapInput> 
               <Input
-                type={"email"}
-                name={"email"}
-                label={"Email"}
+                type="email"
+                name="email"
+                label="Email"
                 placeholder={'Email.holt@example.com'}
-                onChange={(e) => setEmail(e.target.value)}
-               register={register}   
-               error={errors.email?.message}
+                register={register}
+                error={errors.email?.message}
             /> 
           </WrapInput>
 
           <WrapInput>
               <Input 
-                type={"password"}
-                name={"password"}
-                label={"Password"}
+                type="password"
+                name="password"
+                label="Password"
                 placeholder={"••••••••"}
-                onChange={(e) => setPassword(e.target.value)}
                 register={register}
                 error={errors.password?.message}             
             /> 

@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { 
     Container,
     InputField,
@@ -9,11 +9,11 @@ import {
 } from './style'
 
 
-const Input = ({type,name,label,placeholder,onChange,register = () =>{},error,oninput,step,value}) => {
+const Input = ({ type, name, label, placeholder, onChange, register = () => ({}), error, onInput, step, value }) => {
     const [show, setShow] = useState(false);
   
-    function handleClick(e){
-      e.preventDefault()
+    function handleClick(e) {
+      e.preventDefault();
         setShow(!show)
     }
     
@@ -22,28 +22,23 @@ const Input = ({type,name,label,placeholder,onChange,register = () =>{},error,on
             <label>{label}</label>
                 <WrapInput >
                     <InputField
-                        type={type == "password" ? (show ? "text" : "password") : type } 
+                        type={type === "password" ? (show ? "text" : "password") : type } 
                         name={name} 
                         placeholder={placeholder} 
                         onChange={onChange} 
-                        autoFocus={true}
-                        {...register(`${name}`,{
-                            
-                        })} 
-                        oninput={oninput}
+                        {...register(name)} 
+                        onInput={onInput}
                         step={step}
                         value={value}
-                    >
-                       
-                     </InputField>
+                    />
 
-                    { error ? <Error> {error} </Error> :""}
+                    {error ? <Error>{error}</Error> : null}
                     { 
-                        type == 'password' ? (show ? 
+                        type === 'password' ? (show ? 
                             (<Eyes onClick={handleClick}/> ): 
                             (<Eyes2 onClick={handleClick}/>)
                             ): (
-                                " "
+                                null
                             )
                     }
                 </WrapInput>

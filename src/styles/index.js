@@ -1,65 +1,24 @@
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 export const Menu = styled.div`
     display: flex;
     justify-content: center;
-    >ul{
-        width: 100vw;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: relative;
-        top: 35px;
-        left: 20%;
-
-        > li{
-            > a {
-                text-decoration: none;
-                margin-right: 50px;
-                color: black;
-                font-family: 'Inter';
-                font-size: 16px;
-                font-weight: 500;
-                line-height: 20px;
-                letter-spacing: 0em;
-            }
-
-            > a:hover{
-                color:#119598
-            }
-        }
-
-    @media (min-width: 950px) {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        left: 0px;
-    }
-
-    @media (max-width:650px) {
-       > li{
-        display: none;
-       }
-    }
-    
-}
-
-`;
-
-export const Links = styled.div`
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    width: 100%;
+    padding: 1.5rem 2rem;
     position: relative;
-    left: -40px;
-    top: 0px;
+    box-sizing: border-box;
 
+    > ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        transform: translateX(1.25rem);
 
-    > li{
-        > a{
+        > li > a {
             text-decoration: none;
             color: black;
             font-family: 'Inter';
@@ -67,211 +26,316 @@ export const Links = styled.div`
             font-weight: 500;
             line-height: 20px;
             letter-spacing: 0em;
-         }
+        }
 
-         > a:hover{
-                color:#119598;
-            }
+        > li > a:hover {
+            color: #119598;
+        }
     }
 
-    Button{
+    @media (max-width: 950px) {
+        padding: 1.25rem 1rem;
+
+        > ul {
+            transform: translateX(0.75rem);
+        }
+    }
+
+    @media (max-width: 650px) {
+        justify-content: space-between;
+        padding: 1rem;
+
+        > ul > li {
+            display: none;
+        }
+
+        > ul {
+            width: auto;
+            justify-content: flex-end;
+            transform: translateX(0);
+            gap: 0.5rem;
+        }
+    }
+`;
+
+export const Links = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    > li > a {
+        text-decoration: none;
+        color: black;
+        font-family: 'Inter';
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0em;
+    }
+
+    > li > a:hover {
+        color: #119598;
+    }
+
+    Button {
         width: 150px;
-        margin-right:25px ;
+        margin: 0;
     }
 
-    Button:hover{
+    Button:hover {
         background-color: #119598;
     }
 
-    @media (min-width: 590px) {
-        left: 65px;
-    }
+    @media (max-width: 650px) {
+        width: auto;
+        justify-content: flex-end;
+        gap: 0.75rem;
 
-
-    @media (min-width: 650px) {
-        left: 15px;
+        Button {
+            width: 140px;
+        }
     }
 `;
 
 export const Logo = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    position: relative;
-    left: 12px;
-    top: 30px;
-    width: 130px;
-    height: 30px;
+    gap: 0.75rem;
+    position: absolute;
+    left: 5.5rem;
 
-    > p{            
-        height: 19px;
-        width: 86px;
-        position: absolute;
-        left: 7px;
-        top: 35px;
-
+    > p {
+        margin: 0;
         font-family: 'Inter';
+        font-size: 16px;
         font-weight: 500;
         line-height: 19px;
         letter-spacing: 0.01em;
         text-align: left;
+        white-space: nowrap;
     }
 
-    @media (min-width: 650px) {
-        position: relative;
-        left: 5%;
-        top: 41px;
-        width: 130px;
-        height: 30px;
-        display: flex;
-        flex-direction: row;
+    @media (max-width: 950px) {
+        left: 2.5rem;
+    }
 
-        > p{
-            position: absolute;
-            font-family: 'Inter';
-            height: 19px;
-            width: 86px;
-            left: 44px;
-            top: 6.5px;
+    @media (max-width: 760px) {
+        position: static;
+        left: auto;
+        gap: 0.5rem;
+
+        > p {
+            display: block;
+            font-size: 14px;
         }
     }
-
- 
-
 `;
 
 export const Content = styled.div`
     display: flex;
     justify-content: center;
-    align-items:center;
-    flex-direction: row-reverse; 
-    
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 2rem;
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+
     @media (max-width: 950px) {
-        display: flex;
-        justify-content: center;
-        align-items:center;
         flex-direction: column;
-        
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+`;
+
+export const HomeSection = styled.section`
+    width: 100%;
+    padding: 3rem 0rem 10rem;
+`;
+
+export const AboutSection = styled.section`
+    width: 100%;
+    padding: 10rem 2rem 10rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    background: #f8fbfb;
+`;
+
+export const AboutContent = styled.div`
+    width: min(100%, 980px);
+
+    > h2 {
+        margin: 0 0 1rem;
+        font-family: 'Inter';
+        font-size: clamp(1.8rem, 3vw, 2.25rem);
+        font-weight: 700;
+        color: #0b3b3c;
+    }
+
+    > p {
+        margin: 0.75rem 0;
+        font-family: 'Inter';
+        font-size: clamp(1rem, 1.8vw, 1.1rem);
+        line-height: 1.6;
+        color: rgba(0, 0, 0, 0.72);
+    }
+
+    @media (max-width: 650px) {
+        text-align: center;
+        padding: 0 0.25rem;
+    }
+`;
+
+export const Footer = styled.footer`
+    width: 100%;
+    background: #0f4d4f;
+    padding: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+`;
+
+export const FooterContent = styled.div`
+    width: min(100%, 980px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    > p {
+        margin: 0;
+        font-family: 'Inter';
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    @media (max-width: 760px) {
+        flex-direction: column;
+        text-align: center;
+    }
+`;
+
+export const FooterLinks = styled.nav`
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    > a {
+        font-family: 'Inter';
+        color: white;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    > a:hover {
+        color: #9ce7e8;
     }
 `;
 
 export const ImageInvestments = styled.div`
-    position: relative;
-    height: 35vh;
-    width: 45%;
-    max-width: 600px;
-    min-width: 300px;
-    
-    top: 80px;
+    width: min(45%, 620px);
+    min-height: 360px;
     border-radius: 20px;
-    padding: 163px 0px 163px 0px;
-    margin: 10px;
-
     background-color: #47ADAF;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    padding: 2rem;
+    box-sizing: border-box;
     animation-name: moveImage;
-    animation-duration:1s;
+    animation-duration: 1s;
 
     @media (max-width: 950px) {
-        height: 15vh;
-        width: 70vw;
-
-        margin-bottom: 200px;
+        width: min(100%, 620px);
+        min-height: 280px;
     }
 
     @keyframes moveImage {
-        from{
-            opacity:0;
+        from {
+            opacity: 0;
         }
-        to{
-            opacity:1;
+        to {
+            opacity: 1;
         }
     }
 `;
 
-
-
 export const ContentStart = styled.div`
-    width: 40%;
+    width: min(40%, 520px);
     display: flex;
     flex-direction: column;
-    align-items:start;
-    position: relative;
-    
-    bottom: 55px;
-
+    align-items: flex-start;
     animation-name: moveText;
-    animation-duration:1s;
+    animation-duration: 1s;
 
-    > h1{
+    > h1 {
+        margin: 0;
         font-family: 'Inter';
-        font-size: 40px;
+        font-size: clamp(2rem, 4vw, 2.5rem);
         font-weight: 700;
-        line-height: 34px;
+        line-height: 1.2;
         letter-spacing: 0em;
         text-align: left;
     }
 
-    >p{
-        position: relative;
-        top: 30px;
-
-        font-family: "inter";
-        font-size: 20px;
+    > p {
+        margin: 1rem 0 2rem;
+        font-family: "Inter";
+        font-size: clamp(1rem, 2vw, 1.25rem);
         font-weight: 500;
-        line-height: 30px;
+        line-height: 1.5;
         letter-spacing: 0em;
         text-align: left;
-
         color: rgba(0, 0, 0, 0.44);
-
     }
 
-    > a{
-        position: relative;
-        top: 100px;
+    > a {
         text-decoration: none;
-        animation-name:moveText;
-        animation-duration:2s;
+        width: 100%;
+        max-width: 205px;
+        animation-name: moveText;
+        animation-duration: 2s;
+    }
 
-        > Button{
-            width: 205px;
-        }
+    > a > Button {
+        width: 100%;
+        max-width: 205px;
     }
 
     @media (max-width: 950px) {
-        width: 90vw;
-        position: relative;
-        left: 35px;
+        width: 100%;
+        max-width: 620px;
+        align-items: center;
+        text-align: center;
 
-        >a{
-            position: relative;
-            top: 70px;
+        > h1,
+        > p {
+            text-align: center;
         }
-        
-    }
 
-    @media (min-width: 360px) {
-        
-        >h1 ,p{
-            position:relative;
-            left: -35px;
+        > a {
+            max-width: 260px;
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        > a > Button {
+            margin: 0 auto;
         }
     }
-
 
     @keyframes moveText {
-        from{
-            opacity:0;
+        from {
+            opacity: 0;
             transform: translateX(-6%);
         }
-        to{
-            opacity:1;
+        to {
+            opacity: 1;
             transform: translateX(0);
         }
     }
-
 `;

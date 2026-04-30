@@ -11,7 +11,7 @@ import {
   IoClose
 } from './styles';
 
-export default function Modal({ onClose , children, data, onError, results, page, type , operation,resetData}) {
+export default function Modal({ onClose , onSuccess, children, data, onError, results, page, type , operation,resetData}) {
   const { user } = useContext(AuthContext);
 
   const reset = (data)=>{
@@ -24,6 +24,7 @@ export default function Modal({ onClose , children, data, onError, results, page
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const ticker = (data?.name || "").trim().toUpperCase();
 
     if(type == "EDITAR" ){
       var local = window.location
@@ -39,27 +40,49 @@ export default function Modal({ onClose , children, data, onError, results, page
 
       
     }else{
-      if((data.name == undefined || data.name == "") || (data.value == undefined || data.value == "") || (data.corretora == undefined || data.corretora == "") || (data.date == undefined || data.date == "") || (data.qtd == undefined || data.qtd == "")) {
+      if((ticker == undefined || ticker == "") || (data.value == undefined || data.value == "") || (data.corretora == undefined || data.corretora == "") || (data.date == undefined || data.date == "") || (data.qtd == undefined || data.qtd == "")) {
 
         return onError("Preencha todos os campos")
   
       }else{
-        await existDb(user.uid, data).then(async (Response) => {
-          if (results.includes(data.name.toUpperCase()) == false) {
+        const payload = {
+          ...data,
+          name: ticker
+        };
+
+        await existDb(user.uid, payload).then(async (Response) => {
+          const hasTickerInList = Array.isArray(results) && results.includes(ticker);
+          let hasTickerInQuote = false;
+
+          try {
+            const quote = await fetch(`https://brapi.dev/api/quote/${ticker}?token=x6Cr3XN4ZDKxycrrRbx7kM`);
+            const quoteData = await quote.json();
+            hasTickerInQuote = Array.isArray(quoteData?.results) && quoteData.results.length > 0;
+          } catch (error) {
+            hasTickerInQuote = false;
+          }
+
+          if (!hasTickerInList && !hasTickerInQuote) {
             return onError("Ação não existe")
   
           }if(Response == true) {
             return onError("Ação já Cadastrada")
           }
 
-          await addAcoesDb(user.uid, data)
+          await addAcoesDb(user.uid, payload)
 
-          reset(data)
+          reset(payload)
         
           setTimeout(async () => {
-            reset(data)
+            reset(payload)
             await onError("Cadastrada com sucesso" , true)
             resetData(true)
+            if (onSuccess) {
+              onSuccess()
+            }
+            if (onClose) {
+              onClose()
+            }
           }, 500)
           await e.target.reset();
         })

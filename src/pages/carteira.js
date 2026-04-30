@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar";
-import { listDb, readDb, resetDb } from '../services/db';
+import { listDb, readDb } from '../services/db';
 import Welcome from '../components/Welcome';
 import AddAcoes from '../components/AddAcoes';
 import Donut from '../components/Graphics/Donut';
@@ -38,32 +38,54 @@ export async function getStaticProps() {
 export default function Carteira({ results }) {
     const [user, setUser] = useState();
     const [data, setData] = useState([]);
-    const [cost, setCost] = useState();
-    const [result, setResult] = useState();
-    const [porcento, setPorcento] = useState();
-    const [retorno, setRetorno] = useState();
+    const [cost, setCost] = useState(0);
+    const [patrimony, setPatrimony] = useState(0);
+    const [porcento, setPorcento] = useState(0);
+    const [retorno, setRetorno] = useState(0);
     const [activeModal, setActiveModal] = useState(false);
     const [activeModalEdit, setActiveModalEdit] = useState(false);
     const [dataAtivo, setDataAtivo] = useState({});
     const [loading, setLoading] = useState(true);
+    const [donutRefreshKey, setDonutRefreshKey] = useState(0);
+
+    const fetchData = async () => {
+        const uid = localStorage.getItem('uid');
+        if (!uid) {
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const [analytics, totals] = await Promise.all([
+                listDb(uid, "analytics"),
+                readDb(uid, "total", "RESULTTOTAL"),
+            ]);
+
+            setData(Array.isArray(analytics) ? analytics : []);
+
+            if (totals?.totalCost !== undefined) {
+                const totalCost = Number(totals.totalCost || 0);
+                const totalReturn = Number(totals.totalReturn || 0);
+                const percentage = Number(totals.percentage || 0);
+
+                setCost(totalCost);
+                setPatrimony(totalReturn);
+                setPorcento(percentage);
+                setRetorno(totalReturn - totalCost);
+            } else {
+                setCost(0);
+                setPatrimony(0);
+                setPorcento(0);
+                setRetorno(0);
+            }
+
+            setUser(uid);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            await resetDb(localStorage.getItem('uid'));
-            await listDb(localStorage.getItem('uid'), "analytics").then((response) => {
-                setData(response);
-                setLoading(false);
-            });
-            await readDb(localStorage.getItem('uid'), "total", "RESULTTOTAL").then((response) => {
-                if (response.totalCost) {
-                    setCost(response.totalCost.toFixed(2));
-                    setResult(response.totalReturn.toFixed(2));
-                    setPorcento(response.percentage.toFixed(1));
-                    setRetorno(((response.percentage * response.totalCost) / 1000).toFixed(3));
-                }
-            });
-            setUser(localStorage.getItem('uid'));
-        };
         fetchData();
     }, []);
 
@@ -81,17 +103,31 @@ export default function Carteira({ results }) {
     };
 
     const formatCurrency = (value) => {
-        const signal = Number(value) < 0 ? "-" : "";
-        return signal + (Number(value) / 100).toLocaleString("pt-br", {
+        return Number(value || 0).toLocaleString("pt-br", {
             style: "currency",
             currency: "BRL"
         });
     };
 
-    const calculationPercentage = (n1, n2) => (((n1 - n2) / n2) * 100).toFixed(0);
+    const calculationPercentage = (n1, n2) => {
+        const costValue = Number(n2 || 0);
+        if (costValue <= 0) return "0.0";
+        return (((Number(n1 || 0) - costValue) / costValue) * 100).toFixed(1);
+    };
+
+    const calculationWalletPercentage = (assetReturn, totalReturn) => {
+        const total = Number(totalReturn || 0);
+        if (total <= 0) return "0.0";
+        return ((Number(assetReturn || 0) * 100) / total).toFixed(1);
+    };
 
     const handleToggleModal = () => setActiveModal(!activeModal);
     const handleToggleModalEdit = () => setActiveModalEdit(!activeModalEdit);
+    const handleSaved = async () => {
+        setLoading(true);
+        await fetchData();
+        setDonutRefreshKey((current) => current + 1);
+    };
 
     return (
         loading ? (
@@ -115,13 +151,13 @@ export default function Carteira({ results }) {
                         <Patrimony>
                             <Total>
                                 <h1><IconFaCoins /> Patrimônio</h1>
-                                <p>{formatCurrency(result)}</p>
+                                <p>{formatCurrency(patrimony)}</p>
                                 <Graphic>
-                                    <Donut />
+                                    <Donut refreshKey={donutRefreshKey} />
                                 </Graphic>
                             </Total>
                             <p>Custo <Valor>{formatCurrency(cost)}</Valor></p>
-                            <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({porcento}%)</Valor></p>
+                            <p>Retorno <Valor>{formatCurrency(retorno)}</Valor> <Valor>({Number(porcento || 0).toFixed(2)}%)</Valor></p>
                         </Patrimony>
                         <List>
                             <h1>Meus Ativos</h1>
@@ -131,15 +167,15 @@ export default function Carteira({ results }) {
                                 ))}
                             </Header>
                             <Scroll>
-                                {data.map((result) => (
-                                    <ModalEdit key={result.name} onClick={() => handleOpenModalEdit(result.name)}>
+                                {data.map((asset) => (
+                                    <ModalEdit key={asset.name} onClick={() => handleOpenModalEdit(asset.name)}>
                                         <Item>
-                                            <TextLimiter text={result.name} qtd={4} />
-                                            <span>{result.qtd}</span>
-                                            <span>{result.valueBuy}</span>
-                                            <span>{result.currentValue}</span>
-                                            <span>{calculationPercentage(result.return, result.cost)}%</span>
-                                            <span>{((result.return * 100) / result).toFixed(1)}%</span>
+                                            <TextLimiter text={asset.name} qtd={4} />
+                                            <span>{asset.qtd}</span>
+                                            <span>{asset.valueBuy}</span>
+                                            <span>{asset.currentValue}</span>
+                                            <span>{calculationPercentage(asset.return, asset.cost)}%</span>
+                                            <span>{calculationWalletPercentage(asset.return, patrimony)}%</span>
                                         </Item>
                                     </ModalEdit>
                                 ))}
@@ -148,10 +184,23 @@ export default function Carteira({ results }) {
                         </List>
                     </ContainerCarteira>
                     {activeModal && (
-                        <AddAcoes results={results} onClose={() => { handleToggleModal(); setLoading(true); }} page="carteira" type="CADASTRAR" />
+                        <AddAcoes
+                            results={results}
+                            onClose={handleToggleModal}
+                            onSuccess={handleSaved}
+                            page="carteira"
+                            type="CADASTRAR"
+                        />
                     )}
                     {activeModalEdit && (
-                        <AddAcoes results={results} onClose={() => { handleToggleModalEdit(); setLoading(true); }} page="carteira" type="EDITAR" ativos={dataAtivo} />
+                        <AddAcoes
+                            results={results}
+                            onClose={handleToggleModalEdit}
+                            onSuccess={handleSaved}
+                            page="carteira"
+                            type="EDITAR"
+                            ativos={dataAtivo}
+                        />
                     )}
                 </Body>
             ) : (

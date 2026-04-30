@@ -67,7 +67,8 @@ export const updateDb = async (user, data) => {
 
     await updateDoc(userDoc, data);
     await updateDoc(userDocAnalytics, newData);
-    await resetDb(user)
+    await pieDb(user)
+    await totalDb(user)
 
 
 }
@@ -91,28 +92,32 @@ export const listDb = async (user, router) => {
 };
 
 export const addAcoesDb = async (user, data) => {
-    var q = query(collection(db, "Usuarios"));
-    var querySnapshot = await getDocs(q);
-
-    var queryData = querySnapshot.docs.map((detail) => {
-        ({
-            ...detail.data(),
-            id: user,
-        })
-    }
-    );
-
-    queryData.map(async (v) => {
-        await setDoc(doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase()), {
-            name: data.name.toUpperCase(),
-            value: data.value,
-            corretora: data.corretora,
-            date: data.date,
-            qtd: data.qtd
-        })
+    const stockName = data.name.toUpperCase();
+    await setDoc(doc(db, `Usuarios/${user}/acoes`, stockName), {
+        name: stockName,
+        value: data.value,
+        corretora: data.corretora,
+        date: data.date,
+        qtd: data.qtd
     })
 
-    await addAnalytics(user)
+    const quote = await fetch(`https://brapi.dev/api/quote/${stockName}?token=x6Cr3XN4ZDKxycrrRbx7kM`);
+    const quoteData = await quote.json();
+    const valueShares = Number(quoteData?.results?.[0]?.regularMarketPrice || 0);
+
+    await setDoc(doc(db, `Usuarios/${user}/analytics`, stockName), {
+        name: stockName,
+        valueBuy: data.value,
+        currentValue: valueShares.toString(),
+        qtd: data.qtd,
+        date: data.date.replace(/[-]/g, "/"),
+        cost: Number(data.value) * Number(data.qtd),
+        return: valueShares * Number(data.qtd),
+        history12m: []
+    }, { merge: true })
+
+    await pieDb(user)
+    await totalDb(user)
 }
 
 
@@ -220,10 +225,10 @@ export const pieDb = async (user) => {
             })
 
             const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
-            await updateDoc(userDoc, {
+            await setDoc(userDoc, {
                 cost: cost,
                 name: name
-            });
+            }, { merge: true });
         })
 
 

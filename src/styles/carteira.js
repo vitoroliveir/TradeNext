@@ -11,16 +11,10 @@ export const IconFaCoins = styled(FaCoins)`
 
 export const Body = styled.div`
     background-color: var(--background);
-    height:1050px;
-    width: 100vw;
-
-    @media(min-width:501px){
-        height:1500px;
-    }   
-
-    @media(min-width:850px){
-        height:100vh;
-    }   
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 32px;
+    box-sizing: border-box;
 
 `;
 
@@ -73,7 +67,7 @@ export const Patrimony = styled.div`
         bottom:0;
         
         margin-left:8.5px;
-        left:11%;
+        left:0;
         top:100px;
 
         >p{
@@ -130,7 +124,7 @@ export const List = styled.div`
         width:51.1vw;
         height:85vh;
         margin-left:7.5px;
-        left:12%;
+        left:0;
         top:100px;
         margin-bottom: 0px;
     }
@@ -395,25 +389,32 @@ export const Scroll = styled.ul`
 
 
 export const ContainerCarteira = styled.div`
-    position:absolute;
+    position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
     flex-direction:column;
-    top:15%;
-    left:5%;
+    top:0;
+    left:0;
+    padding-top: 120px;
+    width: 100%;
+    box-sizing: border-box;
     
 
     @media (min-width:501px) {
-        top:13px;
-        left:15%;
+        top:0;
+        left:0;
         
     }
 
     @media (min-width:850px) {
         flex-direction:row;
+        align-items:flex-start;
+        justify-content:center;
+        gap: 16px;
         top:0;
         left:0;
+        padding-top: 110px;
 
     }
 `;

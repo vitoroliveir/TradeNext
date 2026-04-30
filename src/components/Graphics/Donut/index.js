@@ -5,18 +5,20 @@ import { Content } from "./style"
 import React, { useEffect, useState } from 'react';
 import { readDb } from "../../../services/db"
 
-export default function Donut() {
+export default function Donut({ refreshKey = 0 }) {
   const [cost, setCost] = useState([0])
   const [name, setName] = useState([])
 
   useEffect(() => {
     readDb(localStorage.getItem('uid'), "total", "PIE").then((value) => {
-      setCost(value.cost)
-      setName(value.name)
+      const safeCost = Array.isArray(value?.cost) ? value.cost : [0];
+      const safeName = Array.isArray(value?.name) ? value.name : [];
+      setCost(safeCost)
+      setName(safeName)
     })
-  }, [])
+  }, [refreshKey])
   
-  var show = cost.length <= 12 ? false : true
+  var show = (cost?.length || 0) <= 12 ? false : true
 
   var state = {
     name: name,

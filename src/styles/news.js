@@ -1,283 +1,169 @@
 import styled from 'styled-components';
 
 export const Body = styled.div`
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--background);
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6.5rem 1rem 1.5rem;
+
+  @media (min-width: 870px) {
     flex-direction: row;
-    align-items: center;
-    height:1355px;
-    width: 100vw;
-    position: absolute;
-
-    
-    background-color: var(--background);
-
-    @media (max-width: 870px){
-      left: 0;
-      display: flex;
-      flex-direction: column;
-
-    }
-
-    @media(min-width:515px){
-        height:100vh;
-    }
-
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    padding: 6.5rem 1.25rem 1.25rem 6.25rem;
+  }
 `;
 
-export const New = styled.div`
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    width: 90vw;
-    height: 100vh;
-    position: relative;
-    top: 280px;
-    border-radius: 10px;
-    
-    
-    >h1{
-      position: absolute;
+export const NewsMain = styled.section`
+  background-color: white;
+  width: 100%;
+  border-radius: 10px;
+  padding: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
-      height: 50px;
-      background-color: white;
-      color: black;
-      padding-left: 15px;
-      padding-top: 20px;
-      font-family: 'Inter';
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 19px;
-      letter-spacing: 0.01em;
-      text-align: left;
-    }
+  > h1 {
+    margin: 0 0 1rem;
+    color: black;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-weight: 600;
+  }
 
-    @media (min-width: 515px){
-        width: 80vw;
-        left: 5%;
-    }
+  @media (min-width: 870px) {
+    width: min(46vw, 700px);
+    min-height: calc(100vh - 8rem);
+  }
+`;
 
-    @media (min-width: 870px) {
-      width: 45vw;
-      height: 85vh;
-      top: 30px;
-      left: 110px;
-    }
-    
-    
+export const ListMain = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
-    
+export const Main = styled.div`
+  width: 100%;
+  min-height: 300px;
+
+  img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+export const SubNews = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  width: 100%;
+
+  img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 560px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+export const CardMain = styled.li`
+  list-style: none;
+  margin: 0;
+
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+`;
+
+export const New = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  border-radius: 10px;
+  padding: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  > h1 {
+    align-self: flex-start;
+    margin: 0 0 1rem;
+    color: black;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  @media (min-width: 870px) {
+    width: min(44vw, 660px);
+    min-height: calc(100vh - 8rem);
+  }
+`;
+
+export const List = styled.ul`
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  height: min(70vh, 650px);
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    border: 1px solid white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--grenn-150);
+    border-radius: 6px;
+  }
 `;
 
 export const Card = styled.li`
-  height: 55px;
-  width: 73vw;
-  background-color: rgba(236, 236, 236, 0.716);
-  margin: 8px;
+  min-height: 55px;
+  width: 100%;
+  background-color: rgba(236, 236, 236, 0.72);
+  margin: 8px 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   border-radius: 5px;
+  padding: 0.35rem 0.5rem;
+  box-sizing: border-box;
 
-  :hover{
+  :hover {
     background-color: rgba(145, 228, 137, 0.5);
-  }
-
-  @media (min-width: 870px) {
-    height: 55px;
-    width: 38vw;
-    padding-left:4px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 40vw;
-
   }
 `;
 
 export const Content = styled.a`
   text-decoration: none;
-  
-`;
-
-export const NewsMain = styled.div`
-   background-color: white;
-    position: relative;
-    width: 90vw;
-    border-radius: 10px;
-    top: 100px;
-
-    >h1{
-      position: relative;
-      left: 25%;
-      color: black;
-      margin-left: 10px;
-      margin-top: 20px;
-      font-family: 'Inter';
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 19px;
-      letter-spacing: 0.01em;
-      text-align: left;
-    }
-
-    @media (min-width: 515px){
-        width: 80vw;
-        left: 5%;
-
-        h1{
-          left: 30%;
-        }
-    }
-
-    @media (min-width: 870px) {
-      width: 45vw;
-      height: 85vh;
-      top: 30px;
-      left: 100px;
-      
-    }
-
-    @media (min-width: 1750px) {
-      h1{
-        left: 40%;
-      }
-  }
-
-`;
-
-
-
-export const CardMain = styled.li`
-  margin-left: 15px;
-`;
-
-export const Main = styled.div`
-  position: relative;
-  width: 93%;
-  padding-bottom: 25px;
-  display: flex;
-  align-items: center;
-
-  
-  img{
-    width: 100%;
-    height: 20%;
-    left: 5px;
-    border-radius: 5px;
-    
-  }
-
-  @media (min-width: 870px) {npm error code ERESOLVE
-npm error ERESOLVE unable to resolve dependency tree
-npm error
-npm error While resolving: TradeNext@0.1.0
-npm error Found: apexcharts@3.54.1
-npm error node_modules/apexcharts
-npm error   apexcharts@"^3.35.5" from the root project
-npm error
-npm error Could not resolve dependency:
-npm error peer apexcharts@">=4.0.0" from react-apexcharts@1.9.0
-npm error node_modules/react-apexcharts
-npm error   react-apexcharts@"^1.4.0" from the root project
-npm error
-npm error Fix the upstream dependency conflict, or retry
-npm error this command with --force or --legacy-peer-deps
-npm error to accept an incorrect (and potentially broken) dependency resolution.
-npm error
-npm error
-npm error For a full report see:
-npm error C:\Users\vitor\AppData\Local\npm-cache\_logs\2026-04-17T13_36_51_030Z-eresolve-report.txt
-npm error A complete log of this run can be found in: C:\Users\vitor\AppData\Local\npm-cache\_logs\2026-04-17T13_36_51_030Z-debug-0.log
-      position: relative;
-      bottom: 15px;
-      
-      img{
-        width: 100%;
-        max-width: 500px;
-
-      }
-  }
-  @media (min-width: 1750px) {
-      position: relative;
-      left: 8%;
-
-  }
-`;
-
-export const SubNews = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  position: relative;
-  top: 50px;
-  width: 95%;
-  height: 100px;
-  display: flex;
-  align-items: center;
-
-
-  img{
-    width: 100%;
-    height: 130px;
-    border-radius: 5px;
-  }
-
-
-  @media (min-width: 870px) {
-        flex-direction: row;
-        position: absolute;
-        top: 425px;
-
-
-        img{
-          width: 100%;
-          max-width: 400px;
-          height: 170px;
-          border-radius: 5px;
-        }
-  }
-`;
-
-
-
-export const List = styled.ul`
-  position: relative;
-  top: 70px;
-  overflow-y: scroll;
-  height: 90%;
-  width: 95%;
-
-  &::-webkit-scrollbar{
-        width:13px;
-        border: 1px solid white;
-    }
-
-    &::-webkit-scrollbar-thumb{
-        background-color: var(--grenn-150);
-        border-radius:6px;
-        
-    }
-
-`;
-
-export const ListMain = styled.ul`
-  position: relative;
-  top: 40px;
-  left: 2%;
-
+  color: inherit;
+  width: 100%;
 `;
 
 export const Title = styled.h1`
-    color: black;
-    margin-left: 5px;
-    font-family: 'Inter';
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19px;
-    letter-spacing: 0.01em;
-    text-align: left;
+  color: black;
+  margin: 0;
+  font-family: 'Inter';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-align: left;
 `;
-
-
-

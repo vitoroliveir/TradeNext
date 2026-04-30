@@ -12,13 +12,35 @@ import {
 
 
 export const resetDb = async (user) => {
+    if (!user) return
+
     const userDocpie = doc(db, `Usuarios/${user}/total`, "PIE");
 
     await deleteDoc(userDocpie);
+    await setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), {
+        totalCost: 0,
+        totalReturn: 0,
+        percentage: 0
+    }, { merge: true })
+
     await setDoc(doc(db, `Usuarios/${user}/total`, 'PIE'), {
         cost: [],
         name: [],
     })
+
+    await setDoc(doc(db, `Usuarios/${user}/total`, 'HISTORY'), {
+        averageAll: [],
+        dateAll: [],
+        percentage: [],
+        averageAll1y: [],
+        dateAll1y: [],
+        averageAll6m: [],
+        dateAll6m: [],
+        averageMonthDate: [],
+        averageMonthValue: [],
+        selic: [],
+        percentageSelic: [],
+    }, { merge: true })
 
     await pieDb(user)
     await totalDb(user)
@@ -208,7 +230,7 @@ export const totalDb = async (user) => {
     }
 
     const userDoc = doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL');
-    await updateDoc(userDoc, newData);
+    await setDoc(userDoc, newData, { merge: true });
 
 
 }
@@ -260,8 +282,8 @@ function dates(dias) {
 
 export const HistoryDb = async (user) => {
     const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
-    const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    const qtdStokes = result.length
+    const analytics = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const qtdStokes = analytics.length
     /*     const data1 = await readDb(user, `total` , 'RESULTTOTAL');
         const result1 = data1.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         const cost =  data1.totalCost */
@@ -278,7 +300,7 @@ export const HistoryDb = async (user) => {
 
     const datas = dates(1095)
 
-    result.map(async (result) => {
+    for (const result of analytics) {
         const history3y = []
         const allCost = []
         // Obtendo a data atual
@@ -315,7 +337,7 @@ export const HistoryDb = async (user) => {
 
         safeHistory.slice().reverse().map((results, index) => {
             history3y.push({
-                value: results.PREABE,
+                value: Number(results.PREABE || results.close || 0),
                 date: datas[index],
                 cost: result.cost
             })
@@ -539,7 +561,7 @@ export const HistoryDb = async (user) => {
 
 
         const userDoc = doc(db, `Usuarios/${user}/total`, 'HISTORY');
-        await updateDoc(userDoc, {
+        await setDoc(userDoc, {
             averageAll: newFilterAllValue,
             dateAll: filterAllDate,
             percentage: newFilterAllPercentage,
@@ -551,11 +573,9 @@ export const HistoryDb = async (user) => {
             averageMonthValue: averageMonthValue,
             selic: ValueSelic,
             percentageSelic: newFilterAllPercentageSelic,
-        });
+        }, { merge: true });
 
-    })
+    }
 
 }
-
-
 

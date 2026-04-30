@@ -62,7 +62,7 @@ export const Patrimony = styled.div`
 
 
     @media (min-width:850px) {
-        width:35vw;
+        width:33vw;
         height:85vh;
         bottom:0;
         
@@ -76,7 +76,7 @@ export const Patrimony = styled.div`
     }
 
     @media (min-width:1023px) {
-        width:35vw;
+        width:33vw;
         height:85vh;
     }
 
@@ -121,7 +121,7 @@ export const List = styled.div`
     
 
     @media (min-width:850px) {
-        width:51.1vw;
+        width:49vw;
         height:85vh;
         margin-left:7.5px;
         left:0;
@@ -130,7 +130,7 @@ export const List = styled.div`
     }
 
     @media (min-width:1450px) {
-        width:55.6vw;
+        width:53vw;
         left:8%;
     }
 
@@ -394,7 +394,7 @@ export const ContainerCarteira = styled.div`
     align-items:center;
     justify-content:center;
     flex-direction:column;
-    top:0;
+    top:-80px;
     left:0;
     padding-top: 120px;
     width: 100%;
@@ -402,8 +402,8 @@ export const ContainerCarteira = styled.div`
     
 
     @media (min-width:501px) {
-        top:0;
-        left:0;
+        top:-70px;
+        left:-10px;
         
     }
 
@@ -412,10 +412,14 @@ export const ContainerCarteira = styled.div`
         align-items:flex-start;
         justify-content:center;
         gap: 16px;
-        top:0;
-        left:0;
+        top:-100px;
+        left:-40px;
         padding-top: 110px;
 
+    }
+
+    @media (min-width:1300px) {
+        left:-60px;
     }
 `;
 

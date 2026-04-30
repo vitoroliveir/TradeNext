@@ -21,7 +21,7 @@ export const Body= styled.div`
 export const Patrimony =  styled.div`
     position: relative;
     background-color:white;
-    width:min(100%, 380px);
+    width:100%;
     min-height:430px;
     border-radius:15px;
     padding: 1rem 0.5rem 1.25rem;
@@ -41,7 +41,8 @@ export const Patrimony =  styled.div`
     }
 
     @media (min-width:850px) {
-        width:min(35vw, 380px);
+        width:min(35%, 380px);
+        flex: 0 0 min(35%, 380px);
     }
 
 `;
@@ -63,7 +64,7 @@ export const List =  styled.div`
     flex-direction: column;
     align-items: center;
     background-color: white;
-    width: min(100%, 900px);
+    width: 100%;
     min-height: 780px;
     position: relative;
     border-radius: 15px;
@@ -72,7 +73,8 @@ export const List =  styled.div`
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
     @media (min-width:850px) {
-        width:min(58vw, 920px);
+        flex: 1;
+        min-width: 0;
     }
 
 `;
@@ -84,15 +86,31 @@ export const ContainerCarteira =  styled.div`
     justify-content:center;
     flex-direction:column;
     gap: 1.25rem;
-    width: min(100%, 1280px);
+    width: 100%;
+    max-width: 1280px;
     margin: 8.5rem auto 0;
     padding: 0 1rem;
     box-sizing: border-box;
+
+    @media (min-width:501px) {
+        width: calc(100% - 112px);
+        margin-left: 96px;
+        margin-right: 16px;
+    }
 
     @media (min-width:850px) {
         flex-direction:row;
         align-items:flex-start;
         padding: 0 1.5rem;
+        width: calc(100% - 112px);
+        max-width: 1280px;
+        margin-left: 96px;
+        margin-right: auto;
+    }
+
+    @media (min-width:1300px) {
+        width: calc(100% - 128px);
+        margin-left: 104px;
     }
 `;
 
@@ -134,23 +152,30 @@ export const Graphic = styled.div`
 `
 
 export const New = styled.div`
-  display: flex;
-  flex-direction:row;
-  flex-wrap: wrap;
-  justify-content:center;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
   width: 100%;
   margin-top: 1rem;
+
+  @media(min-width: 680px){
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media(min-width: 1120px){
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 `;
 
 export const Card = styled.li`
     list-style: none;   
+    min-width: 0;
 `;
 
 export const Content = styled.a`
   text-decoration: none;
   width: 100%;
-  max-width: 370px;
+  height: 100%;
 
   img{
     height: 160px;
@@ -159,10 +184,9 @@ export const Content = styled.a`
     border-radius:5px;
   }
 
-  margin: 10px;
-
   display: flex;
   flex-direction:column;
+  gap: 0.75rem;
 
   
   @media(min-width:601px){
@@ -173,13 +197,9 @@ export const Content = styled.a`
   }
 
   @media(min-width:1120px){
-    flex-direction:row;
-    margin: 14px;
-    max-width: 520px;
-    align-items: center;
     img{
-        height: 100px;
-        width: 100px;
+        height: 132px;
+        width: 100%;
     }
   }
   
@@ -194,12 +214,11 @@ export const News = styled.ul`
 
 export const Title = styled.h1`
     color: black;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin: 0;
     font-family: 'Inter';
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    line-height: 19px;
+    line-height: 1.35;
     letter-spacing: 0.01em;
     text-align: left;
     width:100%;
@@ -210,12 +229,10 @@ export const Title = styled.h1`
     }
 
     @media(min-width:1120px){
-        width:calc(100% - 120px);
-        margin-top: 0;
+        width:100%;
     }
 
     @media(min-width:1380px){
-        width:calc(100% - 120px);
-        margin-top:10px;
+        width:100%;
     }
 `;

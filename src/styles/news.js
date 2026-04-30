@@ -9,19 +9,21 @@ export const Body = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 6.5rem 1rem 1.5rem;
+  overflow-x: hidden;
 
   @media (min-width: 870px) {
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
     gap: 1rem;
-    padding: 6.5rem 1.25rem 1.25rem 6.25rem;
+    padding: 6.5rem 1.25rem 1.25rem 7rem;
   }
 `;
 
 export const NewsMain = styled.section`
   background-color: white;
   width: 100%;
+  min-width: 0;
   border-radius: 10px;
   padding: 1rem;
   box-sizing: border-box;
@@ -36,7 +38,8 @@ export const NewsMain = styled.section`
   }
 
   @media (min-width: 870px) {
-    width: min(46vw, 700px);
+    flex: 1 1 0;
+    max-width: 700px;
     min-height: calc(100vh - 8rem);
   }
 `;
@@ -50,10 +53,11 @@ export const ListMain = styled.div`
 export const Main = styled.div`
   width: 100%;
   min-height: 300px;
+  min-width: 0;
 
   img {
     width: 100%;
-    height: 280px;
+    height: clamp(210px, 34vw, 280px);
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 0.5rem;
@@ -65,6 +69,7 @@ export const SubNews = styled.div`
   grid-template-columns: 1fr;
   gap: 0.9rem;
   width: 100%;
+  min-width: 0;
 
   img {
     width: 100%;
@@ -75,13 +80,14 @@ export const SubNews = styled.div`
   }
 
   @media (min-width: 560px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 
 export const CardMain = styled.li`
   list-style: none;
   margin: 0;
+  min-width: 0;
 
   border-radius: 8px;
   padding: 0.5rem;
@@ -94,6 +100,7 @@ export const New = styled.section`
   align-items: center;
   background-color: white;
   width: 100%;
+  min-width: 0;
   border-radius: 10px;
   padding: 1rem;
   box-sizing: border-box;
@@ -109,7 +116,8 @@ export const New = styled.section`
   }
 
   @media (min-width: 870px) {
-    width: min(44vw, 660px);
+    flex: 0 1 660px;
+    max-width: 660px;
     min-height: calc(100vh - 8rem);
   }
 `;
@@ -137,6 +145,7 @@ export const List = styled.ul`
 export const Card = styled.li`
   min-height: 55px;
   width: 100%;
+  min-width: 0;
   background-color: rgba(236, 236, 236, 0.72);
   margin: 8px 0;
   display: flex;
@@ -155,6 +164,7 @@ export const Content = styled.a`
   text-decoration: none;
   color: inherit;
   width: 100%;
+  min-width: 0;
 `;
 
 export const Title = styled.h1`
@@ -166,4 +176,5 @@ export const Title = styled.h1`
   line-height: 1.3;
   letter-spacing: 0.01em;
   text-align: left;
+  overflow-wrap: anywhere;
 `;

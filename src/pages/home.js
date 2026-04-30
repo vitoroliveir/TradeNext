@@ -152,7 +152,7 @@ export default function Home({ results, results2 = [], /**resultsStocks**/ }) {
                             
                             <New>
                                 {results2.map((result,index) => (
-                                    index <= 5 && result.urlToImage != null?
+                                    index <= 6 && result.urlToImage != null?
                                     <Card key={result.url || index}>
                                         <Content href={result.url} target="_blank" rel="noreferrer">
                                             <img src={`${result.urlToImage}`}/>

@@ -42,9 +42,6 @@ export default function News({ results }) {
     const firstMain = featuredNews[1];
     const secondaryNews = featuredNews.slice(2);
     const listNews = validNews.slice(4);
-    console.log(firstMain);
-    
-
     return (
         <>
         

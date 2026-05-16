@@ -8,19 +8,28 @@ export const Body = styled.div`
 `;
 
 export const DashboardContent = styled.main`
-    width: min(1180px, calc(100% - 32px));
+    width: 100%;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 96px 0 40px;
+    padding: 8.5rem 1rem 2.5rem;
+    box-sizing: border-box;
 
-    @media(min-width: 515px){
-        width: calc(100% - 180px);
-        margin-left: 148px;
-        padding-top: 104px;
+    @media(min-width: 501px){
+        width: calc(100% - 112px);
+        margin-left: 96px;
+        margin-right: 16px;
     }
 
-    @media(min-width: 1200px){
-        width: calc(100% - 220px);
-        margin-left: 172px;
+    @media(min-width: 850px){
+        width: calc(100% - 112px);
+        margin-left: 96px;
+        margin-right: auto;
+        padding: 8.5rem 1.5rem 2.5rem;
+    }
+
+    @media(min-width: 1300px){
+        width: calc(100% - 128px);
+        margin-left: 104px;
     }
 `;
 

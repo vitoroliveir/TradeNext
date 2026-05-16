@@ -75,7 +75,6 @@ export default function AddAcoes({onClose, onSuccess, results, page , type, ativ
     return (
         <Container>
             {error && type != "EDITAR"? <Errs><Err backgroundColor={success ? "green": null} width={"240px"}>{messageError}</Err></Errs>: null}
-
             <Modal data={type == "EDITAR" ? newData : data}  onClose={onClose} onSuccess={onSuccess} onError={(response, success) => onErro(response, success)} results={results} page={page} type={type} operation={operation} resetData={reset}>
                 <Title>{`${type} AÇÕES`}</Title>
                

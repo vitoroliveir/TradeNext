@@ -2,50 +2,43 @@ import styled from 'styled-components';
 import { IoCloseSharp } from "react-icons/io5";
 
 export const Container = styled.div`
-    position:absolute;
-    z-index:1000;
-    width:100vw;
-    height:1500px;
-    background-color:rgba(98, 95, 95, 0.58);
-    display:flex;
-    justify-content:center;
-
-    @media (min-width: 515px) {
-        height:100vh;
-    }
-
-    
-    
+    position: fixed;
+    z-index: 10000;
+    inset: 0;
+    width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: rgba(98, 95, 95, 0.58);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
 `;
 
 export const ContainerModal = styled.form`
-    position:absolute;
-    width:80vw;
-    height:80vh;
-    display:flex;
-    justify-content:center;
+    position: relative;
+    width: min(100%, 630px);
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     border-radius: 15px;
-    top:10%;
-
     background-color: white;
-    
+    overflow-y: auto;
+    padding: 3rem 1rem 1.5rem;
+    box-sizing: border-box;
+
     @media (min-width: 515px) {
-        width:60vw;
-        height:70vh;
-
-        max-width:630px;
-        top:15%;
+        width: min(86vw, 630px);
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
+        padding: 3.25rem 1.5rem 1.25rem;
     }
-
-    @media (min-width: 870px) {
-        padding-left:3%
-    }
-
-    @media (min-width: 1020px) {
-        height:50vh;
-    }
-
-
     
 `;
 
@@ -56,22 +49,24 @@ export const IoClose = styled(IoCloseSharp)`
 `;
 
 export const Close = styled.a`
-    position:absolute;
-    border-radius:50px;
+    position: absolute;
+    border-radius: 50px;
     background-color: var(--green-50);
-    border:none;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    left:80%;
-    top:1%;
-    width:35px;
-    height:35px;
-    text-decoration:none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0.75rem;
+    top: 0.75rem;
+    width: 35px;
+    height: 35px;
+    text-decoration: none;
+    cursor: pointer;
 
     @media (min-width: 515px) {
-        background-color: white;
-        left:101%;
+        background-color: var(--green-50);
+        right: 0.75rem;
+        top: 0.75rem;
     }
     
 `;

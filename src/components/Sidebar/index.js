@@ -90,7 +90,7 @@ export default function SideBar({ Page }) {
     }
 
     return (
-        <Container onMouseLeave={validarSaida}  >
+        <Container active={isOpen} onMouseLeave={validarSaida}  >
 
             <Sidebar active={isOpen} onMouseEnter={() => setIsOpen(false)}>
                 <Menu>

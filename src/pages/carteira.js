@@ -20,7 +20,8 @@ import {
     Header,
     Modal,
     Scroll,
-    ModalEdit
+    ModalEdit,
+    TableArea
 } from "../styles/carteira";
 
 export async function getStaticProps() {
@@ -161,25 +162,27 @@ export default function Carteira({ results }) {
                         </Patrimony>
                         <List>
                             <h1>Meus Ativos</h1>
-                            <Header>
-                                {["", "Qtde", "P.Médio", "Preço", "Retorno", "%Carteira"].map((text, index) => (
-                                    <TextLimiter key={index} text={text} qtd={4} />
-                                ))}
-                            </Header>
-                            <Scroll>
-                                {data.map((asset) => (
-                                    <ModalEdit key={asset.name} onClick={() => handleOpenModalEdit(asset.name)}>
-                                        <Item>
-                                            <TextLimiter text={asset.name} qtd={4} />
-                                            <span>{asset.qtd}</span>
-                                            <span>{asset.valueBuy}</span>
-                                            <span>{asset.currentValue}</span>
-                                            <span>{calculationPercentage(asset.return, asset.cost)}%</span>
-                                            <span>{calculationWalletPercentage(asset.return, patrimony)}%</span>
-                                        </Item>
-                                    </ModalEdit>
-                                ))}
-                            </Scroll>
+                            <TableArea>
+                                <Header>
+                                    {["", "Qtde", "P.Médio", "Preço", "Retorno", "%Carteira"].map((text, index) => (
+                                        <TextLimiter key={index} text={text} qtd={4} />
+                                    ))}
+                                </Header>
+                                <Scroll>
+                                    {data.map((asset) => (
+                                        <ModalEdit key={asset.name} onClick={() => handleOpenModalEdit(asset.name)}>
+                                            <Item>
+                                                <TextLimiter text={asset.name} qtd={4} />
+                                                <span>{asset.qtd}</span>
+                                                <span>{asset.valueBuy}</span>
+                                                <span>{asset.currentValue}</span>
+                                                <span>{calculationPercentage(asset.return, asset.cost)}%</span>
+                                                <span>{calculationWalletPercentage(asset.return, patrimony)}%</span>
+                                            </Item>
+                                        </ModalEdit>
+                                    ))}
+                                </Scroll>
+                            </TableArea>
                             <Modal onClick={handleToggleModal}>Adicionar um investimento</Modal>
                         </List>
                     </ContainerCarteira>

@@ -105,6 +105,10 @@ export const Container = styled.div`
     position: fixed;
     z-index:1000;
     height:100vh;
+
+    @media (max-width: 500px){
+        height: ${props => props.active ? "100vh" : "9vh"};
+    }
     
 `
 
@@ -283,4 +287,3 @@ export const Access = styled.ul`
 
 
 `
-

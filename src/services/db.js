@@ -5,42 +5,75 @@ import {
     doc,
     setDoc,
     collection,
-    query,
     getDoc,
     updateDoc,
 } from "firebase/firestore";
+
+const emptyResultTotal = {
+    totalCost: 0,
+    totalReturn: 0,
+    percentage: 0,
+};
+
+const emptyPie = {
+    cost: [],
+    name: [],
+};
+
+const emptyHistory = {
+    averageAll: [],
+    dateAll: [],
+    percentage: [],
+    averageAll1y: [],
+    dateAll1y: [],
+    averageAll6m: [],
+    dateAll6m: [],
+    averageMonthDate: [],
+    averageMonthValue: [],
+    selic: [],
+    percentageSelic: [],
+};
+
+const asNumber = (value) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+};
+
+const normalizeTicker = (value) => String(value || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+const fetchQuote = async (ticker) => {
+    const safeTicker = normalizeTicker(ticker);
+    if (!safeTicker) {
+        return 0;
+    }
+
+    try {
+        const response = await fetch(`/api/quote/${encodeURIComponent(safeTicker)}`);
+        const data = await response.json();
+        return asNumber(data?.results?.[0]?.regularMarketPrice);
+    } catch (error) {
+        return 0;
+    }
+};
+
+const formatBCBDate = (value) => {
+    const normalized = String(value || "").trim().replaceAll("-", "/");
+    const [year, month, day] = normalized.split("/");
+
+    if (!year || !month || !day) return "";
+
+    return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
+};
 
 
 export const resetDb = async (user) => {
     if (!user) return
 
-    const userDocpie = doc(db, `Usuarios/${user}/total`, "PIE");
-
-    await deleteDoc(userDocpie);
-    await setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), {
-        totalCost: 0,
-        totalReturn: 0,
-        percentage: 0
-    }, { merge: true })
-
-    await setDoc(doc(db, `Usuarios/${user}/total`, 'PIE'), {
-        cost: [],
-        name: [],
-    })
-
-    await setDoc(doc(db, `Usuarios/${user}/total`, 'HISTORY'), {
-        averageAll: [],
-        dateAll: [],
-        percentage: [],
-        averageAll1y: [],
-        dateAll1y: [],
-        averageAll6m: [],
-        dateAll6m: [],
-        averageMonthDate: [],
-        averageMonthValue: [],
-        selic: [],
-        percentageSelic: [],
-    }, { merge: true })
+    await Promise.all([
+        setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), emptyResultTotal, { merge: true }),
+        setDoc(doc(db, `Usuarios/${user}/total`, 'PIE'), emptyPie, { merge: true }),
+        setDoc(doc(db, `Usuarios/${user}/total`, 'HISTORY'), emptyHistory, { merge: true }),
+    ]);
 
     await pieDb(user)
     await totalDb(user)
@@ -49,19 +82,20 @@ export const resetDb = async (user) => {
 
 
 export const existDb = async (user, data) => {
-    const docRef = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
+    if (!user || !data?.name) return false;
+
+    const docRef = doc(db, `Usuarios/${user}/acoes`, normalizeTicker(data.name));
     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-        return true
-    } else {
-        return false
-    }
+    return docSnap.exists()
 }
 
 export const deleteDb = async (user, data) => {
-    const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
-    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, data.name.toUpperCase());
+    if (!user || !data?.name) return;
+
+    const ticker = normalizeTicker(data.name);
+    const userDoc = doc(db, `Usuarios/${user}/acoes`, ticker);
+    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, ticker);
 
     await deleteDoc(userDoc);
     await deleteDoc(userDocAnalytics);
@@ -69,23 +103,24 @@ export const deleteDb = async (user, data) => {
 }
 
 export const updateDb = async (user, data) => {
-    const datas = await fetch(`/api/quote/${encodeURIComponent(data.name)}`);
-    const results = await datas.json();
-    const valueShares = await results.results[0].regularMarketPrice;
+    if (!user || !data?.name) return;
+
+    const ticker = normalizeTicker(data.name);
+    const valueShares = await fetchQuote(ticker);
 
     const newData = {
-        name: data.name,
+        name: ticker,
         valueBuy: data.value,
         currentValue: valueShares.toString(),
         qtd: data.qtd,
         date: data.date,
-        cost: Number(data.value) * Number(data.qtd),
-        return: valueShares * Number(data.qtd)
+        cost: asNumber(data.value) * asNumber(data.qtd),
+        return: valueShares * asNumber(data.qtd)
     }
 
 
-    const userDoc = doc(db, `Usuarios/${user}/acoes`, data.name.toUpperCase());
-    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, data.name.toUpperCase());
+    const userDoc = doc(db, `Usuarios/${user}/acoes`, ticker);
+    const userDocAnalytics = doc(db, `Usuarios/${user}/analytics`, ticker);
 
     await updateDoc(userDoc, data);
     await updateDoc(userDocAnalytics, newData);
@@ -96,6 +131,8 @@ export const updateDb = async (user, data) => {
 }
 
 export const readDb = async (user, router, data) => {
+    if (!user || !router || !data) return false;
+
     const docRef = doc(db, `Usuarios/${user}/${router}`, data.toUpperCase());
     const docSnap = await getDoc(docRef);
 
@@ -108,13 +145,17 @@ export const readDb = async (user, router, data) => {
 }
 
 export const listDb = async (user, router) => {
+    if (!user || !router) return [];
+
     const data = await getDocs(collection(db, `Usuarios/${user}/${router}`));
     const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result
 };
 
 export const addAcoesDb = async (user, data) => {
-    const stockName = data.name.toUpperCase();
+    if (!user || !data?.name) return;
+
+    const stockName = normalizeTicker(data.name);
     await setDoc(doc(db, `Usuarios/${user}/acoes`, stockName), {
         name: stockName,
         value: data.value,
@@ -123,9 +164,7 @@ export const addAcoesDb = async (user, data) => {
         qtd: data.qtd
     })
 
-    const quote = await fetch(`/api/quote/${encodeURIComponent(stockName)}`);
-    const quoteData = await quote.json();
-    const valueShares = Number(quoteData?.results?.[0]?.regularMarketPrice || 0);
+    const valueShares = await fetchQuote(stockName);
 
     await setDoc(doc(db, `Usuarios/${user}/analytics`, stockName), {
         name: stockName,
@@ -144,83 +183,40 @@ export const addAcoesDb = async (user, data) => {
 
 
 export const addAnalytics = async (user) => {
-    listDb(user, "acoes").then((result) => {
-        result.map(async (item) => {
-            const data = await fetch(`/api/quote/${encodeURIComponent(item.name)}`)
-            const results = await data.json()
-            const valueShares = await results.results[0].regularMarketPrice
+    if (!user) return;
 
-            var q = query(collection(db, "Usuarios"));
-            var querySnapshot = await getDocs(q);
+    const assets = await listDb(user, "acoes");
 
-            var queryData = querySnapshot.docs.map((detail) => {
-                ({
-                    ...detail.data(),
-                    id: user,
-                })
-            }
-            );
+    await Promise.all(assets.map(async (item) => {
+        const ticker = normalizeTicker(item.name);
+        const valueShares = await fetchQuote(ticker);
 
-            queryData.map(async (v) => {
+        await setDoc(doc(db, `Usuarios/${user}/analytics`, ticker), {
+            name: ticker,
+            valueBuy: item.value,
+            currentValue: valueShares.toString(),
+            qtd: item.qtd,
+            date: String(item.date || "").replace(/[-]/g, "/"),
+            cost: asNumber(item.value) * asNumber(item.qtd),
+            return: valueShares * asNumber(item.qtd),
+            history12m: []
+        });
+    }));
 
-                await setDoc(doc(db, `Usuarios/${user}/analytics`, item.name.toUpperCase()), {
-                    name: item.name,
-                    valueBuy: item.value,
-                    currentValue: valueShares.toString(),
-                    qtd: item.qtd,
-                    date: item.date.replace(/[-]/g, "/"),
-                    cost: Number(item.value) * Number(item.qtd),
-                    return: valueShares * Number(item.qtd),
-                    history12m: []
-                })
-
-                await setDoc(doc(db, `Usuarios/${user}/total`, 'RESULTTOTAL'), {
-                    totalCost: 0,
-                    totalReturn: 0,
-                    percentage: 0
-                })
-
-                await setDoc(doc(db, `Usuarios/${user}/total`, 'PIE'), {
-                    cost: [],
-                    name: [],
-                })
-
-                await setDoc(doc(db, `Usuarios/${user}/total`, 'HISTORY'), {
-                    averageAll: [],
-                    dateAll: [],
-                    averageAll1y: [],
-                    dateAll1y: [],
-                    averageAll6m: [],
-                    dateAll6m: []
-                })
-
-
-                await resetDb(user, item)
-            })
-
-
-        })
-    })
+    await resetDb(user);
 }
 
 
 
 export const totalDb = async (user) => {
-    var totalCost = 0
-    var totalReturn = 0
+    if (!user) return;
 
     const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
     const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-    result.map((result) => {
-        if (result.cost != NaN && result.return != NaN) {
-            totalCost = totalCost + result.cost
-            totalReturn = totalReturn + result.return
-        }
-
-    })
-
-    var percentage = ((totalReturn - totalCost) / totalCost) * 100
+    const totalCost = result.reduce((sum, item) => sum + asNumber(item.cost), 0);
+    const totalReturn = result.reduce((sum, item) => sum + asNumber(item.return), 0);
+    const percentage = totalCost > 0 ? ((totalReturn - totalCost) / totalCost) * 100 : 0;
 
 
     const newData = {
@@ -236,25 +232,25 @@ export const totalDb = async (user) => {
 }
 
 export const pieDb = async (user) => {
-    await listDb(user, "acoes").then(async (response) => {
-        const cost = []
-        const name = []
+    if (!user) return;
 
-        response.map(async (item) => {
-            await readDb(user, "analytics", item.name).then(async (value) => {
-                cost.push(value.return)
-                name.push(value.name)
-            })
+    const response = await listDb(user, "acoes");
+    const pairs = await Promise.all(response.map(async (item) => {
+        const value = await readDb(user, "analytics", item.name);
+        if (!value) return null;
+        return {
+            cost: asNumber(value.return),
+            name: value.name,
+        };
+    }));
 
-            const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
-            await setDoc(userDoc, {
-                cost: cost,
-                name: name
-            }, { merge: true });
-        })
+    const filtered = pairs.filter(Boolean);
 
-
-    })
+    const userDoc = doc(db, `Usuarios/${user}/total`, 'PIE');
+    await setDoc(userDoc, {
+        cost: filtered.map((item) => item.cost),
+        name: filtered.map((item) => item.name),
+    }, { merge: true });
 }
 
 //criando datas
@@ -281,6 +277,8 @@ function dates(dias) {
 
 
 export const HistoryDb = async (user) => {
+    if (!user) return;
+
     const data = await getDocs(collection(db, `Usuarios/${user}/analytics`));
     const analytics = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     const qtdStokes = analytics.length
@@ -327,6 +325,15 @@ export const HistoryDb = async (user) => {
         let dataFormatadaMenos365 = `${anoMenos365}${mesMenos365 < 10 ? '0' : ''}${mesMenos365}${diaMenos365 < 10 ? '0' : ''}${diaMenos365}`;
 
 
+        var hoje = new Date();
+        var ano = hoje.getFullYear();
+        var mes = hoje.getMonth();
+        var dia = hoje.getDate();
+
+        //comparar a data
+        let dataInicial = result.date.replace(/[-]/g, "/");
+        let dataFinal = `${ano}/${mes + 1}/${dia}`;
+
         // const dataHystory = await fetch(`/api/quote/${encodeURIComponent(result.name)}`)
         // const resultsHystory = await dataHystory.json()
         // const resultshistory = resultsHystory.results[0].historicalDataPrice
@@ -349,25 +356,17 @@ export const HistoryDb = async (user) => {
         })
 
 
-        const selic = await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json`)
+        const selic = await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=${encodeURIComponent(formatBCBDate(dataInicial))}&dataFinal=${encodeURIComponent(formatBCBDate(dataFinal))}`)
         const resultsSelic = await selic.json()
         const safeSelic = Array.isArray(resultsSelic) ? resultsSelic : []
         safeSelic.slice().reverse().map((results) => {
             allCost.push({
                 value: ((result.cost * (results.valor / 100)) + result.cost),
                 date: results.data.split('/').reverse().join('/'),
-                percentage: parseFloat(results.valor)
+                percentage: Number(String(results.valor || 0).replace(',', '.'))
             })
         })
 
-        var hoje = new Date();
-        var ano = hoje.getFullYear();
-        var mes = hoje.getMonth();
-        var dia = hoje.getDate();
-
-        //comparar a data
-        let dataInicial = result.date.replace(/[-]/g, "/");
-        let dataFinal = `${ano}/${mes + 1}/${dia}`;
         let objetosFiltradosSelic = allCost.filter(results => {
             return results.date >= dataInicial && results.date <= dataFinal;
         })
@@ -472,7 +471,7 @@ export const HistoryDb = async (user) => {
 
             val = somaValue + val
 
-            const res = val / qtdStokes
+            const res = qtdStokes > 0 ? val / qtdStokes : 0
 
             newFilterAllPercentageSelic[index] = res.toFixed(1)
         })
@@ -488,30 +487,22 @@ export const HistoryDb = async (user) => {
         })
 
         if (objetosFiltrados.length > 365) {
-            objetosFiltrados.map((value, index) => {
-                if (index < 365) {
-                    filterAllDate1y.push(value.date)
-                }
+            objetosFiltrados.slice(0, 365).forEach((value) => {
+                filterAllDate1y.push(value.date)
             })
 
-            newFilterAllValue.map((values, index) => {
-                if (index < 365) {
-                    newFilterAllValue1y.push(values)
-                }
+            newFilterAllValue.slice(0, 365).forEach((values) => {
+                newFilterAllValue1y.push(values)
             })
 
 
             if (objetosFiltrados.length > 182) {
-                objetosFiltrados.map((value, index) => {
-                    if (index < 182) {
-                        filterAllDate6m.push(value.date)
-                    }
+                objetosFiltrados.slice(0, 182).forEach((value) => {
+                    filterAllDate6m.push(value.date)
                 })
 
-                newFilterAllValue.map((values, index) => {
-                    if (index < 182) {
-                        newFilterAllValue6m.push(values)
-                    }
+                newFilterAllValue.slice(0, 182).forEach((values) => {
+                    newFilterAllValue6m.push(values)
                 })
             }
         }

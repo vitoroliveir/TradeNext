@@ -14,6 +14,13 @@ const normalizeDate = (date) => {
   return String(date).replaceAll('/', '-')
 }
 
+const formatBCBDate = (date) => {
+  const normalized = String(date || '').replaceAll('-', '/')
+  const [year, month, day] = normalized.split('/')
+  if (!year || !month || !day) return ''
+  return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`
+}
+
 const buildFallbackSeries = (assets) => {
   const sortedAssets = [...assets].sort((a, b) => {
     return new Date(normalizeDate(a.date)) - new Date(normalizeDate(b.date))
@@ -44,7 +51,17 @@ const buildFallbackSeries = (assets) => {
 const fetchSelicPercentages = async (dates) => {
   if (!dates.length) return []
 
-  const response = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json')
+  const orderedDates = dates
+    .map((date) => normalizeDate(date))
+    .filter(Boolean)
+    .sort((a, b) => new Date(a) - new Date(b))
+
+  const firstDate = orderedDates[0]
+  const lastDate = orderedDates[orderedDates.length - 1]
+
+  const response = await fetch(
+    `https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=${encodeURIComponent(formatBCBDate(firstDate))}&dataFinal=${encodeURIComponent(formatBCBDate(lastDate))}`
+  )
   const data = await response.json()
   const selicData = Array.isArray(data) ? data : []
 
@@ -86,21 +103,20 @@ export default function SplineArea() {
       readDb(uid, "total", "HISTORY"),
       listDb(uid, "analytics")
     ]).then(async ([history, assets]) => {
-      const historyValues = Array.isArray(history?.percentage) ? history.percentage : []
+      const historyValues = Array.isArray(history?.percentage) ? history.percentage.map(Number) : []
       const historyDates = Array.isArray(history?.dateAll) ? history.dateAll : []
-      const historySelic = Array.isArray(history?.percentageSelic) ? history.percentageSelic.slice().reverse() : []
 
       if (historyValues.length && historyDates.length) {
         setValue(historyValues)
         setDate(historyDates)
-        setValueSelic(historySelic.length ? historySelic : await fetchSelicPercentages(historyDates))
+        setValueSelic((await fetchSelicPercentages(historyDates)).map(Number))
         return
       }
 
       const fallback = buildFallbackSeries(Array.isArray(assets) ? assets : [])
       setValue(fallback.values)
       setDate(fallback.dates)
-      setValueSelic(await fetchSelicPercentages(fallback.dates))
+      setValueSelic((await fetchSelicPercentages(fallback.dates)).map(Number))
     }).finally(() => setLoading(false))
   }, [])
 
@@ -143,6 +159,14 @@ export default function SplineArea() {
       stroke: {
         curve: 'smooth'
       },
+      yaxis: {
+        title: {
+          text: 'Percentual acumulado'
+        },
+        labels: {
+          formatter: (value) => `${Number(value).toFixed(2)}%`
+        }
+      },
       xaxis: {
         type: 'datetime',
         categories: date
@@ -166,6 +190,11 @@ export default function SplineArea() {
             },
             legend: {
               position: 'bottom'
+            },
+            yaxis: {
+              labels: {
+                formatter: (value) => `${Number(value).toFixed(2)}%`
+              }
             },
             xaxis: {
               labels: {

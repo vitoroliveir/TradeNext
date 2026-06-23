@@ -7,16 +7,16 @@ export const Body = styled.div`
   background-color: var(--background);
   min-height: 100vh;
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   box-sizing: border-box;
   padding: 8.5rem 1rem 1.5rem;
   overflow-x: hidden;
 
   @media (min-width: 501px) {
-    width: calc(100% - 112px);
-    margin-left: 96px;
-    margin-right: 16px;
+    width: 100%;
+    padding-left: 96px;
+    padding-right: 1rem;
   }
 
   @media (min-width: 850px) {
@@ -24,14 +24,14 @@ export const Body = styled.div`
     align-items: flex-start;
     justify-content: center;
     padding: 8.5rem 1.5rem 1.5rem;
-    width: calc(100% - 112px);
-    margin-left: 96px;
-    margin-right: auto;
+    width: 100%;
+    padding-left: 96px;
+    padding-right: 1.5rem;
   }
 
   @media (min-width: 1300px) {
-    width: calc(100% - 128px);
-    margin-left: 104px;
+    width: 100%;
+    padding-left: 104px;
   }
 `;
 

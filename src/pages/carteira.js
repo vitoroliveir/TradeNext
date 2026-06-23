@@ -1,7 +1,8 @@
-import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import Sidebar from "../components/Sidebar";
 import { listDb, readDb } from '../services/db';
+import { AuthContext } from "../contexts/AuthContext";
 import Welcome from '../components/Welcome';
 import AddAcoes from '../components/AddAcoes';
 import Donut from '../components/Graphics/Donut';
@@ -37,7 +38,7 @@ export async function getStaticProps() {
 }
 
 export default function Carteira({ results }) {
-    const [user, setUser] = useState();
+    const { user } = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [cost, setCost] = useState(0);
     const [patrimony, setPatrimony] = useState(0);
@@ -50,7 +51,7 @@ export default function Carteira({ results }) {
     const [donutRefreshKey, setDonutRefreshKey] = useState(0);
 
     const fetchData = async () => {
-        const uid = localStorage.getItem('uid');
+        const uid = user?.uid;
         if (!uid) {
             setLoading(false);
             return;
@@ -79,8 +80,6 @@ export default function Carteira({ results }) {
                 setPorcento(0);
                 setRetorno(0);
             }
-
-            setUser(uid);
         } finally {
             setLoading(false);
         }
@@ -88,10 +87,11 @@ export default function Carteira({ results }) {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [user?.uid]);
 
     const handleOpenModalEdit = async (ativos) => {
-        await readDb(localStorage.getItem('uid'), "acoes", ativos).then((response) => {
+        if (!user?.uid) return;
+        await readDb(user.uid, "acoes", ativos).then((response) => {
             setDataAtivo({
                 name: response.name,
                 value: response.value,
@@ -136,17 +136,6 @@ export default function Carteira({ results }) {
         ) : (
             data.length > 0 ? (
                 <Body>
-                    <Head>
-                        <script
-                            dangerouslySetInnerHTML={{
-                                __html: `
-                                if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                                    window.location.href = "/";
-                                }
-                                `,
-                            }}
-                        />
-                    </Head>
                     <Sidebar Page={'Carteira'} />
                     <ContainerCarteira>
                         <Patrimony>

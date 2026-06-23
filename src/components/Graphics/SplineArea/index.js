@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react';
 import { listDb, readDb } from '../../../services/db';
+import { getCurrentUid } from '../../../services/firebase';
 import {
   EmptyChart,
   Graphic
@@ -74,7 +75,7 @@ export default function SplineArea() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const uid = localStorage.getItem('uid')
+    const uid = getCurrentUid()
 
     if (!uid) {
       setLoading(false)
@@ -124,8 +125,11 @@ export default function SplineArea() {
     ],
     options: {
       chart: {
-        height: 350,
+        height: '100%',
         type: 'area',
+        parentHeightOffset: 0,
+        redrawOnParentResize: true,
+        redrawOnWindowResize: true,
         toolbar: {
           show: false
         }
@@ -148,12 +152,43 @@ export default function SplineArea() {
           format: 'yy/MM/dd'
         },
       },
+      responsive: [
+        {
+          breakpoint: 600,
+          options: {
+            chart: {
+              height: 280
+            },
+            title: {
+              style: {
+                fontSize: '14px'
+              }
+            },
+            legend: {
+              position: 'bottom'
+            },
+            xaxis: {
+              labels: {
+                rotate: -35,
+                trim: true
+              }
+            },
+            yaxis: {
+              labels: {
+                style: {
+                  fontSize: '10px'
+                }
+              }
+            }
+          }
+        }
+      ],
     },
   };
 
   return (
     <Graphic>
-      <ReactApexChart options={state.options} series={state.series} type="line" height="350px" />
+      <ReactApexChart options={state.options} series={state.series} type="line" width="100%" height="100%" />
     </Graphic>
   )
 }

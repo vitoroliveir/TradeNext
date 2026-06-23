@@ -1,7 +1,6 @@
-import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar"
-import { listDb, readDb, resetDb } from '../services/db';
+import { listDb, readDb } from '../services/db';
 import { AuthContext } from "../contexts/AuthContext"
 import { useContext } from "react";
 import Welcome from '../components/Welcome'
@@ -22,6 +21,7 @@ import Donut from '../components/Graphics/Donut';
 import Loading from '../components/Loading';
 import TopStocks from '../components/TopStocks';
 import Carrossel from '../components/Carrossel';
+import { isSafeHttpUrl } from '../utils/url';
 
 
 
@@ -38,16 +38,13 @@ export async function getStaticProps() {
         results = [];
     }
 
-    // const urlS = `https://brapi.dev/api/quote/PETR4%2CMGLU3%2CVALE3%2CITUB4%2CB3SA3%2CSUZB3%2CBBDC4%2CABEV3%2CLREN3%2CBBAS3%2CRENT3%2CHAPV3%2CKLBN11%2CPRIO3%2CELET3?token=x6Cr3XN4ZDKxycrrRbx7kM&range=1d&interval=1d&fundamental=true`;
-    // const dataS = await fetch(urlS)
-    // const datasS = await dataS.json()
-    // const resultsStocks = await datasS.results
-
     try {
-        const url2 = `https://newsapi.org/v2/everything?q=economy&from=30/12/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
-        const data2 = await fetch(url2)
-        const datas2 = await data2.json()
-        results2 = datas2?.articles || [];
+        if (process.env.NEWS_API_KEY) {
+            const url2 = `https://newsapi.org/v2/everything?q=economy&from=30/12/2022&sortBy=popularity&pageSize=26&language=pt&apiKey=${process.env.NEWS_API_KEY}`;
+            const data2 = await fetch(url2)
+            const datas2 = await data2.json()
+            results2 = datas2?.articles || [];
+        }
     } catch (error) {
         results2 = [];
     }
@@ -78,15 +75,13 @@ export default function Home({ results, results2 = [], /**resultsStocks**/ }) {
 
 
     const list = async () => {
-        const uid = localStorage.getItem('uid');
+        const uid = user?.uid;
         if (!uid) {
             setLoading(false);
             return;
         }
 
         try {
-            await resetDb(uid)
-
             const [walletData, totals] = await Promise.all([
                 listDb(uid, "acoes"),
                 readDb(uid, "total", "RESULTTOTAL"),
@@ -111,7 +106,7 @@ export default function Home({ results, results2 = [], /**resultsStocks**/ }) {
 
     useEffect(() => {
         list()
-    }, [])
+    }, [user?.uid])
 
     return (
         loading ? (
@@ -119,18 +114,6 @@ export default function Home({ results, results2 = [], /**resultsStocks**/ }) {
         ) :
             data.length > 0 ? (
                 <Body>
-                    <Head>
-                        <script
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                                __html: `
-                        if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                            window.location.href = "/"
-                        }
-                        `,
-                            }}
-                        />
-                    </Head>
                     <Sidebar Page={'Home'} />
                     
                     <TopStocks /**stocks={resultsStocks}**/ />
@@ -152,7 +135,7 @@ export default function Home({ results, results2 = [], /**resultsStocks**/ }) {
                             
                             <New>
                                 {results2.map((result,index) => (
-                                    index <= 6 && result.urlToImage != null?
+                                    index <= 6 && result.urlToImage != null && isSafeHttpUrl(result.url)?
                                     <Card key={result.url || index}>
                                         <Content href={result.url} target="_blank" rel="noreferrer">
                                             <img src={`${result.urlToImage}`}/>

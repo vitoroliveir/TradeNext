@@ -18,7 +18,7 @@ export const Container = styled.div`
 
 export const ContainerModal = styled.form`
     position: relative;
-    width: min(100%, 630px);
+    width: min(100%, 720px);
     max-height: calc(100vh - 2rem);
     max-height: calc(100dvh - 2rem);
     min-height: 0;
@@ -33,11 +33,16 @@ export const ContainerModal = styled.form`
     box-sizing: border-box;
 
     @media (min-width: 515px) {
-        width: min(86vw, 630px);
+        width: min(86vw, 760px);
         height: auto;
         max-height: none;
         overflow-y: visible;
         padding: 3.25rem 1.5rem 1.25rem;
+    }
+
+    @media (min-width: 1200px) {
+        width: min(72vw, 980px);
+        padding: 3.5rem 2rem 1.5rem;
     }
     
 `;

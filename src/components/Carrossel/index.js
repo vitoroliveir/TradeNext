@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 
 import "slick-carousel/slick/slick-theme.css";
 import { Container, Card } from './styles';
+import { isSafeHttpUrl } from "../../utils/url";
 
 const fallbackNews = [
   {
@@ -37,7 +38,7 @@ export default function Carrossel({ news = [] }) {
 
   const carouselNews = Array.isArray(news) && news.length > 0
     ? news
-        .filter((item) => item?.url && item?.urlToImage && item?.title)
+        .filter((item) => isSafeHttpUrl(item?.url) && item?.urlToImage && item?.title)
         .slice(0, 5)
         .map((item) => ({
           url: item.url,

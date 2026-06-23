@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import AddAcoes from '../components/AddAcoes';
 import B3 from '../components/B3';
@@ -87,18 +86,6 @@ export default function Lamina({results}){
     
             data != "" ? (
                 <Body>
-                    <Head>
-                        <script
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                                __html: `
-                            if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                                window.location.href = "/"
-                            }
-                            `,
-                            }}
-                        />
-                    </Head>
                     <Sidebar Page={'Carteira'} />
                     <ContainerCarteira>
                         <Patrimony>
@@ -117,18 +104,6 @@ export default function Lamina({results}){
                 </Body>
             ) : (
                 <Body>
-                    <Head>
-                        <script
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                                __html: `
-                                if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                                    window.location.href = "/"
-                                }
-                                `,
-                            }}
-                        />
-                    </Head>
                     <Sidebar Page={'Carteira'} />
                     <Container>
                         <Welcome>

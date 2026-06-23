@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useMemo } from "react";
 import Link from "next/link";
+import Router from "next/router";
 import Image from 'next/image'
 import { AuthContext } from "../../contexts/AuthContext";
 import { Message } from '../Message';
@@ -79,6 +80,12 @@ export default function SideBar({ Page }) {
             window.removeEventListener('resize', handleResizeMemo);
         };
     }, [handleResizeMemo]);
+
+    useEffect(() => {
+        ['/home', '/dashboard', '/carteira', '/news'].forEach((route) => {
+            Router.prefetch(route);
+        });
+    }, []);
 
 
     const onMessage = () => {

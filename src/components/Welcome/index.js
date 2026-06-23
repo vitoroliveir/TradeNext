@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Head from 'next/head';
 import AddAcoes from '../AddAcoes';
 import B3 from '../B3';
 import Image from 'next/image'
@@ -24,18 +23,6 @@ export default function Welcome({ results, user, page }) {
 
     return (
         <Body>
-            <Head>
-                <script
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                                if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                                    window.location.href = "/"
-                                }
-                                `,
-                    }}
-                />
-            </Head>
             <Sidebar Page={'Carteira'} />
             <Container>
                 <Welcome2>
@@ -60,7 +47,7 @@ export default function Welcome({ results, user, page }) {
 
                 </Add>
             </Container>
-            {activeModal ? <AddAcoes results={results} onClose={() => { setActiveModal(false), window.location.reload();}}  page={page} type={"CADASTRAR"}/> : null}
+            {activeModal ? <AddAcoes results={results} onClose={() => { setActiveModal(false) }} onSuccess={() => window.location.reload()} page={page} type={"CADASTRAR"}/> : null}
             {activeModalB3 ? <B3 results={results} onClose={() => { setActiveModalB3(false) }} page={page} /> : null}
 
         </Body>

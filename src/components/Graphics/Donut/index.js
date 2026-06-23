@@ -4,13 +4,17 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { Content } from "./style"
 import React, { useEffect, useState } from 'react';
 import { readDb } from "../../../services/db"
+import { getCurrentUid } from "../../../services/firebase";
 
 export default function Donut({ refreshKey = 0 }) {
   const [cost, setCost] = useState([0])
   const [name, setName] = useState([])
 
   useEffect(() => {
-    readDb(localStorage.getItem('uid'), "total", "PIE").then((value) => {
+    const uid = getCurrentUid();
+    if (!uid) return;
+
+    readDb(uid, "total", "PIE").then((value) => {
       const safeCost = Array.isArray(value?.cost) ? value.cost : [0];
       const safeName = Array.isArray(value?.name) ? value.name : [];
       setCost(safeCost)
@@ -65,5 +69,4 @@ export default function Donut({ refreshKey = 0 }) {
   );
 
 }
-
 

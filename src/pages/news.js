@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar"
-import Head from 'next/head';
+import { isSafeHttpUrl } from "../utils/url";
 import {
     Body,
     NewsMain,
@@ -18,10 +18,12 @@ import {
 export async function getStaticProps() {
     let results = [];
     try {
-        const url = `https://newsapi.org/v2/everything?q=economy&from=29/04/2026&sortBy=popularity&pageSize=26&language=pt&apiKey=a242db57c2014e789589154d5e3bd158`;
-        const data = await fetch(url);
-        const datas = await data.json();
-        results = Array.isArray(datas?.articles) ? datas.articles : [];
+        if (process.env.NEWS_API_KEY) {
+            const url = `https://newsapi.org/v2/everything?q=economy&from=29/04/2026&sortBy=popularity&pageSize=26&language=pt&apiKey=${process.env.NEWS_API_KEY}`;
+            const data = await fetch(url);
+            const datas = await data.json();
+            results = Array.isArray(datas?.articles) ? datas.articles : [];
+        }
     } catch (error) {
         results = [];
     }
@@ -35,7 +37,7 @@ export default function News({ results }) {
     const validNews = (results || []).filter((article) => (
         article?.title &&
         article.title !== "[Removed]" &&
-        article?.url
+        isSafeHttpUrl(article?.url)
     ));
 
     const featuredNews = validNews.slice(0, 4);
@@ -44,21 +46,6 @@ export default function News({ results }) {
     const listNews = validNews.slice(4);
     return (
         <>
-        
-            <Head>
-                <script
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                    if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                        window.location.href = "/"
-                    }
-                    `,
-                    }}
-                />
-            </Head>
-
-
             <Sidebar Page={'News'} />
 
             <Body>

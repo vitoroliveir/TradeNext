@@ -1,7 +1,6 @@
-import Head from 'next/head';
 import { useCallback, useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar"
-import { listDb, resetDb } from '../services/db';
+import { listDb } from '../services/db';
 import { AuthContext } from "../contexts/AuthContext"
 import { useContext } from "react";
 import Welcome from '../components/Welcome'
@@ -29,7 +28,7 @@ export default function Dashboard({ results }) {
     const [error, setError] = useState("")
 
     const list = useCallback(async () => {
-        const uid = user?.uid || localStorage.getItem('uid')
+        const uid = user?.uid
 
         if (!uid) {
             setLoading(false)
@@ -41,13 +40,6 @@ export default function Dashboard({ results }) {
             const analytics = Array.isArray(response) ? response : []
             setData(analytics)
 
-            if (analytics.length > 0) {
-                try {
-                    await resetDb(uid)
-                } catch (err) {
-                    setError("Nao foi possivel atualizar o historico dos graficos agora.")
-                }
-            }
         } catch (err) {
             setError("Nao foi possivel carregar os dados da dashboard.")
             setData([])
@@ -68,18 +60,6 @@ export default function Dashboard({ results }) {
         ) :
             hasPortfolio ? (
                 <Body>
-                    <Head>
-                        <script
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                                __html: `
-                            if (!document.cookie || !document.cookie.includes('tradeNext-auth')) {
-                                window.location.href = "/"
-                            }
-                            `,
-                            }}
-                        />
-                    </Head>
                     <Sidebar Page={'Dashboard'} />
 
                     <DashboardContent>

@@ -23,10 +23,10 @@ export const Dados = styled.div`
     align-items: start;
     gap: 0.5rem;
     width: 100%;
-    max-width: 560px;
+    max-width: none;
 
     button{
-        width: min(100%, 220px);
+        width: min(100%, 240px);
         justify-self: center;
         margin-top: 0.5rem;
     }
@@ -41,7 +41,8 @@ export const Dados = styled.div`
     }
 
     @media (min-width: 1140px) {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        gap: 0.9rem 1.25rem;
     }
 `;
 

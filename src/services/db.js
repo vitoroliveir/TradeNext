@@ -69,7 +69,7 @@ export const deleteDb = async (user, data) => {
 }
 
 export const updateDb = async (user, data) => {
-    const datas = await fetch(`https://brapi.dev/api/quote/${data.name}?token=x6Cr3XN4ZDKxycrrRbx7kM`);
+    const datas = await fetch(`/api/quote/${encodeURIComponent(data.name)}`);
     const results = await datas.json();
     const valueShares = await results.results[0].regularMarketPrice;
 
@@ -123,7 +123,7 @@ export const addAcoesDb = async (user, data) => {
         qtd: data.qtd
     })
 
-    const quote = await fetch(`https://brapi.dev/api/quote/${stockName}?token=x6Cr3XN4ZDKxycrrRbx7kM`);
+    const quote = await fetch(`/api/quote/${encodeURIComponent(stockName)}`);
     const quoteData = await quote.json();
     const valueShares = Number(quoteData?.results?.[0]?.regularMarketPrice || 0);
 
@@ -146,7 +146,7 @@ export const addAcoesDb = async (user, data) => {
 export const addAnalytics = async (user) => {
     listDb(user, "acoes").then((result) => {
         result.map(async (item) => {
-            const data = await fetch(`https://brapi.dev/api/quote/${item.name}?token=x6Cr3XN4ZDKxycrrRbx7kM`)
+            const data = await fetch(`/api/quote/${encodeURIComponent(item.name)}`)
             const results = await data.json()
             const valueShares = await results.results[0].regularMarketPrice
 
@@ -327,7 +327,7 @@ export const HistoryDb = async (user) => {
         let dataFormatadaMenos365 = `${anoMenos365}${mesMenos365 < 10 ? '0' : ''}${mesMenos365}${diaMenos365 < 10 ? '0' : ''}${diaMenos365}`;
 
 
-        // const dataHystory = await fetch(`https://brapi.dev/api/quote/${result.name}?token=x6Cr3XN4ZDKxycrrRbx7kM&range=3mo&interval=1d&fundamental=true`)
+        // const dataHystory = await fetch(`/api/quote/${encodeURIComponent(result.name)}`)
         // const resultsHystory = await dataHystory.json()
         // const resultshistory = resultsHystory.results[0].historicalDataPrice
         const dataHystorys = await fetch(`https://www.okanebox.com.br/api/acoes/hist/${result.name}/${dataFormatadaMenos365}/${dataFormatadaAtual}/`)
@@ -578,4 +578,3 @@ export const HistoryDb = async (user) => {
     }
 
 }
-

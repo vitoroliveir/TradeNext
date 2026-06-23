@@ -2,7 +2,14 @@ import styled from 'styled-components';
 
 export const Graphic = styled.div`
   width: 100%;
-  min-height: 350px;
+  height: clamp(280px, 46vw, 380px);
+  min-width: 0;
+
+  .apexcharts-canvas,
+  .apexcharts-svg,
+  .apexcharts-inner {
+    max-width: 100%;
+  }
 `
 
 export const EmptyChart = styled.div`

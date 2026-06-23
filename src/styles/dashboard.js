@@ -13,6 +13,7 @@ export const DashboardContent = styled.main`
     margin: 0 auto;
     padding: 8.5rem 1rem 2.5rem;
     box-sizing: border-box;
+    min-width: 0;
 
     @media(min-width: 501px){
         width: calc(100% - 112px);
@@ -55,6 +56,7 @@ export const DashboardHeader = styled.header`
 export const ChartGrid = styled.section`
     display: grid;
     gap: 24px;
+    min-width: 0;
 `;
 
 const ChartCard = styled.div`
@@ -62,7 +64,9 @@ const ChartCard = styled.div`
     border: 1px solid rgba(208, 213, 221, 0.8);
     border-radius: 8px;
     box-shadow: 0 14px 34px rgba(17, 24, 39, 0.06);
-    min-height: 390px;
+    min-height: clamp(320px, 48vw, 430px);
+    min-width: 0;
+    overflow: hidden;
     padding: 18px 16px 8px;
 
     @media(min-width: 768px){

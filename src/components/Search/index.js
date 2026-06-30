@@ -4,7 +4,7 @@ import {
   Mess
 } from './style'
 import { React, useRef, useState } from 'react'
-/* import Link from 'next/link' */
+import Router from 'next/router'
 import { BiSearchAlt2 } from "react-icons/bi";
 import { Message } from '../Message';
 
@@ -18,17 +18,26 @@ function Search() {
     setSearch(e.target.value)
   }
 
-  const onMessage = () => {
-    setMessage(true)
+  const sanitizeTicker = (value) => String(value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '')
 
-    setTimeout(function () {
-      setMessage(false)
-    }, 3000)
+  const goToStock = () => {
+    const ticker = sanitizeTicker(search)
+
+    if (!ticker) {
+      setMessage(true)
+
+      setTimeout(function () {
+        setMessage(false)
+      }, 3000)
+      return
+    }
+
+    Router.push(`/acao/${ticker}`)
   }
 
   const handleKeyDown = (event) => {
-    if (event.keyCode === 13) {
-      onMessage()
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      goToStock()
     }
   }
 
@@ -38,9 +47,7 @@ function Search() {
       <SearchBox onKeyDown={handleKeyDown} >
 
         <Input type="text" onChange={onChange} ref={nameInputRef} placeholder='Pesquisa por ativos' />
-        {/* <Link href={`${search?"/result/" + search: "/"}`} > */}
-        <BiSearchAlt2 onClick={onMessage} />
-        {/* </Link> */}
+        <BiSearchAlt2 onClick={goToStock} />
 
       </SearchBox>
 

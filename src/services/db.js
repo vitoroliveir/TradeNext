@@ -49,10 +49,16 @@ const fetchQuote = async (ticker) => {
 
     try {
         const response = await fetch(`/api/quote/${encodeURIComponent(safeTicker)}`);
+        if (!response.ok) {
+            return null;
+        }
+
         const data = await response.json();
-        return asNumber(data?.results?.[0]?.regularMarketPrice);
+        const price = Number(data?.results?.[0]?.regularMarketPrice);
+
+        return Number.isFinite(price) && price > 0 ? price : null;
     } catch (error) {
-        return 0;
+        return null;
     }
 };
 
@@ -107,15 +113,18 @@ export const updateDb = async (user, data) => {
 
     const ticker = normalizeTicker(data.name);
     const valueShares = await fetchQuote(ticker);
+    const previousAnalytics = await readDb(user, "analytics", ticker);
+    const previousValue = asNumber(previousAnalytics?.currentValue);
+    const currentValue = valueShares ?? (previousValue > 0 ? previousValue : asNumber(data.value));
 
     const newData = {
         name: ticker,
         valueBuy: data.value,
-        currentValue: valueShares.toString(),
+        currentValue: currentValue.toString(),
         qtd: data.qtd,
         date: data.date,
         cost: asNumber(data.value) * asNumber(data.qtd),
-        return: valueShares * asNumber(data.qtd)
+        return: currentValue * asNumber(data.qtd)
     }
 
 
@@ -165,15 +174,18 @@ export const addAcoesDb = async (user, data) => {
     })
 
     const valueShares = await fetchQuote(stockName);
+    // Nao grave zero quando a API de cotacoes estiver indisponivel. O preco de
+    // compra mantem os totais consistentes ate a proxima atualizacao bem-sucedida.
+    const currentValue = valueShares ?? asNumber(data.value);
 
     await setDoc(doc(db, `Usuarios/${user}/analytics`, stockName), {
         name: stockName,
         valueBuy: data.value,
-        currentValue: valueShares.toString(),
+        currentValue: currentValue.toString(),
         qtd: data.qtd,
         date: data.date.replace(/[-]/g, "/"),
         cost: Number(data.value) * Number(data.qtd),
-        return: valueShares * Number(data.qtd),
+        return: currentValue * Number(data.qtd),
         history12m: []
     }, { merge: true })
 
@@ -190,15 +202,18 @@ export const addAnalytics = async (user) => {
     await Promise.all(assets.map(async (item) => {
         const ticker = normalizeTicker(item.name);
         const valueShares = await fetchQuote(ticker);
+        const previousAnalytics = await readDb(user, "analytics", ticker);
+        const previousValue = asNumber(previousAnalytics?.currentValue);
+        const currentValue = valueShares ?? (previousValue > 0 ? previousValue : asNumber(item.value));
 
         await setDoc(doc(db, `Usuarios/${user}/analytics`, ticker), {
             name: ticker,
             valueBuy: item.value,
-            currentValue: valueShares.toString(),
+            currentValue: currentValue.toString(),
             qtd: item.qtd,
             date: String(item.date || "").replace(/[-]/g, "/"),
             cost: asNumber(item.value) * asNumber(item.qtd),
-            return: valueShares * asNumber(item.qtd),
+            return: currentValue * asNumber(item.qtd),
             history12m: []
         });
     }));

@@ -132,7 +132,9 @@ export default function Carteira({ results }) {
 
     return (
         loading ? (
+            
             <Loading />
+
         ) : (
             data.length > 0 ? (
                 <Body>

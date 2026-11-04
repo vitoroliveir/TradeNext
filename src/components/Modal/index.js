@@ -71,7 +71,11 @@ export default function Modal({ onClose , onSuccess, children, data, onError, re
             return onError("Ação já Cadastrada")
           }
 
-          await addAcoesDb(user.uid, payload)
+          try {
+            await addAcoesDb(user.uid, payload)
+          } catch (error) {
+            return onError(error?.message || "Nao foi possivel cadastrar o ativo")
+          }
 
           reset(payload)
         

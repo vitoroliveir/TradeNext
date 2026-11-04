@@ -1,4 +1,10 @@
-const sanitizeTicker = (ticker) => String(ticker || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+const sanitizeTicker = (ticker) => {
+  const normalized = String(ticker || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+  // Na B3, o sufixo F representa negociacao no mercado fracionario (ex.: VALE3F).
+  // A BRAPI cota o ativo-base, sem esse sufixo.
+  return normalized.replace(/^([A-Z]{4,6}\d{1,2})F$/, "$1");
+};
 
 const buildBrapiUrl = (ticker, query) => {
   const params = new URLSearchParams();

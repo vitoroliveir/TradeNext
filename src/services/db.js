@@ -44,7 +44,7 @@ const normalizeTicker = (value) => String(value || "").trim().toUpperCase().repl
 const fetchQuote = async (ticker) => {
     const safeTicker = normalizeTicker(ticker);
     if (!safeTicker) {
-        return 0;
+        return null;
     }
 
     try {
@@ -165,6 +165,12 @@ export const addAcoesDb = async (user, data) => {
     if (!user || !data?.name) return;
 
     const stockName = normalizeTicker(data.name);
+    const valueShares = await fetchQuote(stockName);
+
+    if (valueShares === null) {
+        throw new Error("Nao foi possivel obter a cotacao atual do ativo. Tente novamente em instantes.");
+    }
+
     await setDoc(doc(db, `Usuarios/${user}/acoes`, stockName), {
         name: stockName,
         value: data.value,
@@ -173,19 +179,14 @@ export const addAcoesDb = async (user, data) => {
         qtd: data.qtd
     })
 
-    const valueShares = await fetchQuote(stockName);
-    // Nao grave zero quando a API de cotacoes estiver indisponivel. O preco de
-    // compra mantem os totais consistentes ate a proxima atualizacao bem-sucedida.
-    const currentValue = valueShares ?? asNumber(data.value);
-
     await setDoc(doc(db, `Usuarios/${user}/analytics`, stockName), {
         name: stockName,
         valueBuy: data.value,
-        currentValue: currentValue.toString(),
+        currentValue: valueShares.toString(),
         qtd: data.qtd,
         date: data.date.replace(/[-]/g, "/"),
         cost: Number(data.value) * Number(data.qtd),
-        return: currentValue * Number(data.qtd),
+        return: valueShares * Number(data.qtd),
         history12m: []
     }, { merge: true })
 

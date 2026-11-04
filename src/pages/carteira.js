@@ -132,7 +132,7 @@ export default function Carteira({ results }) {
 
     return (
         loading ? (
-            
+
             <Loading />
 
         ) : (
@@ -153,6 +153,7 @@ export default function Carteira({ results }) {
                         </Patrimony>
                         <List>
                             <h1>Meus Ativos</h1>
+                            
                             <TableArea>
                                 <Header>
                                     {["", "Qtde", "P.Médio", "Preço", "Retorno", "%Carteira"].map((text, index) => (
